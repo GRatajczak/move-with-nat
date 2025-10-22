@@ -1,94 +1,127 @@
-# 10x Astro Starter
+# MoveWithNat
 
-A modern, opinionated starter template for building fast, accessible, and AI-friendly web applications.
+A responsive web application for personal trainers to create, manage, and share structured training plans with their clients—eliminating the need for spreadsheets and delivering a seamless user experience.
+
+## Table of Contents
+
+1. [Tech Stack](#tech-stack)
+2. [Getting Started Locally](#getting-started-locally)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Environment Variables](#environment-variables)
+   - [Running the Development Server](#running-the-development-server)
+3. [Available Scripts](#available-scripts)
+4. [Project Scope](#project-scope)
+5. [Project Status](#project-status)
+6. [License](#license)
 
 ## Tech Stack
 
-- [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
-- [React](https://react.dev/) v19.0.0 - UI library for building interactive components
-- [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+- **Frameworks & Languages**: Astro 5, React 19, TypeScript 5
+- **Styling**: Tailwind CSS 4, shadcn/ui
+- **State & Utilities**: clsx, class-variance-authority, tailwind-merge, tw-animate-css
+- **Authentication & Database**: Supabase Auth (email link), RLS (Row-Level Security)
+- **Media & Email**: Vimeo embeds, SendGrid transactional emails
+- **Tooling & CI/CD**:
+  - Node.js v22.14.0 (managed via [`.nvmrc`](.nvmrc))
+  - GitHub Actions (recommended)
+  - DigitalOcean App Platform or CDN-backed hosting
+- **Linting & Formatting**: ESLint, Prettier, Husky, lint-staged
 
-## Prerequisites
+## Getting Started Locally
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+### Prerequisites
 
-## Getting Started
+- Node.js v22.14.0 (use nvm: `nvm install 22 && nvm use 22`)
+- npm (v8+)
+- A Supabase project with Auth & RLS enabled
+- SendGrid account and API key
+- Vimeo access token for private video embedding
 
-1. Clone the repository:
+### Installation
 
-```bash
-git clone https://github.com/przeprogramowani/10x-astro-starter.git
-cd 10x-astro-starter
+1. Clone the repository
+   ```bash
+   git clone https://github.com/your-username/move-with-nat.git
+   cd move-with-nat
+   ```
+2. Install dependencies
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+### Environment Variables
+
+Create a `.env` file in the project root with the following keys:
+
+```env
+# Supabase
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# SendGrid
+SENDGRID_API_KEY=your-sendgrid-api-key
+
+# Vimeo
+VIMEO_ACCESS_TOKEN=your-vimeo-access-token
 ```
 
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Run the development server:
+### Running the Development Server
 
 ```bash
 npm run dev
 ```
 
-4. Build for production:
-
-```bash
-npm run build
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
+- `npm run dev`  
+  Start the Astro development server with hot-reload.
+- `npm run build`
+  Build the static production site.
+- `npm run preview`
+  Preview the production build locally.
+- `npm run astro`  
+  Run the Astro CLI.
+- `npm run lint`  
+  Run ESLint to check for code issues.
+- `npm run lint:fix`  
+  Run ESLint and automatically fix problems.
+- `npm run format`  
+  Run Prettier to format all files.
 
-## Project Structure
+## Project Scope
 
-```md
-.
-├── src/
-│   ├── layouts/    # Astro layouts
-│   ├── pages/      # Astro pages
-│   │   └── api/    # API endpoints
-│   ├── components/ # UI components (Astro & React)
-│   └── assets/     # Static assets
-├── public/         # Public assets
-```
+This project’s MVP includes:
 
-## AI Development Support
+- **Authentication & Authorization**
+  - Email-link login & password reset (Supabase Auth)
+  - Role-based access control (administrator, trainer, trainee) via RLS
+- **Exercise Library**
+  - CRUD for exercises (name, description, Vimeo link)
+- **Training Plan Management**
+  - Trainers create, edit, hide/unhide, and delete plans for their assigned trainees
+- **User Management**
+  - Administrators add/edit/delete/suspend/reactivate trainers & trainees
+  - Email activation & reset flow via SendGrid
+- **Notifications**
+  - Transactional emails (account activation, password reset, new plan)
+  - In-app notification banner for unread alerts
+- **Pagination & Filtering**
+  - Offset–limit pagination (default 20 items/page)
+  - Filtering by name, status, creation date, and trainer
+- **Audit Log**
+  - Records of CRUD events on plans and accounts with metadata (user, action, timestamp)
+  - 90-day retention
 
-This project is configured with AI development tools to enhance the development experience, providing guidelines for:
+## Project Status
 
-- Project structure
-- Coding practices
-- Frontend development
-- Styling with Tailwind
-- Accessibility best practices
-- Astro and React guidelines
-
-### Cursor IDE
-
-The project includes AI rules in `.cursor/rules/` directory that help Cursor IDE understand the project structure and provide better code suggestions.
-
-### GitHub Copilot
-
-AI instructions for GitHub Copilot are available in `.github/copilot-instructions.md`
-
-### Windsurf
-
-The `.windsurfrules` file contains AI configuration for Windsurf.
-
-## Contributing
-
-Please follow the AI guidelines and coding practices defined in the AI configuration files when contributing to this project.
+🚧 **MVP in development**  
+Core features are actively being built in alignment with the PRD’s MVP requirements.
 
 ## License
 
-MIT
+This project does not currently include a license. Please add a `LICENSE` file to specify usage permissions.
