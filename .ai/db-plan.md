@@ -6,17 +6,15 @@
 3. Relacja jeden-do-wielu między trenerami a podopiecznymi: dodanie `trainer_id UUID` (FK) w tabeli `users` dla roli `podopieczny`.  
 4. Tabela łącznikowa `plan_exercises` (FK do `plans.id` i `exercises.id`) z polami `sort_order INT`, `sets INT`, `reps INT`.  
 5. Kolumna `is_visible BOOLEAN DEFAULT TRUE` w tabeli `plans` z indeksem B-TREE do filtrowania widocznych planów.  
-6. Tabela `audit_log` z kolumnami `id SERIAL PK`, `entity_type TEXT`, `entity_id UUID`, `action_type TEXT`, `performed_by UUID`, `timestamp TIMESTAMPTZ DEFAULT NOW()`, `details JSONB`; indeks na `timestamp`.  
-7. Indeksy:  
+6. Indeksy:  
    - `UNIQUE` na `users(email)`  
    - B-TREE na `plans(trainer_id)`, `plans(created_at)`  
    - B-TREE na `exercises(name)`  
    - Indeks wielokolumnowy `(trainer_id, created_at)` dla paginacji po trenerze i dacie.  
-8. Partycjonowanie `audit_log` według zakresu dat (np. co miesiąc na podstawie `timestamp`), ułatwiające kasowanie danych starszych niż 90 dni.  
-9. RLS: włączone na tabelach `plans` i `users`, z policy:  
+7. RLS: włączone na tabelach `plans` i `users`, z policy:  
    - Trener może `SELECT/INSERT/UPDATE/DELETE` tam, gdzie `plans.trainer_id = current_setting('jwt.claims.user_id')`.  
    - Podopieczny może tylko `SELECT` wierszy `users.id = current_setting('jwt.claims.user_id')`.  
-10. Integralność danych: klucze obce z `ON DELETE CASCADE`/`RESTRICT` oraz użycie transakcji (BEGIN/COMMIT) przy operacjach obejmujących wiele tabel.  
+8. Integralność danych: klucze obce z `ON DELETE CASCADE`/`RESTRICT` oraz użycie transakcji (BEGIN/COMMIT) przy operacjach obejmujących wiele tabel.  
 </decisions>
 
 <matched_recommendations>
@@ -26,11 +24,9 @@
 3. Model relacji jeden-do-wielu trener→podopieczny.
 4. Tabela łącznikowa `plan_exercises` z dodatkowymi polami.
 5. Flaga `is_visible BOOLEAN` z indeksem.
-6. Tabela `audit_log` z JSONB i indeksem na `timestamp`.
-7. Indeksy B-TREE i wielokolumnowy dla paginacji.
-8. Partycjonowanie `audit_log` po datach.
-9. Polityki RLS wykorzystujące `jwt.claims.user_id`.
-10. FK + transakcje dla spójności.  
+6. Indeksy B-TREE i wielokolumnowy dla paginacji.
+7. Polityki RLS wykorzystujące `jwt.claims.user_id`.
+8. FK + transakcje dla spójności.  
     </matched_recommendations>
 
 <database_planning_summary>
@@ -41,20 +37,16 @@ Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe
   • `exercises`  
   • `plans`  
   • `plan_exercises` (łączenie ćwiczeń z planami)  
-  • `audit_log`
 - Relacje:
   • Jeden trener ma wielu podopiecznych (`users.trainer_id → users.id`)  
   • Wiele ćwiczeń może należeć do wielu planów (tabela łącznikowa)
 - Typy danych i ograniczenia:
   • UUID jako klucze główne dla dystrybucji i skalowalności  
-  • TEXT/TIMESTAMPTZ/JSONB dla opisów, znaczników czasu i szczegółów audytu  
+  • TEXT/TIMESTAMPTZ dla opisów i znaczników czasu  
   • ENUM dla roli użytkownika
 - Indeksy i wydajność:
   • Indeksy B-TREE na polach filtrowanych i sortowanych (`email`, `trainer_id`, `created_at`, `name`)  
   • Indeks wielokolumnowy dla paginacji
-- Skalowalność:
-  • Partycjonowanie tabeli `audit_log` co miesiąc  
-  • Automatyczne czyszczenie partycji starszych niż 90 dni
 - Bezpieczeństwo:
   • RLS na `users` i `plans` z autoryzacją opartą na `jwt.claims.user_id`  
   • Polityki zapewniające, że trener widzi tylko swoje plany, a podopieczny tylko własne dane
@@ -67,7 +59,6 @@ Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe
 
 - Szczegółowe zdefiniowanie struktury tabeli `plans` (nazwa, opis, terminy, status).
 - Pełen zestaw pól profilowych w tabeli `users` (imię, e-mail, kontakt).
-- Mechanizm automatycznego zarządzania partycjami i harmonogram usuwania danych starszych niż 90 dni.
 - Dokładne zasady RLS dla operacji `UPDATE` i `INSERT` w tabeli `exercises` i `plan_exercises` (kto może modyfikować).  
   </unresolved_issues>
 

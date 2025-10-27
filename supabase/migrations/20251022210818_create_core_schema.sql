@@ -1,10 +1,9 @@
--- migration: create core schema for users, exercises, plans, plan_exercises, and audit_log
--- purpose: implement mvp database schema with rls, indexes, and monthly-partitioned audit log
--- affected: types (user_role), tables (users, exercises, plans, plan_exercises, audit_log)
+-- migration: create core schema for users, exercises, plans, and plan_exercises
+-- purpose: implement mvp database schema with rls and indexes (no audit log)
+-- affected: types (user_role), tables (users, exercises, plans, plan_exercises)
 -- notes:
 --   - row level security (rls) is enabled on all tables.
 --   - policies are defined per supabase role (anon, authenticated) and per action (select, insert, update, delete).
---   - audit_log is partitioned by month and includes example creation for current and next month partitions.
 --   - destructive operations are not included; future drops must be evaluated carefully.
 
 create extension if not exists pgcrypto;
@@ -252,70 +251,4 @@ create policy plan_exercises_select_by_trainee_visible on public.plan_exercises 
       where p.id = plan_id and p.trainer_id = u.trainer_id and p.is_visible is true
     )
   );
-
--- audit_log: append-only audit trail, monthly partitioned by timestamp
-create table if not exists public.audit_log (
-  id bigint generated always as identity,
-  entity_type text not null,
-  entity_id uuid,
-  action_type text not null,
-  performed_by uuid,
-  timestamp timestamptz not null default now(),
-  details jsonb,
-  constraint audit_log_details_is_object check (jsonb_typeof(details) is null or jsonb_typeof(details) = 'object')
-  , primary key (timestamp, id)
-) partition by range (timestamp);
-
-comment on table public.audit_log is 'append-only audit trail; partitioned monthly by timestamp to ease retention and pruning.';
-
--- partitioned index on timestamp across all partitions
-create index if not exists idx_audit_log_timestamp on public.audit_log using btree (timestamp);
-
--- create current and next month partitions as an initial setup
-do $$
-declare
-  start_current date := date_trunc('month', now())::date;
-  start_next date := (date_trunc('month', now()) + interval '1 month')::date;
-  start_after_next date := (date_trunc('month', now()) + interval '2 month')::date;
-  partition_current text := format('audit_log_%s', to_char(start_current, 'yyyymm'));
-  partition_next text := format('audit_log_%s', to_char(start_next, 'yyyymm'));
-begin
-  if to_regclass('public.' || partition_current) is null then
-    execute format(
-      'create table public.%I partition of public.audit_log for values from (%L) to (%L);',
-      partition_current,
-      start_current,
-      start_next
-    );
-  end if;
-
-  if to_regclass('public.' || partition_next) is null then
-    execute format(
-      'create table public.%I partition of public.audit_log for values from (%L) to (%L);',
-      partition_next,
-      start_next,
-      start_after_next
-    );
-  end if;
-end $$;
-
--- default partition to catch any rows outside created ranges
-create table if not exists public.audit_log_default partition of public.audit_log default;
-
--- rls for audit_log: deny all by default; service role can still access
-alter table public.audit_log enable row level security;
-create policy audit_log_select_anon_deny on public.audit_log for select to anon using (false);
-create policy audit_log_insert_anon_deny on public.audit_log for insert to anon with check (false);
-create policy audit_log_update_anon_deny on public.audit_log for update to anon using (false) with check (false);
-create policy audit_log_delete_anon_deny on public.audit_log for delete to anon using (false);
-
-create policy audit_log_select_auth_deny on public.audit_log for select to authenticated using (false);
-create policy audit_log_insert_auth_deny on public.audit_log for insert to authenticated with check (false);
-create policy audit_log_update_auth_deny on public.audit_log for update to authenticated using (false) with check (false);
-create policy audit_log_delete_auth_deny on public.audit_log for delete to authenticated using (false);
-
--- retention note:
---   implement a scheduled job (outside of sql here) to drop partitions older than 90 days, e.g.,
---   select format('drop table if exists public.audit_log_%s;', to_char(date_trunc('month', now()) - interval '3 months', 'yyyymm'));
-
 
