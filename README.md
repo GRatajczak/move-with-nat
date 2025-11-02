@@ -1,127 +1,125 @@
 # MoveWithNat
 
-A responsive web application for personal trainers to create, manage, and share structured training plans with their clients—eliminating the need for spreadsheets and delivering a seamless user experience.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/YOUR_USERNAME/move-with-nat/ci.yml?branch=master)](https://github.com/YOUR_USERNAME/move-with-nat/actions)  
+[![Version](https://img.shields.io/badge/version-0.0.1-blue)]()  
+[![License](https://img.shields.io/badge/license-Unlicensed-lightgrey)]()
+
+A responsive web application enabling personal trainers and administrators to create, manage, and share structured training plans with clients—eliminating the need for spreadsheets. Trainees can view assigned plans, track exercise progress, and record reasons for incomplete exercises.
 
 ## Table of Contents
 
 1. [Tech Stack](#tech-stack)
 2. [Getting Started Locally](#getting-started-locally)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-   - [Environment Variables](#environment-variables)
-   - [Running the Development Server](#running-the-development-server)
 3. [Available Scripts](#available-scripts)
-4. [Project Scope](#project-scope)
+4. [Project Scope (MVP)](#project-scope-mvp)
 5. [Project Status](#project-status)
 6. [License](#license)
+7. [Additional Resources](#additional-resources)
 
 ## Tech Stack
 
-- **Frameworks & Languages**: Astro 5, React 19, TypeScript 5
-- **Styling**: Tailwind CSS 4, shadcn/ui
-- **State & Utilities**: clsx, class-variance-authority, tailwind-merge, tw-animate-css
-- **Authentication & Database**: Supabase Auth (email link), RLS (Row-Level Security)
-- **Media & Email**: Vimeo embeds, SendGrid transactional emails
-- **Tooling & CI/CD**:
-  - Node.js v22.14.0 (managed via [`.nvmrc`](.nvmrc))
-  - GitHub Actions (recommended)
-  - DigitalOcean App Platform or CDN-backed hosting
-- **Linting & Formatting**: ESLint, Prettier, Husky, lint-staged
+- **Frontend**: Astro 5 · React 19 · TypeScript 5
+- **Styling**: Tailwind CSS 4 · Shadcn/ui · clsx · class-variance-authority
+- **Backend & Database**: Supabase (Auth, RLS, PostgreSQL)
+- **Media**: Vimeo private playback (token-based)
+- **Email**: SendGrid transactional emails
+- **Build & Tooling**: Vite · GitHub Actions · DigitalOcean App Platform
+- **Utilities**: tailwind-merge · lucide-react · tw-animate-css
 
 ## Getting Started Locally
 
 ### Prerequisites
 
-- Node.js v22.14.0 (use nvm: `nvm install 22 && nvm use 22`)
-- npm (v8+)
-- A Supabase project with Auth & RLS enabled
-- SendGrid account and API key
-- Vimeo access token for private video embedding
+- Node.js ≥18 (or your preferred LTS)
+- npm or yarn
+- Git
 
 ### Installation
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/your-username/move-with-nat.git
-   cd move-with-nat
-   ```
-2. Install dependencies
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+```bash
+git clone https://github.com/YOUR_USERNAME/move-with-nat.git
+cd move-with-nat
+npm install
+# or
+# yarn install
+```
 
 ### Environment Variables
 
-Create a `.env` file in the project root with the following keys:
+Create a `.env` file in the project root with the following variables:
 
-```env
+```bash
 # Supabase
 SUPABASE_URL=your-supabase-url
-SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_KEY=your-supabase-key
 
 # SendGrid
-SENDGRID_API_KEY=your-sendgrid-api-key
+SENDGRID_API_KEY=your-sendgrid-apikey
 
 # Vimeo
-VIMEO_ACCESS_TOKEN=your-vimeo-access-token
+VIMEO_TOKEN=your-vimeo-token
+
+# (Optional) Additional
+OPENROUTER_API_KEY=your-openrouter-apikey
 ```
 
-### Running the Development Server
+### Running in Development
 
 ```bash
 npm run dev
+# or
+# yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Available Scripts
 
-- `npm run dev`  
-  Start the Astro development server with hot-reload.
-- `npm run build`
-  Build the static production site.
-- `npm run preview`
-  Preview the production build locally.
-- `npm run astro`  
-  Run the Astro CLI.
-- `npm run lint`  
-  Run ESLint to check for code issues.
-- `npm run lint:fix`  
-  Run ESLint and automatically fix problems.
-- `npm run format`  
-  Run Prettier to format all files.
+- `npm run dev` — Start Astro development server
+- `npm run build` — Build for production
+- `npm run preview` — Preview production build
+- `npm run lint` — Run ESLint
+- `npm run lint:fix` — Run ESLint with auto-fix
+- `npm run format` — Format code with Prettier
 
-## Project Scope
-
-This project’s MVP includes:
+## Project Scope (MVP)
 
 - **Authentication & Authorization**
-  - Email-link login & password reset (Supabase Auth)
-  - Role-based access control (administrator, trainer, trainee) via RLS
-- **Exercise Library**
-  - CRUD for exercises (name, description, Vimeo link)
-- **Training Plan Management**
-  - Trainers create, edit, hide/unhide, and delete plans for their assigned trainees
+  - Supabase Auth with email link login & 1h password reset
+  - Role-based RLS: Administrator, Trainer, Trainee
+- **Exercises Management**
+  - CRUD operations: name, description, tempo, default weight, Vimeo link
+- **Training Plans**
+  - Trainers create/edit/delete/hide plans for assigned trainees
 - **User Management**
-  - Administrators add/edit/delete/suspend/reactivate trainers & trainees
-  - Email activation & reset flow via SendGrid
+  - Admin invites/manages trainers & trainees; email activation links
 - **Notifications**
-  - Transactional emails (account activation, password reset, new plan)
-  - In-app notification banner for unread alerts
+  - SendGrid for account activation, password reset, new plan, plan updates
+- **Progress Tracking**
+  - Trainees mark exercises as done/undone with standard or custom reasons
 - **Pagination & Filtering**
-  - Offset–limit pagination (default 20 items/page)
-  - Filtering by name, status, creation date, and trainer
-- **Audit Log**
-  - Records of CRUD events on plans and accounts with metadata (user, action, timestamp)
-  - 90-day retention
+  - Offset–limit pagination (20 items/page), filter by name, status, date, trainer
+- **Profile Editing**
+  - Role-specific profile updates for admins, trainers, trainees
+- **Admin Utilities**
+  - Manage standard reasons for incomplete exercises
 
 ## Project Status
 
-🚧 **MVP in development**  
-Core features are actively being built in alignment with the PRD’s MVP requirements.
+🚧 **In Development (MVP Stage)**  
+Version 0.0.1 — Core features implemented; testing and polishing underway.
 
 ## License
 
-This project does not currently include a license. Please add a `LICENSE` file to specify usage permissions.
+This project is currently unlicensed. Please add a `LICENSE` file to specify terms.
+
+## Additional Resources
+
+- [Product Requirements (PRD)](.ai/prd.md)
+- [API & Database Design](.ai/api-plan.md, .ai/db-plan.md)
+- [Tech Stack Rationale](.ai/tech-stack.md)
+- [Supabase Migrations](supabase/migrations/)
+- [Astro Documentation](https://docs.astro.build)
+- [Supabase Documentation](https://supabase.com/docs)
+- [SendGrid Documentation](https://docs.sendgrid.com)
+- [Vimeo Developer API](https://developer.vimeo.com)
