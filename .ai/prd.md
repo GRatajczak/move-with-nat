@@ -67,28 +67,28 @@ Wyłączone w MVP:
 ## 5. Historie użytkownika
 
 US-001
-Tytuł: Logowanie administratora (link jednorazowy 1h)
-Opis: Administrator loguje się przez stronę logowania, korzystając z linku e-mailowego ważnego 1 godzinę.
+Tytuł: Logowanie administratora
+Opis: Administrator loguje się przez stronę logowania, podając swój e-mail i hasło.
 Kryteria akceptacji:
 
-- Po podaniu prawidłowego e-maila administrator otrzymuje link logowania (ważny 1h).
-- Przy użyciu wygasłego/nieprawidłowego linku wyświetlany jest komunikat o błędzie.
+- Po podaniu prawidłowego e-maila i hasła administrator jest uwierzytelniony i przekierowany do dashboardu.
+- Przy podaniu nieprawidłowego e-maila lub hasła wyświetlany jest komunikat o błędzie.
 
 US-002
-Tytuł: Logowanie trenera (link jednorazowy 1h)
-Opis: Trener loguje się linkiem e-mailowym i trafia na pulpit z listą przypisanych podopiecznych.
+Tytuł: Logowanie trenera
+Opis: Trener loguje się przez stronę logowania, podając swój e-mail i hasło, i trafia na pulpit z listą przypisanych podopiecznych.
 Kryteria akceptacji:
 
-- Po podaniu prawidłowego e-maila trener otrzymuje link logowania (1h).
-- Po kliknięciu w link trener jest uwierzytelniony i przekierowany do listy podopiecznych.
+- Po podaniu prawidłowego e-maila i hasła trener jest uwierzytelniony i widzi listę podopiecznych.
+- Przy podaniu nieprawidłowego e-maila lub hasła wyświetlany jest komunikat o błędzie.
 
 US-003
-Tytuł: Logowanie podopiecznego (link jednorazowy 1h)
-Opis: Podopieczny loguje się przez link e-mailowy i przegląda swój dashboard z planami.
+Tytuł: Logowanie podopiecznego
+Opis: Podopieczny loguje się przez stronę logowania, podając swój e-mail i hasło, i przegląda swój dashboard z planami.
 Kryteria akceptacji:
 
-- Po podaniu przydzielonego e-maila podopieczny otrzymuje link logowania (1h).
-- Po kliknięciu w link podopieczny widzi tylko swoje plany i profil.
+- Po podaniu prawidłowego e-maila i hasła podopieczny jest uwierzytelniony i widzi swoje plany i profil.
+- Przy podaniu nieprawidłowego e-maila lub hasła wyświetlany jest komunikat o błędzie.
 
 US-004
 Tytuł: Reset hasła
