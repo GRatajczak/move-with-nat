@@ -30,7 +30,7 @@ A responsive web application enabling personal trainers and administrators to cr
 
 ### Prerequisites
 
-- Node.js ≥18 (or your preferred LTS)
+- Node.js 22 (or your preferred LTS)
 - npm or yarn
 - Git
 
@@ -59,8 +59,6 @@ SENDGRID_API_KEY=your-sendgrid-apikey
 # Vimeo
 VIMEO_TOKEN=your-vimeo-token
 
-# (Optional) Additional
-OPENROUTER_API_KEY=your-openrouter-apikey
 ```
 
 ### Running in Development
