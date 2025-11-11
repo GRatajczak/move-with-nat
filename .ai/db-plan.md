@@ -11,10 +11,11 @@
    - B-TREE na `plans(trainer_id)`, `plans(created_at)`  
    - B-TREE na `exercises(name)`  
    - Indeks wielokolumnowy `(trainer_id, created_at)` dla paginacji po trenerze i dacie.  
-7. RLS: włączone na tabelach `plans` i `users`, z policy:  
+7. Partycjonowanie `audit_log` według zakresu dat (np. co miesiąc na podstawie `timestamp`), ułatwiające kasowanie danych starszych niż 90 dni.  
+8. RLS: włączone na tabelach `plans` i `users`, z policy:  
    - Trener może `SELECT/INSERT/UPDATE/DELETE` tam, gdzie `plans.trainer_id = current_setting('jwt.claims.user_id')`.  
    - Podopieczny może tylko `SELECT` wierszy `users.id = current_setting('jwt.claims.user_id')`.  
-8. Integralność danych: klucze obce z `ON DELETE CASCADE`/`RESTRICT` oraz użycie transakcji (BEGIN/COMMIT) przy operacjach obejmujących wiele tabel.  
+9. Integralność danych: klucze obce z `ON DELETE CASCADE`/`RESTRICT` oraz użycie transakcji (BEGIN/COMMIT) przy operacjach obejmujących wiele tabel.  
 </decisions>
 
 <matched_recommendations>
@@ -25,9 +26,10 @@
 4. Tabela łącznikowa `plan_exercises` z dodatkowymi polami.
 5. Flaga `is_visible BOOLEAN` z indeksem.
 6. Indeksy B-TREE i wielokolumnowy dla paginacji.
-7. Polityki RLS wykorzystujące `jwt.claims.user_id`.
-8. FK + transakcje dla spójności.  
-    </matched_recommendations>
+7. Partycjonowanie `audit_log` po datach.
+8. Polityki RLS wykorzystujące `jwt.claims.user_id`.
+9. FK + transakcje dla spójności.  
+   </matched_recommendations>
 
 <database_planning_summary>
 Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe elementy schematu PostgreSQL dla MVP:
@@ -36,13 +38,13 @@ Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe
   • `users` (administrator, trener, podopieczny)  
   • `exercises`  
   • `plans`  
-  • `plan_exercises` (łączenie ćwiczeń z planami)  
+  • `plan_exercises` (łączenie ćwiczeń z planami)
 - Relacje:
   • Jeden trener ma wielu podopiecznych (`users.trainer_id → users.id`)  
   • Wiele ćwiczeń może należeć do wielu planów (tabela łącznikowa)
 - Typy danych i ograniczenia:
   • UUID jako klucze główne dla dystrybucji i skalowalności  
-  • TEXT/TIMESTAMPTZ dla opisów i znaczników czasu  
+  • TEXT/TIMESTAMPTZ/JSONB dla opisów, znaczników czasu i szczegółów audytu  
   • ENUM dla roli użytkownika
 - Indeksy i wydajność:
   • Indeksy B-TREE na polach filtrowanych i sortowanych (`email`, `trainer_id`, `created_at`, `name`)  
@@ -59,6 +61,7 @@ Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe
 
 - Szczegółowe zdefiniowanie struktury tabeli `plans` (nazwa, opis, terminy, status).
 - Pełen zestaw pól profilowych w tabeli `users` (imię, e-mail, kontakt).
+- Mechanizm automatycznego zarządzania partycjami i harmonogram usuwania danych starszych niż 90 dni.
 - Dokładne zasady RLS dla operacji `UPDATE` i `INSERT` w tabeli `exercises` i `plan_exercises` (kto może modyfikować).  
   </unresolved_issues>
 

@@ -5,255 +5,308 @@
 - **Users** (`users` table)
 - **Exercises** (`exercises` table)
 - **Plans** (`plans` table)
-- **PlanExercises** (`plan_exercises` table)
-- **Notifications** (in-app and email)
-- **AuditLogs** (`audit_logs` table)
+- **Plan Exercises** (`plan_exercises` join table)
+- **Completion Records** (marks exercise completion by trainees)
+- **Standard Reasons** (predefined reasons for incomplete exercises)
 
 ## 2. Endpoints
 
-### 2.1 Authentication
+### Authentication & Account Activation
 
-POST /auth/request-link
+#### 1. Request Activation / Invitation Email
 
-- Description: Send login or activation link
-- Body: { email: string }
-- Responses:
-  - 200: { message: "Link sent" }
-  - 400: { error: "Invalid email" }
-  - 404: { error: "User not found" }
+- Method: POST
+- URL: `/auth/invite`
+- Description: Send activation link to a new user (trainer or trainee) or re-send invitation
+- Request Body:
+  ```json
+  { "email": "user@example.com", "role": "trainer|trainee", "resend": false }
+  ```
+- Success Response (202 Accepted):
+  ```json
+  { "message": "Activation link sent" }
+  ```
+- Error (400/409): invalid email or user already active
 
-POST /auth/verify
+#### 2. Activate Account
 
-- Description: Verify token and issue JWT
-- Body: { token: string }
-- Responses:
-  - 200: { accessToken: string, expiresIn: number }
-  - 400: { error: "Invalid token" }
-  - 401: { error: "Token expired" }
+- Method: POST
+- URL: `/auth/activate`
+- Description: Activate account using token
+- Request Body:
+  ```json
+  { "token": "activation_jwt_token" }
+  ```
+- Success (200): `{ "message": "Account activated" }`
+- Error (400/401): invalid/expired token
 
-POST /auth/reset-request
+#### 3. Request Password Reset
 
-- Description: Send password reset link
-- Body: { email: string }
-- Responses:
-  - 200: { message: "Reset link sent" }
+- Method: POST
+- URL: `/auth/reset-password/request`
+- Description: Send password reset link (1h expiry)
+- Request Body: `{ "email": "user@example.com" }`
+- Success (202): `{ "message": "Reset link sent" }`
+- Error (404): email not found
 
-POST /auth/reset
+#### 4. Reset Password
 
-- Description: Reset password
-- Body: { token: string, newPassword: string }
-- Responses:
-  - 200: { message: "Password updated" }
+- Method: POST
+- URL: `/auth/reset-password/confirm`
+- Description: Reset password using token
+- Request Body:
+  ```json
+  { "token": "reset_jwt_token", "newPassword": "P@ssw0rd" }
+  ```
+- Success (200): `{ "message": "Password updated" }`
+- Error (400/401): invalid/expired token, validation error
 
-### 2.2 Users
+### Users Management
 
-GET /users
+#### 1. List Users
 
-- Description: List users
-- Query: role, status, page, limit, sortBy, sortOrder
-- Auth: Administrator
-- Responses:
-  - 200: { data: User[], pagination: {...} }
-
-POST /users
-
-- Description: Create user
-- Body: { email, role, firstName, lastName, trainerId? }
-- Auth: Administrator
-- Validations: unique email, role ∈ ENUM
-- Responses:
-  - 201: User
-  - 400: { error: "Validation failed" }
-
-GET /users/:id
-
-- Description: Get user
-- Auth: Admin or owner
-- Responses:
-  - 200: User
-  - 403: { error: "Forbidden" }
-
-PUT /users/:id
-
-- Description: Update any user
-- Body: same as create
-- Auth: Admin or assigned trainer
-- Responses:
-  - 200: User
-  - 400,403
-
-DELETE /users/:id
-
-- Description: Deactivate user
-- Auth: Administrator
-- Responses:
-  - 204
-
-PUT /users/:id/profile
-
-- Description: Podopieczny updates own profile
-- Body: { firstName, lastName, contact? }
-- Auth: Podopieczny
-- Responses:
-  - 200: User
-  - 400,403
-
-### 2.3 Exercises
-
-GET /exercises
-
-- Description: List exercises
-- Query: page, limit, sortBy, search
-- Auth: Admin, Trainer
-- Responses:
-  - 200: { data: Exercise[], pagination }
-
-POST /exercises
-
-- Description: Create exercise
-- Body: { name, description?, vimeoToken }
-- Auth: Administrator
-- Validations: name non-empty, vimeoToken non-empty
-- Responses:
-  - 201: Exercise
-  - 400: { error: "Validation failed" }
-
-GET /exercises/:id
-
-- Description: Get exercise
-- Auth: Admin, Trainer
-- Responses:
-  - 200: Exercise
-
-PUT /exercises/:id
-
-- Description: Update exercise
-- Body: same as create
-- Auth: Administrator
-- Responses:
-  - 200: Exercise
-
-DELETE /exercises/:id
-
-- Description: Delete exercise
-- Auth: Administrator
-- Responses:
-  - 204
-
-### 2.4 Plans
-
-GET /plans
-
-- Description: List plans
-- Query: assignedTo, visible, page, limit, sortBy, sortOrder
-- Auth: Trainer (own), Podopieczny (assigned & visible)
-- Responses:
-  - 200: { data: Plan[], pagination }
-
-POST /plans
-
-- Description: Create plan
-- Body:
+- Method: GET
+- URL: `/users`
+- Description: Retrieve paginated list of users with optional filtering by role, status, trainer
+- Query Params:
+  - `role` (admin|trainer|trainee)
+  - `status` (active|pending|suspended)
+  - `trainerId` (UUID)
+  - `page` (int, default 1)
+  - `limit` (int, default 20)
+- Response:
+  ```json
   {
-  name: string,
-  description?: string,
-  assignedTo: UUID,
-  exercises: [ { exerciseId: UUID, sortOrder: int, sets: int, reps: int } ]
+    "data": [{ "id": "...", "email": "...", "role": "trainer", "status": "active" /* ... */ }],
+    "meta": { "page": 1, "limit": 20, "total": 100 }
   }
-- Auth: Trainer
-- Validations: exercises.length >= 1; fields > 0
-- Responses:
-  - 201: Plan with nested exercises
-  - 400: { error: "Validation failed" }
+  ```
 
-GET /plans/:id
+#### 2. Create User
 
-- Description: Get plan details
-- Auth: Trainer (owner), Podopieczny (assigned & visible)
-- Responses:
-  - 200: Plan with exercises
+- Method: POST
+- URL: `/users`
+- Description: Administrator creates new trainer or trainee (status pending)
+- Request Body:
+  ```json
+  {
+    "email": "new@example.com",
+    "role": "trainer|trainee",
+    "firstName": "John",
+    "lastName": "Doe",
+    "trainerId": "<uuid>" // required if role=trainee
+  }
+  ```
+- Response (201 Created):
+  ```json
+  { "id": "...", "status": "pending" }
+  ```
+- Errors (400/409): validation, email conflict
 
-PATCH /plans/:id
+#### 3. Get User
 
-- Description: Update plan fields or visibility
-- Body: partial Plan
-- Auth: Trainer
-- Responses:
-  - 200: Plan
+- Method: GET
+- URL: `/users/{id}`
+- Description: Retrieve user details (self or by admin/trainer for their trainees)
+- Response:
+  ```json
+  { "id": "...", "email": "...", "role": "..." /* profile fields */ }
+  ```
+- Errors (403/404)
 
-DELETE /plans/:id
+#### 4. Update User
 
-- Description: Delete (archive) plan
-- Auth: Trainer
-- Responses:
-  - 204
+- Method: PUT
+- URL: `/users/{id}`
+- Description: Admin or trainer (for assigned trainees) updates profile fields or status
+- Request Body: partial profile fields
+- Response (200): updated user object
+- Errors (403/400)
 
-### 2.5 PlanExercises
+#### 5. Delete / Suspend User
 
-POST /plans/:planId/exercises
+- Method: DELETE
+- URL: `/users/{id}`
+- Description: Admin deletes or suspends a user (cascade/hide related plans)
+- Success (204 No Content)
+- Errors (403/404)
 
-- Description: Add exercise to plan
-- Body: { exerciseId, sortOrder, sets, reps }
-- Auth: Trainer
-- Responses:
-  - 201: PlanExercise
+### Exercises
 
-PUT /plans/:planId/exercises/:exerciseId
+#### 1. List Exercises
 
-- Description: Update plan-exercise mapping
-- Body: { sortOrder?, sets?, reps? }
-- Auth: Trainer
-- Responses:
-  - 200: PlanExercise
+- Method: GET
+- URL: `/exercises`
+- Params: `page`, `limit`, `search` (name)
+- Response paginated list with `id`, `name`, `tempo`, `defaultWeight`
 
-DELETE /plans/:planId/exercises/:exerciseId
+#### 2. Create Exercise
 
-- Description: Remove exercise from plan
-- Auth: Trainer
-- Responses:
-  - 204
+- Method: POST
+- URL: `/exercises`
+- Body:
+  ```json
+  {
+    "name": "Squat",
+    "description": "Proper squat technique...",
+    "vimeoToken": "abcd1234",
+    "tempo": "3-1-3",
+    "defaultWeight": 20
+  }
+  ```
+- Response (201): new exercise object
+- Validations: name required, tempo pattern
 
-### 2.6 Notifications
+#### 3. Get Exercise
 
-GET /notifications
+- Method: GET
+- URL: `/exercises/{id}`
 
-- Description: List user notifications
-- Query: unread, page, limit
-- Auth: any user
-- Responses:
-  - 200: { data: Notification[], pagination }
+#### 4. Update Exercise
 
-PATCH /notifications/:id/read
+- Method: PUT
+- URL: `/exercises/{id}`
+- Body: same as create but all fields optional
 
-- Description: Mark notification read
-- Auth: owner
-- Responses:
-  - 200: Notification
+#### 5. Delete Exercise
 
-### 2.7 AuditLogs
+- Method: DELETE
+- URL: `/exercises/{id}`
+- Response (204)
 
-GET /audit-logs
+### Plans
 
-- Description: List audit entries
-- Query: entity, action, since, page, limit
-- Auth: Administrator
-- Responses:
-  - 200: { data: AuditLog[], pagination }
+#### 1. List Plans
+
+- Method: GET
+- URL: `/plans`
+- Params: `trainerId`, `traineeId`, `visible` (true|false), `page`, `limit`, `sortBy` (createdAt)
+- Response paginated
+
+#### 2. Create Plan
+
+- Method: POST
+- URL: `/plans`
+- Body:
+  ```json
+  {
+    "trainerId": "...",
+    "traineeId": "...",
+    "name": "Leg Day",
+    "description": "Quad focus",
+    "isVisible": true,
+    "exercises": [{ "exerciseId": "...", "sortOrder": 1, "sets": 3, "reps": 12 }]
+  }
+  ```
+- Response (201): plan with nested exercises
+- Side effect: send email notification
+
+#### 3. Get Plan
+
+- Method: GET
+- URL: `/plans/{id}`
+- Includes exercises array
+
+#### 4. Update Plan
+
+- Method: PUT
+- URL: `/plans/{id}`
+- Body: same as create (partial updates allowed)
+- Side effect: send update email if exercises changed
+
+#### 5. Delete Plan
+
+- Method: DELETE
+- URL: `/plans/{id}`
+- Response (204)
+
+#### 6. Toggle Visibility
+
+- Method: PATCH
+- URL: `/plans/{id}/visibility`
+- Body:
+  ```json
+  { "isVisible": false }
+  ```
+- Response (200): updated plan
+
+### Plan Exercises (Nested)
+
+#### 1. Add Exercise to Plan
+
+- Method: POST
+- URL: `/plans/{planId}/exercises`
+- Body: `{ "exerciseId": "...", "sortOrder": 2, "sets": 4, "reps": 10 }`
+
+#### 2. Update Exercise in Plan
+
+- Method: PATCH
+- URL: `/plans/{planId}/exercises/{exerciseId}`
+- Body: fields to update
+
+#### 3. Remove Exercise from Plan
+
+- Method: DELETE
+- URL: `/plans/{planId}/exercises/{exerciseId}`
+
+### Completion Records
+
+#### 1. Mark Exercise Completion
+
+- Method: POST
+- URL: `/plans/{planId}/exercises/{exerciseId}/completion`
+- Body:
+  ```json
+  { "completed": true|false, "reasonId": "...", "customReason": "..." }
+  ```
+- Response (201): record created
+
+#### 2. Get Completion Records for Plan
+
+- Method: GET
+- URL: `/plans/{planId}/completion`
+
+### Standard Reasons
+
+#### 1. List Reasons
+
+- Method: GET
+- URL: `/reasons`
+
+#### 2. Create Reason
+
+- Method: POST
+- URL: `/reasons`
+- Body: `{ "text": "Felt pain" }`
+
+#### 3. Update Reason
+
+- Method: PUT
+- URL: `/reasons/{id}`
+
+#### 4. Delete Reason
+
+- Method: DELETE
+- URL: `/reasons/{id}`
 
 ## 3. Authentication & Authorization
 
-- Supabase Auth with email-link and JWT
-- Roles: administrator, trener, podopieczny
-- Row-Level Security enforced on `users` and `plans` using `jwt.claims.user_id`
-- Role-based guards in middleware
-- Rate limiting: 100 requests/minute per user/IP
+- Use Supabase Auth JWT with row-level security policies (RLS) on `users`, `plans`, `exercises`, `plan_exercises`, `completion_records`.
+- Middleware verifies JWT, extracts `userId` and `role` from claims.
+- Policies:
+  - Admin: full access
+  - Trainer: access to own trainees and plans (`plans.trainer_id = userId`)
+  - Trainee: read own user record, read plans where `trainee_id = userId`, write own completion records
 
 ## 4. Validation & Business Logic
 
-- Users: unique email; role must be one of ENUM; trainerId only for podopieczny
-- Exercises: name and vimeoToken required
-- Plans: must include ≥1 exercise; sortOrder, sets, reps > 0
-- Visibility: `isVisible` toggled by trainer; default true
-- Audit: log CRUD operations with user, action, timestamp
-- Notifications: enqueue email on user creation and plan creation
-- Pagination: offset/limit with defaults (20) and maximum (100)
+- Email: unique, valid format
+- Role: enum [administrator, trainer, trainee]
+- Tempo: regex `^(?:\\d{4}|\\d+[x\\/]\\d+[x\\/]\\d+)$`
+- Sets/Reps/SortOrder: positive integers
+- `trainerId` required when creating a trainee
+- Plans must contain ≥1 exercise on creation
+- Pagination: offset-limit using `page` and `limit`, ordered by indexed fields `(created_at, trainer_id)`
+- Visibility toggle enforces `is_visible = true|false`
+- Exercise completion requires either `reasonId` (existing) or `customReason` when `completed=false`
+- Rate limiting: e.g. 100 requests/min per user
