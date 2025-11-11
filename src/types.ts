@@ -1,463 +1,212 @@
-/**
- * DTO (Data Transfer Object) and Command Model Type Definitions
- *
- * This file contains all types used for API requests and responses.
- * All types are derived from the database schema defined in database.types.ts
- */
+// src/types.ts
 
-import type { Tables, Enums } from "./db/database.types";
+import type { Database } from "./db/database.types";
 
-// ============================================================================
-// Base Entity Types (directly from database)
-// ============================================================================
-
-/**
- * User entity - represents a user in the system
- * Roles: administrator, trener (trainer), podopieczny (trainee)
- */
-export type User = Tables<"users">;
-
-/**
- * Exercise entity - represents a workout exercise with video
- */
-export type Exercise = Tables<"exercises">;
-
-/**
- * Plan entity - represents a workout plan created by a trainer
- */
-export type Plan = Tables<"plans">;
-
-/**
- * PlanExercise entity - junction table linking plans to exercises with workout details
- */
-export type PlanExercise = Tables<"plan_exercises">;
-
-/**
- * User role enumeration
- */
-export type UserRole = Enums<"user_role">;
-
-// ============================================================================
-// Common Types
-// ============================================================================
-
-/**
- * UUID type for ID fields
- */
-export type UUID = string;
-
-/**
- * ISO 8601 datetime string
- */
-export type ISODateTime = string;
-
-// ============================================================================
-// Pagination Types
-// ============================================================================
-
-/**
- * Pagination query parameters
- */
-export interface PaginationQuery {
-  page?: number;
-  limit?: number;
+/** AUTHENTICATION & ACCOUNT ACTIVATION COMMANDS **/
+/** 1. Invite user (trainer|client) **/
+export interface InviteUserCommand {
+  email: Database["public"]["Tables"]["users"]["Insert"]["email"];
+  role: Extract<Database["public"]["Enums"]["user_role"], "trainer" | "client">;
+  resend?: boolean;
 }
 
-/**
- * Sort query parameters
- */
-export interface SortQuery {
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-}
-
-/**
- * Pagination metadata for list responses
- */
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-/**
- * Generic paginated response wrapper
- */
-export interface PaginatedResponse<T> {
-  data: T[];
-  pagination: PaginationMeta;
-}
-
-// ============================================================================
-// Common Response Types
-// ============================================================================
-
-/**
- * Generic error response
- */
-export interface ErrorResponse {
-  error: string;
-}
-
-/**
- * Generic success message response
- */
-export interface MessageResponse {
-  message: string;
-}
-
-// ============================================================================
-// Authentication DTOs
-// ============================================================================
-
-/**
- * POST /auth/request-link
- * Request a magic link for login or account activation
- */
-export interface RequestLinkCommand {
-  email: string;
-}
-
-/**
- * POST /auth/verify
- * Verify a token and receive JWT
- */
-export interface VerifyTokenCommand {
+/** 2. Activate account **/
+export interface ActivateAccountCommand {
   token: string;
 }
 
-/**
- * Response for successful token verification
- */
-export interface AuthResponse {
-  accessToken: string;
-  expiresIn: number;
-}
-
-/**
- * POST /auth/reset-request
- * Request a password reset link
- */
+/** 3. Request password reset **/
 export interface RequestPasswordResetCommand {
-  email: string;
+  email: Database["public"]["Tables"]["users"]["Insert"]["email"];
 }
 
-/**
- * POST /auth/reset
- * Reset password using token
- */
-export interface ResetPasswordCommand {
+/** 4. Confirm password reset **/
+export interface ConfirmPasswordResetCommand {
   token: string;
   newPassword: string;
 }
 
-// ============================================================================
-// User DTOs
-// ============================================================================
+/** USERS **/
+/** List users query parameters **/
+export interface ListUsersQuery {
+  role?: Database["public"]["Enums"]["user_role"];
+  status?: "active" | "pending" | "suspended";
+  trainerId?: string;
+  page?: number;
+  limit?: number;
+}
 
-/**
- * POST /users
- * Create a new user (Administrator only)
- *
- * Note: API uses firstName/lastName but DB stores as full_name.
- * Service layer should concatenate firstName + lastName -> full_name
- */
+/** User DTO for responses **/
+export interface UserDto {
+  id: Database["public"]["Tables"]["users"]["Row"]["id"];
+  email: Database["public"]["Tables"]["users"]["Row"]["email"];
+  role: Database["public"]["Tables"]["users"]["Row"]["role"];
+  status: "active" | "pending" | "suspended";
+}
+
+/** Create user **/
 export interface CreateUserCommand {
-  email: string;
-  role: UserRole;
+  email: Database["public"]["Tables"]["users"]["Insert"]["email"];
+  role: Extract<Database["public"]["Enums"]["user_role"], "trainer" | "client">;
   firstName: string;
   lastName: string;
-  trainerId?: UUID;
+  trainerId?: string; // required when role='client'
 }
 
-/**
- * PUT /users/:id
- * Update user (Administrator or assigned trainer)
- */
-export interface UpdateUserCommand {
-  email?: string;
-  role?: UserRole;
-  firstName?: string;
-  lastName?: string;
-  trainerId?: UUID;
-}
+/** Update user **/
+export type UpdateUserCommand = Partial<CreateUserCommand> & {
+  id: string;
+};
 
-/**
- * PUT /users/:id/profile
- * Update own profile (Podopieczny only)
- */
-export interface UpdateProfileCommand {
-  firstName: string;
-  lastName: string;
-  contact?: string; // phone or other contact info
-}
-
-/**
- * GET /users
- * Query parameters for listing users
- */
-export interface UserListQuery extends PaginationQuery, SortQuery {
-  role?: UserRole;
-  status?: "active" | "inactive";
-}
-
-/**
- * User DTO for API responses
- * Transforms DB full_name to firstName/lastName for frontend consumption
- */
-export interface UserDTO {
-  id: UUID;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string | null;
-  role: UserRole;
-  trainerId: string | null;
-  createdAt: ISODateTime;
-  updatedAt: ISODateTime;
-}
-
-// ============================================================================
-// Exercise DTOs
-// ============================================================================
-
-/**
- * POST /exercises
- * Create a new exercise (Administrator only)
- *
- * Note: API uses vimeoToken (camelCase) but DB stores as vimeo_token (snake_case)
- */
-export interface CreateExerciseCommand {
-  name: string;
-  description?: string;
-  vimeoToken: string;
-  tempo?: string;
-}
-
-/**
- * PUT /exercises/:id
- * Update exercise (Administrator only)
- */
-export interface UpdateExerciseCommand {
-  name?: string;
-  description?: string;
-  vimeoToken?: string;
-  tempo?: string;
-}
-
-/**
- * GET /exercises
- * Query parameters for listing exercises
- */
-export interface ExerciseListQuery extends PaginationQuery, SortQuery {
+/** EXERCISES **/
+/** List exercises query **/
+export interface ListExercisesQuery {
+  page?: number;
+  limit?: number;
   search?: string;
 }
 
-/**
- * Exercise DTO for API responses
- * Transforms DB snake_case to camelCase
- */
-export interface ExerciseDTO {
-  id: UUID;
-  name: string;
-  description: string | null;
-  vimeoToken: string;
-  tempo: string | null;
-  createdBy: UUID | null;
-  createdAt: ISODateTime;
-  updatedAt: ISODateTime;
+/** Summary DTO for exercise list **/
+export interface ExerciseSummaryDto {
+  id: Database["public"]["Tables"]["exercises"]["Row"]["id"];
+  name: Database["public"]["Tables"]["exercises"]["Row"]["name"];
+  defaultWeight: Database["public"]["Tables"]["exercises"]["Row"]["default_weight"];
 }
 
-// ============================================================================
-// Plan DTOs
-// ============================================================================
-
-/**
- * Exercise item within a plan creation request
- */
-export interface PlanExerciseItemCommand {
-  exerciseId: UUID;
-  sortOrder: number;
-  sets: number;
-  reps: number;
+/** Create exercise **/
+export interface CreateExerciseCommand {
+  name: Database["public"]["Tables"]["exercises"]["Insert"]["name"];
+  description?: Database["public"]["Tables"]["exercises"]["Insert"]["description"];
+  vimeoToken: Database["public"]["Tables"]["exercises"]["Insert"]["vimeo_token"];
+  defaultWeight?: Database["public"]["Tables"]["exercises"]["Insert"]["default_weight"];
 }
 
-/**
- * POST /plans
- * Create a new workout plan with exercises (Trainer only)
- */
-export interface CreatePlanCommand {
-  name: string;
-  description?: string;
-  assignedTo: UUID; // trainee user ID
-  exercises: PlanExerciseItemCommand[];
+/** Full DTO for single exercise **/
+export interface ExerciseDto {
+  id: Database["public"]["Tables"]["exercises"]["Row"]["id"];
+  name: Database["public"]["Tables"]["exercises"]["Row"]["name"];
+  description: Database["public"]["Tables"]["exercises"]["Row"]["description"];
+  vimeoToken: Database["public"]["Tables"]["exercises"]["Row"]["vimeo_token"];
+  defaultWeight: Database["public"]["Tables"]["exercises"]["Row"]["default_weight"];
+  isHidden: Database["public"]["Tables"]["exercises"]["Row"]["is_hidden"];
 }
 
-/**
- * PATCH /plans/:id
- * Update plan fields or visibility (Trainer only)
- */
-export interface UpdatePlanCommand {
-  name?: string;
-  description?: string;
-  isVisible?: boolean;
-}
+/** Update exercise **/
+export type UpdateExerciseCommand = Partial<CreateExerciseCommand> & {
+  id: Database["public"]["Tables"]["exercises"]["Row"]["id"];
+};
 
-/**
- * GET /plans
- * Query parameters for listing plans
- */
-export interface PlanListQuery extends PaginationQuery, SortQuery {
-  assignedTo?: UUID;
+/** PLANS **/
+/** List plans query **/
+export interface ListPlansQuery {
+  trainerId?: string;
+  traineeId?: string;
   visible?: boolean;
+  page?: number;
+  limit?: number;
+  sortBy?: "created_at";
 }
 
-/**
- * Plan DTO for API responses
- * Transforms DB snake_case to camelCase
- */
-export interface PlanDTO {
-  id: UUID;
-  name: string;
-  description: string | null;
-  trainerId: UUID;
-  isVisible: boolean;
-  createdAt: ISODateTime;
-  updatedAt: ISODateTime;
+/** Summary DTO for plan list **/
+export interface PlanSummaryDto {
+  id: Database["public"]["Tables"]["plans"]["Row"]["id"];
+  name: Database["public"]["Tables"]["plans"]["Row"]["name"];
+  isHidden: IsHidden;
 }
 
-/**
- * Exercise with workout details within a plan
- */
-export interface PlanExerciseDetailDTO {
-  exerciseId: UUID;
-  exerciseName: string;
-  exerciseDescription: string | null;
-  vimeoToken: string;
-  tempo: string | null;
+/** Nested exercise in plan **/
+export interface PlanExerciseDto {
+  exerciseId: string;
   sortOrder: number;
   sets: number;
   reps: number;
+  tempo: Database["public"]["Tables"]["plan_exercises"]["Row"]["tempo"];
+  defaultWeight?: Database["public"]["Tables"]["plan_exercises"]["Row"]["default_weight"];
 }
 
-/**
- * Plan with nested exercises for detailed view
- * Used in GET /plans/:id response
- */
-export interface PlanWithExercisesDTO extends PlanDTO {
-  exercises: PlanExerciseDetailDTO[];
-}
-
-// ============================================================================
-// PlanExercise DTOs
-// ============================================================================
-
-/**
- * POST /plans/:planId/exercises
- * Add an exercise to an existing plan (Trainer only)
- */
-export interface AddPlanExerciseCommand {
-  exerciseId: UUID;
+export interface Exercise {
+  exerciseId: string;
   sortOrder: number;
   sets: number;
   reps: number;
+  tempo: string;
+  defaultWeight?: number | null;
 }
 
-/**
- * PUT /plans/:planId/exercises/:exerciseId
- * Update exercise details within a plan (Trainer only)
- */
-export interface UpdatePlanExerciseCommand {
-  sortOrder?: number;
-  sets?: number;
-  reps?: number;
+export type IsHidden = Database["public"]["Tables"]["plans"]["Insert"]["is_hidden"];
+
+/** Create plan **/
+export interface CreatePlanCommand {
+  name: Database["public"]["Tables"]["plans"]["Insert"]["name"];
+  clientId: Database["public"]["Tables"]["plans"]["Insert"]["client_id"];
+  trainerId: Database["public"]["Tables"]["plans"]["Insert"]["trainer_id"];
+  isHidden?: IsHidden;
+  description?: string;
+  exercises: Exercise[];
 }
 
-/**
- * PlanExercise DTO for API responses
- * Transforms DB snake_case to camelCase
- */
-export interface PlanExerciseDTO {
-  planId: UUID;
-  exerciseId: UUID;
+/** Full DTO for single plan **/
+export interface PlanDto {
+  id: Database["public"]["Tables"]["plans"]["Row"]["id"];
+  name: Database["public"]["Tables"]["plans"]["Row"]["name"];
+  clientId: Database["public"]["Tables"]["plans"]["Row"]["client_id"];
+  trainerId: Database["public"]["Tables"]["plans"]["Row"]["trainer_id"];
+  isHidden: IsHidden;
+  exercises: PlanExerciseDto[];
+}
+
+/** Update plan **/
+export type UpdatePlanCommand = Partial<Omit<CreatePlanCommand, "exercises">> & {
+  id: string;
+  exercises?: PlanExerciseDto[];
+};
+
+/** Toggle visibility **/
+export interface TogglePlanVisibilityCommand {
+  id: string;
+  isHidden: IsHidden;
+}
+
+/** PLAN EXERCISES (nested) **/
+export interface AddExerciseToPlanCommand {
+  planId: string;
+  exerciseId: string;
   sortOrder: number;
   sets: number;
   reps: number;
-  createdAt: ISODateTime;
-  updatedAt: ISODateTime;
+  tempo: string;
+  defaultWeight?: number | null;
+}
+export type UpdateExerciseInPlanCommand = Partial<AddExerciseToPlanCommand> & {
+  planId: string;
+  exerciseId: string;
+};
+
+/** COMPLETION RECORDS **/
+export interface MarkExerciseCompletionCommand {
+  planId: string;
+  exerciseId: string;
+  completed: boolean;
+  reasonId?: string;
+  customReason?: string;
 }
 
-// ============================================================================
-// Notification DTOs (placeholder for future implementation)
-// ============================================================================
-
-/**
- * GET /notifications
- * Query parameters for listing notifications
- */
-export interface NotificationListQuery extends PaginationQuery {
-  unread?: boolean;
+/** Standard reason DTO **/
+export interface ReasonDto {
+  id: Database["public"]["Tables"]["standard_reasons"]["Row"]["id"];
+  code: Database["public"]["Tables"]["standard_reasons"]["Row"]["code"];
+  label: Database["public"]["Tables"]["standard_reasons"]["Row"]["label"];
 }
 
-/**
- * Notification entity (to be implemented)
- */
-export interface NotificationDTO {
-  id: UUID;
-  userId: UUID;
-  message: string;
-  read: boolean;
-  createdAt: ISODateTime;
-}
+/** Create / Update reason **/
+export type CreateReasonCommand = Pick<Database["public"]["Tables"]["standard_reasons"]["Insert"], "code" | "label">;
+export type UpdateReasonCommand = Partial<CreateReasonCommand> & {
+  id: string;
+};
 
-// ============================================================================
-// AuditLog DTOs (placeholder for future implementation)
-// ============================================================================
-
-/**
- * GET /audit-logs
- * Query parameters for listing audit logs
- */
-export interface AuditLogListQuery extends PaginationQuery, SortQuery {
-  entity?: string;
-  action?: string;
-  since?: ISODateTime;
-}
-
-/**
- * AuditLog entity (to be implemented)
- */
-export interface AuditLogDTO {
-  id: UUID;
-  userId: UUID;
-  entity: string;
-  action: string;
-  timestamp: ISODateTime;
-  metadata?: Record<string, unknown>;
-}
-
-// ============================================================================
-// Type Guards
-// ============================================================================
-
-/**
- * Type guard to check if user is administrator
- */
-export function isAdministrator(user: User): boolean {
-  return user.role === "administrator";
-}
-
-/**
- * Type guard to check if user is trainer
- */
-export function isTrainer(user: User): boolean {
-  return user.role === "trener";
-}
-
-/**
- * Type guard to check if user is trainee
- */
-export function isTrainee(user: User): boolean {
-  return user.role === "podopieczny";
+/** Pagination DTO **/
+export interface PaginationMetaDto {
+  total: number;
+  page: number;
+  limit: number;
 }

@@ -23,70 +23,74 @@ export interface Database {
       exercises: {
         Row: {
           created_at: string;
-          created_by: string | null;
+          default_weight: number | null;
           description: string | null;
           id: string;
+          is_hidden: boolean;
           name: string;
-          tempo: string | null;
           updated_at: string;
           vimeo_token: string;
         };
         Insert: {
           created_at?: string;
-          created_by?: string | null;
+          default_weight?: number | null;
           description?: string | null;
           id?: string;
+          is_hidden?: boolean;
           name: string;
-          tempo?: string | null;
           updated_at?: string;
           vimeo_token: string;
         };
         Update: {
           created_at?: string;
-          created_by?: string | null;
+          default_weight?: number | null;
           description?: string | null;
           id?: string;
+          is_hidden?: boolean;
           name?: string;
-          tempo?: string | null;
           updated_at?: string;
           vimeo_token?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "exercises_created_by_fkey";
-            columns: ["created_by"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       plan_exercises: {
         Row: {
           created_at: string;
+          custom_reason: string | null;
+          default_weight: number | null;
           exercise_id: string;
+          exercise_order: number;
+          id: string;
+          is_completed: boolean;
           plan_id: string;
-          reps: number;
-          sets: number;
-          sort_order: number;
+          reason_id: string | null;
+          tempo: string;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
+          custom_reason?: string | null;
+          default_weight?: number | null;
           exercise_id: string;
+          exercise_order: number;
+          id?: string;
+          is_completed: boolean;
           plan_id: string;
-          reps: number;
-          sets: number;
-          sort_order: number;
+          reason_id?: string | null;
+          tempo: string;
           updated_at?: string;
         };
         Update: {
           created_at?: string;
+          custom_reason?: string | null;
+          default_weight?: number | null;
           exercise_id?: string;
+          exercise_order?: number;
+          id?: string;
+          is_completed?: boolean;
           plan_id?: string;
-          reps?: number;
-          sets?: number;
-          sort_order?: number;
+          reason_id?: string | null;
+          tempo?: string;
           updated_at?: string;
         };
         Relationships: [
@@ -104,37 +108,51 @@ export interface Database {
             referencedRelation: "plans";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "plan_exercises_reason_id_fkey";
+            columns: ["reason_id"];
+            isOneToOne: false;
+            referencedRelation: "standard_reasons";
+            referencedColumns: ["id"];
+          },
         ];
       };
       plans: {
         Row: {
+          client_id: string;
           created_at: string;
-          description: string | null;
           id: string;
-          is_visible: boolean;
+          is_hidden: boolean;
           name: string;
           trainer_id: string;
           updated_at: string;
         };
         Insert: {
+          client_id: string;
           created_at?: string;
-          description?: string | null;
           id?: string;
-          is_visible?: boolean;
+          is_hidden?: boolean;
           name: string;
           trainer_id: string;
           updated_at?: string;
         };
         Update: {
+          client_id?: string;
           created_at?: string;
-          description?: string | null;
           id?: string;
-          is_visible?: boolean;
+          is_hidden?: boolean;
           name?: string;
           trainer_id?: string;
           updated_at?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "plans_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "plans_trainer_id_fkey";
             columns: ["trainer_id"];
@@ -144,57 +162,62 @@ export interface Database {
           },
         ];
       };
+      standard_reasons: {
+        Row: {
+          code: string;
+          created_at: string;
+          id: string;
+          label: string;
+          updated_at: string;
+        };
+        Insert: {
+          code: string;
+          created_at?: string;
+          id?: string;
+          label: string;
+          updated_at?: string;
+        };
+        Update: {
+          code?: string;
+          created_at?: string;
+          id?: string;
+          label?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       users: {
         Row: {
           created_at: string;
           email: string;
-          full_name: string | null;
           id: string;
-          phone: string | null;
+          is_active: boolean;
           role: Database["public"]["Enums"]["user_role"];
-          trainer_id: string | null;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
           email: string;
-          full_name?: string | null;
-          id: string;
-          phone?: string | null;
-          role?: Database["public"]["Enums"]["user_role"];
-          trainer_id?: string | null;
+          id?: string;
+          is_active?: boolean;
+          role: Database["public"]["Enums"]["user_role"];
           updated_at?: string;
         };
         Update: {
           created_at?: string;
           email?: string;
-          full_name?: string | null;
           id?: string;
-          phone?: string | null;
+          is_active?: boolean;
           role?: Database["public"]["Enums"]["user_role"];
-          trainer_id?: string | null;
           updated_at?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "users_trainer_id_fkey";
-            columns: ["trainer_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
     };
     Views: Record<never, never>;
-    Functions: {
-      current_user_is_admin: { Args: never; Returns: boolean };
-      current_user_is_trainee: { Args: never; Returns: boolean };
-      current_user_is_trainer: { Args: never; Returns: boolean };
-      current_user_trainer_id: { Args: never; Returns: string };
-    };
+    Functions: Record<never, never>;
     Enums: {
-      user_role: "administrator" | "trener" | "podopieczny";
+      user_role: "admin" | "trainer" | "client";
     };
     CompositeTypes: Record<never, never>;
   };
@@ -315,7 +338,7 @@ export const Constants = {
   },
   public: {
     Enums: {
-      user_role: ["administrator", "trener", "podopieczny"],
+      user_role: ["admin", "trainer", "client"],
     },
   },
 } as const;

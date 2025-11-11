@@ -6,3 +6,5 @@ const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
 
 export const supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey);
+
+export const DEFAULT_USER_ID = "c8296dc9-d343-4514-a74f-ab893aad7b19";
