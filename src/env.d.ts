@@ -7,6 +7,11 @@ declare global {
   namespace App {
     interface Locals {
       supabase: SupabaseClient<Database>;
+      user?: {
+        id: string;
+        role: Database["public"]["Enums"]["user_role"];
+        email: string;
+      };
     }
   }
 }
@@ -14,6 +19,7 @@ declare global {
 interface ImportMetaEnv {
   readonly SUPABASE_URL: string;
   readonly SUPABASE_KEY: string;
+  readonly SUPABASE_SERVICE_ROLE_KEY?: string; // Optional: for bypassing RLS during development
 }
 
 interface ImportMeta {

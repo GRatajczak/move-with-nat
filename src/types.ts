@@ -2,11 +2,13 @@
 
 import type { Database } from "./db/database.types";
 
+export type UserRole = Database["public"]["Enums"]["user_role"];
+
 /** AUTHENTICATION & ACCOUNT ACTIVATION COMMANDS **/
 /** 1. Invite user (trainer|client) **/
 export interface InviteUserCommand {
   email: Database["public"]["Tables"]["users"]["Insert"]["email"];
-  role: Extract<Database["public"]["Enums"]["user_role"], "trainer" | "client">;
+  role: Extract<UserRole, "trainer" | "client">;
   resend?: boolean;
 }
 
@@ -29,7 +31,7 @@ export interface ConfirmPasswordResetCommand {
 /** USERS **/
 /** List users query parameters **/
 export interface ListUsersQuery {
-  role?: Database["public"]["Enums"]["user_role"];
+  role?: UserRole;
   status?: "active" | "pending" | "suspended";
   trainerId?: string;
   page?: number;
@@ -47,7 +49,7 @@ export interface UserDto {
 /** Create user **/
 export interface CreateUserCommand {
   email: Database["public"]["Tables"]["users"]["Insert"]["email"];
-  role: Extract<Database["public"]["Enums"]["user_role"], "trainer" | "client">;
+  role: Extract<UserRole, "trainer" | "client">;
   firstName: string;
   lastName: string;
   trainerId?: string; // required when role='client'
@@ -92,9 +94,7 @@ export interface ExerciseDto {
 }
 
 /** Update exercise **/
-export type UpdateExerciseCommand = Partial<CreateExerciseCommand> & {
-  id: Database["public"]["Tables"]["exercises"]["Row"]["id"];
-};
+export type UpdateExerciseCommand = Partial<CreateExerciseCommand>;
 
 /** PLANS **/
 /** List plans query **/

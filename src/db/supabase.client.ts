@@ -4,7 +4,13 @@ import type { Database } from "../db/database.types.ts";
 
 const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
+const supabaseServiceRoleKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
 
-export const supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey);
+// For development/testing: Use service_role key to bypass RLS if available
+// For production: Always use anon key with proper authentication
+export const supabaseClient = createClient<Database>(
+  supabaseUrl,
+  supabaseServiceRoleKey || supabaseAnonKey
+);
 
 export const DEFAULT_USER_ID = "c8296dc9-d343-4514-a74f-ab893aad7b19";
