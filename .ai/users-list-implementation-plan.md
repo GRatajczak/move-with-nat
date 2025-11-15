@@ -1250,26 +1250,26 @@ describe("listUsers", () => {
 # Użyj REST Client, Postman, lub curl
 
 # Test 1: Admin lista wszystkich użytkowników
-curl -X GET "http://localhost:4321/api/users" \
+curl -X GET "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}"
 
 # Test 2: Admin z filtrami
-curl -X GET "http://localhost:4321/api/users?role=trainer&page=1&limit=10" \
+curl -X GET "http://localhost:3000/api/users?role=trainer&page=1&limit=10" \
   -H "Authorization: Bearer {admin_jwt}"
 
 # Test 3: Trener lista swoich podopiecznych
-curl -X GET "http://localhost:4321/api/users" \
+curl -X GET "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {trainer_jwt}"
 
 # Test 4: Client (powinien zwrócić 403)
-curl -X GET "http://localhost:4321/api/users" \
+curl -X GET "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {client_jwt}"
 
 # Test 5: Brak tokenu (powinien zwrócić 401)
-curl -X GET "http://localhost:4321/api/users"
+curl -X GET "http://localhost:3000/api/users"
 
 # Test 6: Nieprawidłowa paginacja (powinien zwrócić 400)
-curl -X GET "http://localhost:4321/api/users?page=-1" \
+curl -X GET "http://localhost:3000/api/users?page=-1" \
   -H "Authorization: Bearer {admin_jwt}"
 ```
 

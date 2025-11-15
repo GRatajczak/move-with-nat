@@ -1,0 +1,178 @@
+{
+  "info": {
+    "name": "Exercises API",
+    "_postman_id": "exercises-api-collection",
+    "description": "Complete CRUD operations for exercises in Move with Nat application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Exercise",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    pm.environment.set(\"exercise_id\", response.id);",
+              "    console.log(\"Exercise ID saved:\", response.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Barbell Squat\",\n  \"description\": \"Compound lower body exercise targeting quads, glutes, and hamstrings\",\n  \"vimeoToken\": \"abc123xyz\",\n  \"defaultWeight\": 20\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exercises",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"]
+        },
+        "description": "Creates a new exercise. Only administrators can create exercises."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Exercise (Minimal)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Deadlift\",\n  \"vimeoToken\": \"def456uvw\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exercises",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"]
+        },
+        "description": "Creates an exercise with only required fields (name and vimeoToken)"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Exercise by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises", "{{exercise_id}}"]
+        },
+        "description": "Gets a single exercise by ID. All authenticated users can access. Non-admin users cannot see hidden exercises."
+      },
+      "response": []
+    },
+    {
+      "name": "Update Exercise",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Barbell Back Squat\",\n  \"defaultWeight\": 25\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises", "{{exercise_id}}"]
+        },
+        "description": "Updates an existing exercise. Only administrators can update. All fields are optional but at least one must be provided."
+      },
+      "response": []
+    },
+    {
+      "name": "Update Exercise (Name Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Exercise Name\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises", "{{exercise_id}}"]
+        },
+        "description": "Updates only the name of an exercise"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Exercise (Soft)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises", "{{exercise_id}}"]
+        },
+        "description": "Soft deletes an exercise (sets is_hidden to true). Only administrators can delete."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Exercise (Hard)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises/{{exercise_id}}?hard=true",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises", "{{exercise_id}}"],
+          "query": [
+            {
+              "key": "hard",
+              "value": "true",
+              "description": "Physical delete from database"
+            }
+          ]
+        },
+        "description": "Hard deletes an exercise (physical removal from database). Only works if exercise is not used in any plans. Only administrators can delete."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "exercise_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

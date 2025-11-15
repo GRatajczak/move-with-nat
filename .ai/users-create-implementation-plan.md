@@ -57,7 +57,7 @@ POST
 
 ```bash
 # Utworzenie trenera
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -68,7 +68,7 @@ curl -X POST "http://localhost:4321/api/users" \
   }'
 
 # Utworzenie podopiecznego
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1191,7 +1191,7 @@ describe("createUser", () => {
 
 ```bash
 # Test 1: Admin creates trainer
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1203,7 +1203,7 @@ curl -X POST "http://localhost:4321/api/users" \
 # Expected: 201 Created
 
 # Test 2: Admin creates trainee
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1216,7 +1216,7 @@ curl -X POST "http://localhost:4321/api/users" \
 # Expected: 201 Created
 
 # Test 3: Trainer tries to create user (should fail)
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1228,7 +1228,7 @@ curl -X POST "http://localhost:4321/api/users" \
 # Expected: 403 Forbidden
 
 # Test 4: Duplicate email (should fail)
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1240,7 +1240,7 @@ curl -X POST "http://localhost:4321/api/users" \
 # Expected: 409 Conflict
 
 # Test 5: Invalid trainerId (should fail)
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1253,7 +1253,7 @@ curl -X POST "http://localhost:4321/api/users" \
 # Expected: 400 Bad Request
 
 # Test 6: Missing trainerId for trainee (should fail)
-curl -X POST "http://localhost:4321/api/users" \
+curl -X POST "http://localhost:3000/api/users" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{

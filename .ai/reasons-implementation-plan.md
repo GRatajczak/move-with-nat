@@ -466,38 +466,38 @@ const UpdateReasonCommandSchema = z
 
 ```bash
 # List reasons (all users)
-curl -X GET "http://localhost:4321/api/reasons" \
+curl -X GET "http://localhost:3000/api/reasons" \
   -H "Authorization: Bearer {jwt}"
 # Expected: 200 OK with array
 
 # Create reason (admin only)
-curl -X POST "http://localhost:4321/api/reasons" \
+curl -X POST "http://localhost:3000/api/reasons" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"code":"new_reason","label":"New reason label"}'
 # Expected: 201 Created
 
 # Update reason (admin only)
-curl -X PUT "http://localhost:4321/api/reasons/{id}" \
+curl -X PUT "http://localhost:3000/api/reasons/{id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"label":"Updated label"}'
 # Expected: 200 OK
 
 # Delete reason (admin only)
-curl -X DELETE "http://localhost:4321/api/reasons/{id}" \
+curl -X DELETE "http://localhost:3000/api/reasons/{id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 204 No Content
 
 # Trainer tries to create (should fail)
-curl -X POST "http://localhost:4321/api/reasons" \
+curl -X POST "http://localhost:3000/api/reasons" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"code":"test","label":"Test"}'
 # Expected: 403 Forbidden
 
 # Delete reason in use (should fail)
-curl -X DELETE "http://localhost:4321/api/reasons/{used_reason_id}" \
+curl -X DELETE "http://localhost:3000/api/reasons/{used_reason_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 409 Conflict
 ```

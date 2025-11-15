@@ -563,31 +563,31 @@ describe("Exercises CRUD", () => {
 
 ```bash
 # Create exercise
-curl -X POST "http://localhost:4321/api/exercises" \
+curl -X POST "http://localhost:3000/api/exercises" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"name":"New Exercise","vimeoToken":"abc123"}'
 # Expected: 201 Created
 
 # Get exercise
-curl -X GET "http://localhost:4321/api/exercises/{id}" \
+curl -X GET "http://localhost:3000/api/exercises/{id}" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 200 OK
 
 # Update exercise
-curl -X PUT "http://localhost:4321/api/exercises/{id}" \
+curl -X PUT "http://localhost:3000/api/exercises/{id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"name":"Updated Name"}'
 # Expected: 200 OK
 
 # Delete exercise (soft)
-curl -X DELETE "http://localhost:4321/api/exercises/{id}" \
+curl -X DELETE "http://localhost:3000/api/exercises/{id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 204 No Content
 
 # Delete exercise (hard)
-curl -X DELETE "http://localhost:4321/api/exercises/{id}?hard=true" \
+curl -X DELETE "http://localhost:3000/api/exercises/{id}?hard=true" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 204 No Content
 ```

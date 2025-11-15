@@ -65,7 +65,7 @@ PUT
 
 ```bash
 # Admin aktualizuje email użytkownika
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -73,7 +73,7 @@ curl -X PUT "http://localhost:4321/api/users/{user_id}" \
   }'
 
 # Admin zmienia status na suspended
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -81,7 +81,7 @@ curl -X PUT "http://localhost:4321/api/users/{user_id}" \
   }'
 
 # Trener aktualizuje dane swojego podopiecznego
-curl -X PUT "http://localhost:4321/api/users/{trainee_id}" \
+curl -X PUT "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -90,7 +90,7 @@ curl -X PUT "http://localhost:4321/api/users/{trainee_id}" \
   }'
 
 # Admin zmienia trenera dla podopiecznego
-curl -X PUT "http://localhost:4321/api/users/{trainee_id}" \
+curl -X PUT "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1076,49 +1076,49 @@ describe("updateUser", () => {
 
 ```bash
 # Test 1: Admin updates email
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"email": "newemail@test.com"}'
 # Expected: 200 OK
 
 # Test 2: Admin suspends user
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"status": "suspended"}'
 # Expected: 200 OK
 
 # Test 3: Trainer updates own trainee
-curl -X PUT "http://localhost:4321/api/users/{trainee_id}" \
+curl -X PUT "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"firstName": "Updated", "lastName": "Name"}'
 # Expected: 200 OK
 
 # Test 4: Trainer tries to change status (should fail)
-curl -X PUT "http://localhost:4321/api/users/{trainee_id}" \
+curl -X PUT "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"status": "suspended"}'
 # Expected: 403 Forbidden
 
 # Test 5: Duplicate email (should fail)
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"email": "existing@test.com"}'
 # Expected: 409 Conflict
 
 # Test 6: Empty body (should fail)
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}" \
   -H "Content-Type: application/json" \
   -d '{}'
 # Expected: 400 Bad Request
 
 # Test 7: Client tries to update (should fail)
-curl -X PUT "http://localhost:4321/api/users/{user_id}" \
+curl -X PUT "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {client_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"firstName": "Test"}'

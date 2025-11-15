@@ -578,31 +578,31 @@ const MarkCompletionCommandSchema = z
 
 ```bash
 # Add exercise to plan
-curl -X POST "http://localhost:4321/api/plans/{planId}/exercises" \
+curl -X POST "http://localhost:3000/api/plans/{planId}/exercises" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -d '{"exerciseId":"...","sortOrder":1}'
 
 # Update exercise in plan
-curl -X PATCH "http://localhost:4321/api/plans/{planId}/exercises/{exerciseId}" \
+curl -X PATCH "http://localhost:3000/api/plans/{planId}/exercises/{exerciseId}" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -d '{"sortOrder":2,"tempo":"4-0-2"}'
 
 # Remove exercise from plan
-curl -X DELETE "http://localhost:4321/api/plans/{planId}/exercises/{exerciseId}" \
+curl -X DELETE "http://localhost:3000/api/plans/{planId}/exercises/{exerciseId}" \
   -H "Authorization: Bearer {trainer_jwt}"
 
 # Mark completion (by client)
-curl -X POST "http://localhost:4321/api/plans/{planId}/exercises/{exerciseId}/completion" \
+curl -X POST "http://localhost:3000/api/plans/{planId}/exercises/{exerciseId}/completion" \
   -H "Authorization: Bearer {client_jwt}" \
   -d '{"completed":true}'
 
 # Mark incomplete with reason
-curl -X POST "http://localhost:4321/api/plans/{planId}/exercises/{exerciseId}/completion" \
+curl -X POST "http://localhost:3000/api/plans/{planId}/exercises/{exerciseId}/completion" \
   -H "Authorization: Bearer {client_jwt}" \
   -d '{"completed":false,"customReason":"Felt pain"}'
 
 # Get completion status
-curl -X GET "http://localhost:4321/api/plans/{planId}/completion" \
+curl -X GET "http://localhost:3000/api/plans/{planId}/completion" \
   -H "Authorization: Bearer {trainer_jwt}"
 ```
 

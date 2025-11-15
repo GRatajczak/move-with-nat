@@ -172,27 +172,27 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
 
 ```bash
 # Soft delete user
-curl -X DELETE "http://localhost:4321/api/users/{user_id}" \
+curl -X DELETE "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 204 No Content
 
 # Hard delete user
-curl -X DELETE "http://localhost:4321/api/users/{user_id}?hard=true" \
+curl -X DELETE "http://localhost:3000/api/users/{user_id}?hard=true" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 204 No Content
 
 # Non-admin tries to delete (should fail)
-curl -X DELETE "http://localhost:4321/api/users/{user_id}" \
+curl -X DELETE "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {trainer_jwt}"
 # Expected: 403 Forbidden
 
 # Delete trainer with trainees (should fail)
-curl -X DELETE "http://localhost:4321/api/users/{trainer_id}" \
+curl -X DELETE "http://localhost:3000/api/users/{trainer_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 409 Conflict
 
 # Delete last admin (should fail)
-curl -X DELETE "http://localhost:4321/api/users/{only_admin_id}" \
+curl -X DELETE "http://localhost:3000/api/users/{only_admin_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 403 Forbidden
 ```

@@ -40,15 +40,15 @@ GET
 
 ```bash
 # Pobierz własny profil
-curl -X GET "http://localhost:4321/api/users/{user_id}" \
+curl -X GET "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {jwt_token}"
 
 # Admin pobiera profil dowolnego użytkownika
-curl -X GET "http://localhost:4321/api/users/{any_user_id}" \
+curl -X GET "http://localhost:3000/api/users/{any_user_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 
 # Trener pobiera profil swojego podopiecznego
-curl -X GET "http://localhost:4321/api/users/{trainee_id}" \
+curl -X GET "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {trainer_jwt}"
 ```
 
@@ -877,42 +877,42 @@ describe("getUser", () => {
 
 ```bash
 # Test 1: Get own profile
-curl -X GET "http://localhost:4321/api/users/{user_id}" \
+curl -X GET "http://localhost:3000/api/users/{user_id}" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 200 OK with UserDTO
 
 # Test 2: Admin gets any user
-curl -X GET "http://localhost:4321/api/users/{any_user_id}" \
+curl -X GET "http://localhost:3000/api/users/{any_user_id}" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 200 OK
 
 # Test 3: Trainer gets own trainee
-curl -X GET "http://localhost:4321/api/users/{trainee_id}" \
+curl -X GET "http://localhost:3000/api/users/{trainee_id}" \
   -H "Authorization: Bearer {trainer_jwt}"
 # Expected: 200 OK
 
 # Test 4: Trainer tries to get other trainer (should fail)
-curl -X GET "http://localhost:4321/api/users/{other_trainer_id}" \
+curl -X GET "http://localhost:3000/api/users/{other_trainer_id}" \
   -H "Authorization: Bearer {trainer_jwt}"
 # Expected: 404 Not Found
 
 # Test 5: Client tries to get other user (should fail)
-curl -X GET "http://localhost:4321/api/users/{other_user_id}" \
+curl -X GET "http://localhost:3000/api/users/{other_user_id}" \
   -H "Authorization: Bearer {client_jwt}"
 # Expected: 404 Not Found
 
 # Test 6: Invalid UUID
-curl -X GET "http://localhost:4321/api/users/invalid-uuid" \
+curl -X GET "http://localhost:3000/api/users/invalid-uuid" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 400 Bad Request
 
 # Test 7: Non-existent user
-curl -X GET "http://localhost:4321/api/users/123e4567-e89b-12d3-a456-426614174999" \
+curl -X GET "http://localhost:3000/api/users/123e4567-e89b-12d3-a456-426614174999" \
   -H "Authorization: Bearer {admin_jwt}"
 # Expected: 404 Not Found
 
 # Test 8: No authentication
-curl -X GET "http://localhost:4321/api/users/{user_id}"
+curl -X GET "http://localhost:3000/api/users/{user_id}"
 # Expected: 401 Unauthorized
 ```
 

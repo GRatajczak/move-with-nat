@@ -660,31 +660,31 @@ const TogglePlanVisibilityCommandSchema = z.object({
 
 ```bash
 # List plans
-curl -X GET "http://localhost:4321/api/plans" \
+curl -X GET "http://localhost:3000/api/plans" \
   -H "Authorization: Bearer {jwt}"
 
 # Create plan
-curl -X POST "http://localhost:4321/api/plans" \
+curl -X POST "http://localhost:3000/api/plans" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"trainerId":"...","traineeId":"...","name":"Leg Day","isVisible":true,"exercises":[...]}'
 
 # Get plan
-curl -X GET "http://localhost:4321/api/plans/{id}" \
+curl -X GET "http://localhost:3000/api/plans/{id}" \
   -H "Authorization: Bearer {jwt}"
 
 # Update plan
-curl -X PUT "http://localhost:4321/api/plans/{id}" \
+curl -X PUT "http://localhost:3000/api/plans/{id}" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"name":"Updated Name"}'
 
 # Delete plan
-curl -X DELETE "http://localhost:4321/api/plans/{id}" \
+curl -X DELETE "http://localhost:3000/api/plans/{id}" \
   -H "Authorization: Bearer {trainer_jwt}"
 
 # Toggle visibility
-curl -X PATCH "http://localhost:4321/api/plans/{id}/visibility" \
+curl -X PATCH "http://localhost:3000/api/plans/{id}/visibility" \
   -H "Authorization: Bearer {trainer_jwt}" \
   -H "Content-Type: application/json" \
   -d '{"isVisible":false}'

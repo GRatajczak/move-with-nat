@@ -607,37 +607,37 @@ Move with Nat Team
 
 ```bash
 # Send invitation
-curl -X POST "http://localhost:4321/api/auth/invite" \
+curl -X POST "http://localhost:3000/api/auth/invite" \
   -H "Content-Type: application/json" \
   -d '{"email":"user@test.com","role":"trainer","resend":false}'
 # Expected: 202 Accepted
 
 # Activate account
-curl -X POST "http://localhost:4321/api/auth/activate" \
+curl -X POST "http://localhost:3000/api/auth/activate" \
   -H "Content-Type: application/json" \
   -d '{"token":"jwt_token_here"}'
 # Expected: 200 OK
 
 # Request password reset
-curl -X POST "http://localhost:4321/api/auth/reset-password/request" \
+curl -X POST "http://localhost:3000/api/auth/reset-password/request" \
   -H "Content-Type: application/json" \
   -d '{"email":"user@test.com"}'
 # Expected: 202 Accepted
 
 # Confirm password reset
-curl -X POST "http://localhost:4321/api/auth/reset-password/confirm" \
+curl -X POST "http://localhost:3000/api/auth/reset-password/confirm" \
   -H "Content-Type: application/json" \
   -d '{"token":"reset_token","newPassword":"NewP@ssw0rd"}'
 # Expected: 200 OK
 
 # Invalid token (should fail)
-curl -X POST "http://localhost:4321/api/auth/activate" \
+curl -X POST "http://localhost:3000/api/auth/activate" \
   -H "Content-Type: application/json" \
   -d '{"token":"invalid"}'
 # Expected: 401 Unauthorized
 
 # Weak password (should fail)
-curl -X POST "http://localhost:4321/api/auth/reset-password/confirm" \
+curl -X POST "http://localhost:3000/api/auth/reset-password/confirm" \
   -H "Content-Type: application/json" \
   -d '{"token":"valid_token","newPassword":"weak"}'
 # Expected: 400 Bad Request

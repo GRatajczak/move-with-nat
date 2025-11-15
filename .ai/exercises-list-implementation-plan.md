@@ -800,22 +800,22 @@ describe("listExercises", () => {
 
 ```bash
 # Test 1: List all exercises
-curl -X GET "http://localhost:4321/api/exercises" \
+curl -X GET "http://localhost:3000/api/exercises" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 200 OK with PaginatedResponse
 
 # Test 2: Search exercises
-curl -X GET "http://localhost:4321/api/exercises?search=squat" \
+curl -X GET "http://localhost:3000/api/exercises?search=squat" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 200 OK with filtered results
 
 # Test 3: Pagination
-curl -X GET "http://localhost:4321/api/exercises?page=2&limit=10" \
+curl -X GET "http://localhost:3000/api/exercises?page=2&limit=10" \
   -H "Authorization: Bearer {jwt_token}"
 # Expected: 200 OK with page 2
 
 # Test 4: No authentication (should fail)
-curl -X GET "http://localhost:4321/api/exercises"
+curl -X GET "http://localhost:3000/api/exercises"
 # Expected: 401 Unauthorized
 ```
 
