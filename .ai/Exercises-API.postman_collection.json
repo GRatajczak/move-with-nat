@@ -7,6 +7,98 @@
   },
   "item": [
     {
+      "name": "List All Exercises",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"]
+        },
+        "description": "Lists all exercises with default pagination (page=1, limit=20). Admin sees all exercises including hidden ones. Trainers and clients see only visible exercises."
+      },
+      "response": []
+    },
+    {
+      "name": "List Exercises with Search",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises?search=squat",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"],
+          "query": [
+            {
+              "key": "search",
+              "value": "squat",
+              "description": "Search exercises by name (case-insensitive)"
+            }
+          ]
+        },
+        "description": "Searches exercises by name using case-insensitive ILIKE query."
+      },
+      "response": []
+    },
+    {
+      "name": "List Exercises with Pagination",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises?page=2&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"],
+          "query": [
+            {
+              "key": "page",
+              "value": "2",
+              "description": "Page number (default: 1, min: 1)"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Items per page (default: 20, min: 1, max: 100)"
+            }
+          ]
+        },
+        "description": "Lists exercises with custom pagination settings."
+      },
+      "response": []
+    },
+    {
+      "name": "List Exercises (All Parameters)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/exercises?search=bench&page=1&limit=5",
+          "host": ["{{base_url}}"],
+          "path": ["api", "exercises"],
+          "query": [
+            {
+              "key": "search",
+              "value": "bench",
+              "description": "Search by exercise name"
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number"
+            },
+            {
+              "key": "limit",
+              "value": "5",
+              "description": "Items per page"
+            }
+          ]
+        },
+        "description": "Combines search and pagination parameters. Returns paginated results filtered by search query."
+      },
+      "response": []
+    },
+    {
       "name": "Create Exercise",
       "event": [
         {
@@ -172,7 +264,8 @@
     {
       "key": "exercise_id",
       "value": "",
-      "type": "string"
+      "type": "string",
+      "description": "Exercise ID saved from Create Exercise request"
     }
   ]
 }

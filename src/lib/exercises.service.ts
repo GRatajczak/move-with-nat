@@ -1,9 +1,16 @@
 // src/lib/exercises.service.ts
 
 import { z } from "zod";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type { CreateExerciseCommand, ExerciseDto, UpdateExerciseCommand, UserRole } from "../types";
+import type {
+  CreateExerciseCommand,
+  ExerciseDto,
+  UpdateExerciseCommand,
+  UserRole,
+  ListExercisesQuery,
+  PaginatedResponse,
+} from "../types";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "./errors";
 import { isValidUUID } from "./api-helpers";
 import { mapExerciseToDTO } from "./mappers";
@@ -41,7 +48,7 @@ export const UpdateExerciseCommandSchema = z
  * Creates a new exercise (admin only)
  */
 export async function createExercise(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   command: CreateExerciseCommand,
   currentUser: User
 ): Promise<ExerciseDto> {
@@ -83,7 +90,7 @@ export async function createExercise(
  * Non-admin users cannot see hidden exercises
  */
 export async function getExercise(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   exerciseId: string,
   currentUser: User
 ): Promise<ExerciseDto> {
@@ -111,7 +118,7 @@ export async function getExercise(
  * Updates an existing exercise (admin only)
  */
 export async function updateExercise(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   exerciseId: string,
   command: UpdateExerciseCommand,
   currentUser: User
@@ -182,7 +189,7 @@ export async function updateExercise(
  * Admin only
  */
 export async function deleteExercise(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   exerciseId: string,
   currentUser: User,
   hard = false
@@ -246,4 +253,65 @@ export async function deleteExercise(
       throw new DatabaseError("Failed to delete exercise");
     }
   }
+}
+
+/**
+ * List exercises with pagination and search
+ *
+ * Authorization:
+ * - All authenticated users can list exercises
+ * - Admin sees all exercises (including hidden)
+ * - Trainers and clients see only visible exercises (is_hidden=false)
+ *
+ * @param supabase - Supabase client instance
+ * @param query - Query parameters for filtering and pagination
+ * @param currentUser - Current authenticated user
+ * @returns Paginated list of exercises
+ */
+export async function listExercises(
+  supabase: SupabaseClient,
+  query: ListExercisesQuery,
+  currentUser: User
+): Promise<PaginatedResponse<ExerciseDto>> {
+  const { search, page = 1, limit = 20 } = query;
+
+  // Determine if user can view hidden exercises
+  const canViewHidden = currentUser.role === "admin";
+
+  // Build Supabase query
+  let dbQuery = supabase.from("exercises").select("*", { count: "exact", head: false });
+
+  // Filter hidden exercises for non-admins
+  if (!canViewHidden) {
+    dbQuery = dbQuery.eq("is_hidden", false);
+  }
+
+  // Apply search filter (case-insensitive)
+  if (search) {
+    dbQuery = dbQuery.ilike("name", `%${search}%`);
+  }
+
+  // Apply pagination
+  const offset = (page - 1) * limit;
+  dbQuery = dbQuery.range(offset, offset + limit - 1).order("created_at", { ascending: false });
+
+  // Execute query
+  const { data, error, count } = await dbQuery;
+
+  if (error) {
+    console.error("Database error in listExercises:", error);
+    throw new DatabaseError("Failed to fetch exercises");
+  }
+
+  // Map to DTOs
+  const exerciseDTOs = (data || []).map(mapExerciseToDTO);
+
+  return {
+    data: exerciseDTOs,
+    meta: {
+      page,
+      limit,
+      total: count || 0,
+    },
+  };
 }

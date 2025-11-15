@@ -210,3 +210,9 @@ export interface PaginationMetaDto {
   page: number;
   limit: number;
 }
+
+/** Paginated response wrapper **/
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: PaginationMetaDto;
+}
