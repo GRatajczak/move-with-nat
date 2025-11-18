@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.0.1-blue)]()  
 [![License](https://img.shields.io/badge/license-Unlicensed-lightgrey)]()
 
-A responsive web application enabling personal trainers and administrators to create, manage, and share structured training plans with clients—eliminating the need for spreadsheets. Trainees can view assigned plans, track exercise progress, and record reasons for incomplete exercises.
+A responsive web application enabling personal trainers and administrators to create, manage, and share structured training plans with clients—eliminating the need for spreadsheets. Clients can view assigned plans, track exercise progress, and record reasons for incomplete exercises.
 
 ## Table of Contents
 
@@ -84,21 +84,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 - **Authentication & Authorization**
   - Supabase Auth with email link login & 1h password reset
-  - Role-based RLS: Administrator, Trainer, Trainee
+  - Role-based RLS: Administrator, Trainer, Client
 - **Exercises Management**
   - CRUD operations: name, description, tempo, default weight, Vimeo link
 - **Training Plans**
-  - Trainers create/edit/delete/hide plans for assigned trainees
+  - Trainers create/edit/delete/hide plans for assigned clients
 - **User Management**
-  - Admin invites/manages trainers & trainees; email activation links
+  - Admin invites/manages trainers & clients; email activation links
 - **Notifications**
   - SendGrid for account activation, password reset, new plan, plan updates
 - **Progress Tracking**
-  - Trainees mark exercises as done/undone with standard or custom reasons
+  - Clients mark exercises as done/undone with standard or custom reasons
 - **Pagination & Filtering**
   - Offset–limit pagination (20 items/page), filter by name, status, date, trainer
 - **Profile Editing**
-  - Role-specific profile updates for admins, trainers, trainees
+  - Role-specific profile updates for admins, trainers, clients
 - **Admin Utilities**
   - Manage standard reasons for incomplete exercises
 

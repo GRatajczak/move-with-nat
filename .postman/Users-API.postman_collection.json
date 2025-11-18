@@ -1,0 +1,784 @@
+{
+  "info": {
+    "name": "Users API",
+    "_postman_id": "users-api-collection",
+    "description": "Complete CRUD operations for users in Move with Nat application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List All Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Lists all users with default pagination (page=1, limit=20). Admin sees all users. Trainers see only their clients. Clients cannot access this endpoint."
+      },
+      "response": []
+    },
+    {
+      "name": "List Users with Pagination",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (default: 1, min: 1)"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Items per page (default: 20, min: 1, max: 100)"
+            }
+          ]
+        },
+        "description": "Lists users with custom pagination settings."
+      },
+      "response": []
+    },
+    {
+      "name": "List Users by Role (Trainers)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?role=trainer",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "role",
+              "value": "trainer",
+              "description": "Filter by role: admin, trainer, or client"
+            }
+          ]
+        },
+        "description": "Filters users by trainer role."
+      },
+      "response": []
+    },
+    {
+      "name": "List Users by Role (Clients)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?role=client",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "role",
+              "value": "client",
+              "description": "Filter by role: admin, trainer, or client"
+            }
+          ]
+        },
+        "description": "Filters users by client role."
+      },
+      "response": []
+    },
+    {
+      "name": "List Active Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?status=active",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "status",
+              "value": "active",
+              "description": "Filter by status: active (completed profile), pending (not completed), or suspended"
+            }
+          ]
+        },
+        "description": "Lists only active users (those who have completed their profile)."
+      },
+      "response": []
+    },
+    {
+      "name": "List Pending Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?status=pending",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "status",
+              "value": "pending",
+              "description": "Pending users haven't completed their profile yet"
+            }
+          ]
+        },
+        "description": "Lists users who haven't completed their profile yet (missing first or last name)."
+      },
+      "response": []
+    },
+    {
+      "name": "List Suspended Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?status=suspended",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "status",
+              "value": "suspended",
+              "description": "Suspended users have is_active set to false"
+            }
+          ]
+        },
+        "description": "Lists only suspended users (is_active = false)."
+      },
+      "response": []
+    },
+    {
+      "name": "List Clients by Trainer",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?trainerId={{trainer_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "trainerId",
+              "value": "{{trainer_id}}",
+              "description": "Filter clients by specific trainer ID"
+            }
+          ]
+        },
+        "description": "Filters clients by specific trainer ID. Note: Trainers automatically see only their clients."
+      },
+      "response": []
+    },
+    {
+      "name": "List Users (All Parameters)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?role=client&status=active&trainerId={{trainer_id}}&page=1&limit=20",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "role",
+              "value": "client",
+              "description": "Filter by role"
+            },
+            {
+              "key": "status",
+              "value": "active",
+              "description": "Filter by status"
+            },
+            {
+              "key": "trainerId",
+              "value": "{{trainer_id}}",
+              "description": "Filter by trainer ID"
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number"
+            },
+            {
+              "key": "limit",
+              "value": "20",
+              "description": "Items per page"
+            }
+          ]
+        },
+        "description": "Combines all filtering and pagination parameters."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Trainer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    pm.environment.set(\"trainer_id\", response.id);",
+              "    console.log(\"Trainer ID saved:\", response.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"trainer@example.com\",\n  \"role\": \"trainer\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Creates a new trainer user. Only administrators can create users. The created user will receive an activation email."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Client with Trainer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    pm.environment.set(\"client_id\", response.id);",
+              "    console.log(\"Client ID saved:\", response.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"client@example.com\",\n  \"role\": \"client\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"trainerId\": \"{{trainer_id}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Creates a new client user assigned to a trainer. The trainerId must be a valid UUID of an existing trainer."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Client without Trainer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"client2@example.com\",\n  \"role\": \"client\",\n  \"firstName\": \"Mike\",\n  \"lastName\": \"Johnson\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Creates a new client user without assigning a trainer. The trainerId can be assigned later."
+      },
+      "response": []
+    },
+    {
+      "name": "Get User by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Gets a single user by ID. Admin can access any user. Trainers can access their own profile and their clients. Clients can only access their own profile."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Trainer Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/{{trainer_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{trainer_id}}"]
+        },
+        "description": "Gets trainer profile details."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Client Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/{{client_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{client_id}}"]
+        },
+        "description": "Gets client profile details."
+      },
+      "response": []
+    },
+    {
+      "name": "Update User Email",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"newemail@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Updates only the user's email address. Admin can update any user. Trainers can update their clients."
+      },
+      "response": []
+    },
+    {
+      "name": "Update User Name",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"UpdatedFirstName\",\n  \"lastName\": \"UpdatedLastName\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Updates user's first and last name."
+      },
+      "response": []
+    },
+    {
+      "name": "Update User Profile (Complete)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"updated@example.com\",\n  \"firstName\": \"UpdatedFirst\",\n  \"lastName\": \"UpdatedLast\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Updates multiple user fields at once."
+      },
+      "response": []
+    },
+    {
+      "name": "Suspend User (Admin Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"isActive\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Suspends a user (sets isActive to false). Only administrators can change active status."
+      },
+      "response": []
+    },
+    {
+      "name": "Activate User (Admin Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"isActive\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Activates a suspended user. Only administrators can change active status."
+      },
+      "response": []
+    },
+    {
+      "name": "Reassign Client to Trainer (Admin Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"trainerId\": \"{{trainer_id}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{client_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{client_id}}"]
+        },
+        "description": "Reassigns a client to a different trainer. Only administrators can change trainer assignment."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid UUID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/invalid-uuid",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "invalid-uuid"]
+        },
+        "description": "Test case: Invalid UUID format should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: User Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/00000000-0000-0000-0000-999999999999",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "00000000-0000-0000-0000-999999999999"]
+        },
+        "description": "Test case: Non-existent user ID should return 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Duplicate Email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"trainer@example.com\",\n  \"role\": \"trainer\",\n  \"firstName\": \"Duplicate\",\n  \"lastName\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Creating a user with an existing email should return 409 Conflict."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Trainer ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"client3@example.com\",\n  \"role\": \"client\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"Client\",\n  \"trainerId\": \"00000000-0000-0000-0000-999999999999\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Creating a client with non-existent trainer ID should return 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Missing Required Fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"incomplete@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Missing required fields (role, firstName, lastName) should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Email Format",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"invalid-email\",\n  \"role\": \"trainer\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Invalid email format should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Role",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"role\": \"invalid_role\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Invalid role value should return 400 Bad Request. Valid roles: trainer, client."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Pagination",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users?page=0&limit=200",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"],
+          "query": [
+            {
+              "key": "page",
+              "value": "0",
+              "description": "Invalid: page must be at least 1"
+            },
+            {
+              "key": "limit",
+              "value": "200",
+              "description": "Invalid: limit cannot exceed 100"
+            }
+          ]
+        },
+        "description": "Test case: Invalid pagination parameters should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Client List Access (Forbidden)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users"]
+        },
+        "description": "Test case: Clients attempting to list users should return 403 Forbidden. Test this by authenticating as a client user."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Trainer Updating isActive (Forbidden)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"isActive\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{client_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{client_id}}"]
+        },
+        "description": "Test case: Trainers attempting to change isActive status should return 403 Forbidden. Only admins can change this field."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Trainer Reassigning Client (Forbidden)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"trainerId\": \"{{trainer_id}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{client_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{client_id}}"]
+        },
+        "description": "Test case: Trainers attempting to change trainer assignment should return 403 Forbidden. Only admins can change this field."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Update with No Fields",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        },
+        "description": "Test case: Update must provide at least one field. Should return 400 Bad Request."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4321",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string",
+      "description": "User ID saved from any user creation request"
+    },
+    {
+      "key": "trainer_id",
+      "value": "",
+      "type": "string",
+      "description": "UUID of trainer user (saved from Create Trainer request)"
+    },
+    {
+      "key": "client_id",
+      "value": "",
+      "type": "string",
+      "description": "UUID of client user (saved from Create Client request)"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}
+

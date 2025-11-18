@@ -4,6 +4,12 @@ import type { Database } from "./db/database.types";
 
 export type UserRole = Database["public"]["Enums"]["user_role"];
 
+/** COMMON RESPONSE TYPES **/
+/** Standard message response **/
+export interface MessageResponse {
+  message: string;
+}
+
 /** AUTHENTICATION & ACCOUNT ACTIVATION COMMANDS **/
 /** 1. Invite user (trainer|client) **/
 export interface InviteUserCommand {
@@ -43,7 +49,12 @@ export interface UserDto {
   id: Database["public"]["Tables"]["users"]["Row"]["id"];
   email: Database["public"]["Tables"]["users"]["Row"]["email"];
   role: Database["public"]["Tables"]["users"]["Row"]["role"];
-  status: "active" | "pending" | "suspended";
+  isActive: Database["public"]["Tables"]["users"]["Row"]["is_active"];
+  firstName: Database["public"]["Tables"]["users"]["Row"]["first_name"];
+  lastName: Database["public"]["Tables"]["users"]["Row"]["last_name"];
+  trainerId: Database["public"]["Tables"]["users"]["Row"]["trainer_id"];
+  createdAt: Database["public"]["Tables"]["users"]["Row"]["created_at"];
+  updatedAt: Database["public"]["Tables"]["users"]["Row"]["updated_at"];
 }
 
 /** Create user **/
@@ -56,9 +67,13 @@ export interface CreateUserCommand {
 }
 
 /** Update user **/
-export type UpdateUserCommand = Partial<CreateUserCommand> & {
-  id: string;
-};
+export interface UpdateUserCommand {
+  email?: Database["public"]["Tables"]["users"]["Insert"]["email"];
+  firstName?: string;
+  lastName?: string;
+  isActive?: boolean;
+  trainerId?: string;
+}
 
 /** EXERCISES **/
 /** List exercises query **/
@@ -100,7 +115,7 @@ export type UpdateExerciseCommand = Partial<CreateExerciseCommand>;
 /** List plans query **/
 export interface ListPlansQuery {
   trainerId?: string;
-  traineeId?: string;
+  clientId?: string;
   visible?: boolean;
   page?: number;
   limit?: number;
@@ -169,26 +184,42 @@ export interface TogglePlanVisibilityCommand {
 
 /** PLAN EXERCISES (nested) **/
 export interface AddExerciseToPlanCommand {
-  planId: string;
   exerciseId: string;
   sortOrder: number;
-  sets: number;
-  reps: number;
-  tempo: string;
+  sets?: number;
+  reps?: number;
+  tempo?: string;
   defaultWeight?: number | null;
 }
-export type UpdateExerciseInPlanCommand = Partial<AddExerciseToPlanCommand> & {
-  planId: string;
-  exerciseId: string;
-};
+export interface UpdateExerciseInPlanCommand {
+  sortOrder?: number;
+  sets?: number;
+  reps?: number;
+  tempo?: string;
+  defaultWeight?: number | null;
+}
 
 /** COMPLETION RECORDS **/
 export interface MarkExerciseCompletionCommand {
-  planId: string;
-  exerciseId: string;
   completed: boolean;
   reasonId?: string;
   customReason?: string;
+}
+
+/** Completion record DTO for a single exercise **/
+export interface CompletionRecordDto {
+  planId: string;
+  exerciseId: string;
+  isCompleted: boolean;
+  reasonId: string | null;
+  customReason: string | null;
+  completedAt: string;
+}
+
+/** Plan completion status with all exercises **/
+export interface PlanCompletionDto {
+  planId: string;
+  completionRecords: CompletionRecordDto[];
 }
 
 /** Standard reason DTO **/

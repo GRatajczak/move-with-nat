@@ -1,0 +1,451 @@
+{
+  "info": {
+    "name": "Reasons API",
+    "_postman_id": "reasons-api-collection",
+    "description": "CRUD operations for standard reasons in Move with Nat application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List All Reasons",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Lists all standard reasons ordered by code. Authorization: All authenticated users can access."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Reason",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    pm.environment.set(\"reason_id\", response.id);",
+              "    console.log(\"Reason ID saved:\", response.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"INJURY\",\n  \"label\": \"Injury or pain\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Creates a new standard reason. Authorization: Admin only."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Reason (Alternative)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"EQUIPMENT\",\n  \"label\": \"Equipment not available\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Creates another standard reason for testing."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Reason (Time Constraint)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"TIME\",\n  \"label\": \"Not enough time\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Creates a reason for time constraints."
+      },
+      "response": []
+    },
+    {
+      "name": "Update Reason (Code Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"INJURY_PAIN\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Updates only the reason code. Authorization: Admin only."
+      },
+      "response": []
+    },
+    {
+      "name": "Update Reason (Label Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"label\": \"Injury or discomfort\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Updates only the reason label."
+      },
+      "response": []
+    },
+    {
+      "name": "Update Reason (Both Fields)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"MEDICAL\",\n  \"label\": \"Medical reasons or injury\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Updates both code and label of the reason."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Reason",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Deletes a standard reason. Authorization: Admin only. Cannot delete if reason is used in any plan_exercises."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid UUID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/invalid-uuid",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "invalid-uuid"]
+        },
+        "description": "Test case: Invalid UUID format should return 400 Bad Request with validation error."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Reason Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/00000000-0000-0000-0000-999999999999",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "00000000-0000-0000-0000-999999999999"]
+        },
+        "description": "Test case: Non-existent reason ID should return 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Duplicate Code",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"INJURY\",\n  \"label\": \"Another injury reason\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Creating a reason with duplicate code should return 409 Conflict."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Update to Duplicate Code",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"EQUIPMENT\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Test case: Updating to an existing code should return 409 Conflict. Note: Make sure EQUIPMENT code exists first."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Missing Required Fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"INCOMPLETE\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Missing required field (label) should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Empty Code",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"\",\n  \"label\": \"Empty code reason\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Empty code should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Empty Label",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"VALID_CODE\",\n  \"label\": \"\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Empty label should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Update with No Fields",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Test case: Update must provide at least one field. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Forbidden Create (Non-Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"FORBIDDEN_TEST\",\n  \"label\": \"Should not be created\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Non-admin user trying to create reason should return 403 Forbidden. Note: Login as trainer or client before testing."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Forbidden Update (Non-Admin)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"label\": \"Unauthorized update\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Test case: Non-admin user trying to update reason should return 403 Forbidden. Note: Login as trainer or client before testing."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Forbidden Delete (Non-Admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_id}}"]
+        },
+        "description": "Test case: Non-admin user trying to delete reason should return 403 Forbidden. Note: Login as trainer or client before testing."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Delete Reason in Use",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/{{reason_in_use_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "{{reason_in_use_id}}"]
+        },
+        "description": "Test case: Deleting a reason that is used in plan_exercises should return 409 Conflict. Note: First create a plan with an exercise that uses this reason."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "reason_id",
+      "value": "",
+      "type": "string",
+      "description": "Reason ID saved from Create Reason request"
+    },
+    {
+      "key": "reason_in_use_id",
+      "value": "",
+      "type": "string",
+      "description": "Reason ID that is used in a plan_exercise (for testing delete conflict)"
+    }
+  ]
+}
+

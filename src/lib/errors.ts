@@ -69,3 +69,12 @@ export class DatabaseError extends AppError {
     super(message, 500, "DATABASE_ERROR");
   }
 }
+
+/**
+ * 500 Internal Server Error - Email sending failed
+ */
+export class EmailError extends AppError {
+  constructor(message = "Failed to send email") {
+    super(message, 500, "EMAIL_ERROR");
+  }
+}

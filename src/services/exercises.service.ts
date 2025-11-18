@@ -1,4 +1,4 @@
-// src/lib/exercises.service.ts
+// src/services/exercises.service.ts
 
 import { z } from "zod";
 import type { SupabaseClient } from "../db/supabase.client";
@@ -11,9 +11,9 @@ import type {
   ListExercisesQuery,
   PaginatedResponse,
 } from "../types";
-import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "./errors";
-import { isValidUUID } from "./api-helpers";
-import { mapExerciseToDTO } from "./mappers";
+import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
+import { isValidUUID } from "../lib/api-helpers";
+import { mapExerciseToDTO } from "../lib/mappers";
 
 interface User {
   id: string;

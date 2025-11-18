@@ -1,7 +1,7 @@
 // src/pages/api/exercises/index.ts
 
 import type { APIRoute } from "astro";
-import { listExercises, CreateExerciseCommandSchema } from "../../../lib/exercises.service";
+import { listExercises, CreateExerciseCommandSchema } from "../../../services/exercises.service";
 import { ListExercisesQuerySchema, parseQueryParams } from "../../../lib/validation";
 import { handleAPIError } from "../../../lib/api-helpers";
 
@@ -71,7 +71,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const validatedCommand = CreateExerciseCommandSchema.parse(body);
 
     // Import createExercise dynamically to avoid circular dependencies
-    const { createExercise } = await import("../../../lib/exercises.service");
+    const { createExercise } = await import("../../../services/exercises.service");
 
     // Create exercise
     // Using mock user for testing

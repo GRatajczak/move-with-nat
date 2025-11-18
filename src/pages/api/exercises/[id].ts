@@ -6,7 +6,7 @@ import {
   updateExercise,
   deleteExercise,
   UpdateExerciseCommandSchema,
-} from "../../../lib/exercises.service";
+} from "../../../services/exercises.service";
 import { handleAPIError } from "../../../lib/api-helpers";
 import { ValidationError } from "../../../lib/errors";
 

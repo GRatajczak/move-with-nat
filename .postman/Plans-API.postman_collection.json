@@ -1,0 +1,702 @@
+{
+  "info": {
+    "name": "Plans API",
+    "_postman_id": "plans-api-collection",
+    "description": "Complete API for training plans management in Move with Nat application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Plans CRUD",
+      "item": [
+        {
+          "name": "List All Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"]
+            },
+            "description": "Lists all plans with default pagination (page=1, limit=20). Admin sees all plans. Trainers see own plans. Clients see own plans."
+          },
+          "response": []
+        },
+        {
+          "name": "List Plans with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (default: 20, max: 100)"
+                }
+              ]
+            },
+            "description": "Lists plans with custom pagination settings."
+          },
+          "response": []
+        },
+        {
+          "name": "List Plans by Trainer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans?trainerId={{trainer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"],
+              "query": [
+                {
+                  "key": "trainerId",
+                  "value": "{{trainer_id}}",
+                  "description": "Filter by trainer ID"
+                }
+              ]
+            },
+            "description": "Lists plans filtered by trainer ID."
+          },
+          "response": []
+        },
+        {
+          "name": "List Plans by Client",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans?clientId={{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"],
+              "query": [
+                {
+                  "key": "clientId",
+                  "value": "{{client_id}}",
+                  "description": "Filter by client ID"
+                }
+              ]
+            },
+            "description": "Lists plans filtered by client ID."
+          },
+          "response": []
+        },
+        {
+          "name": "List Visible Plans Only",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans?visible=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"],
+              "query": [
+                {
+                  "key": "visible",
+                  "value": "true",
+                  "description": "Filter by visibility (true = not hidden)"
+                }
+              ]
+            },
+            "description": "Lists only visible (not hidden) plans."
+          },
+          "response": []
+        },
+        {
+          "name": "List Plans (All Filters)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans?trainerId={{trainer_id}}&clientId={{client_id}}&visible=true&page=1&limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"],
+              "query": [
+                {
+                  "key": "trainerId",
+                  "value": "{{trainer_id}}",
+                  "description": "Filter by trainer"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{client_id}}",
+                  "description": "Filter by client"
+                },
+                {
+                  "key": "visible",
+                  "value": "true",
+                  "description": "Filter by visibility"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Items per page"
+                }
+              ]
+            },
+            "description": "Combines all available filters and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Plan with Exercises",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set(\"plan_id\", response.id);",
+                  "    console.log(\"Plan ID saved:\", response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Full Body Workout A\",\n  \"trainerId\": \"{{trainer_id}}\",\n  \"clientId\": \"{{client_id}}\",\n  \"description\": \"Comprehensive full body training plan for strength and muscle building\",\n  \"isHidden\": false,\n  \"exercises\": [\n    {\n      \"exerciseId\": \"{{exercise_id}}\",\n      \"sortOrder\": 1,\n      \"sets\": 4,\n      \"reps\": 8,\n      \"tempo\": \"3-0-3\",\n      \"defaultWeight\": 60\n    },\n    {\n      \"exerciseId\": \"{{exercise_id_2}}\",\n      \"sortOrder\": 2,\n      \"sets\": 3,\n      \"reps\": 12,\n      \"tempo\": \"2-0-2\",\n      \"defaultWeight\": 40\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"]
+            },
+            "description": "Creates a new training plan with exercises. Admin and trainers only."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Plan (Minimal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Upper Body Workout\",\n  \"trainerId\": \"{{trainer_id}}\",\n  \"clientId\": \"{{client_id}}\",\n  \"exercises\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"]
+            },
+            "description": "Creates a plan with only required fields (name, trainerId, clientId) and no exercises."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Hidden Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Draft Workout Plan\",\n  \"trainerId\": \"{{trainer_id}}\",\n  \"clientId\": \"{{client_id}}\",\n  \"description\": \"Plan being prepared, not visible to client yet\",\n  \"isHidden\": true,\n  \"exercises\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans"]
+            },
+            "description": "Creates a hidden plan that client cannot see yet."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Plan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"]
+            },
+            "description": "Gets a single plan by ID with all exercises. Admin sees all. Trainers and clients see own plans only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Plan Metadata",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Full Body Workout A - Updated\",\n  \"description\": \"Updated comprehensive training plan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"]
+            },
+            "description": "Updates plan metadata (name, description). Admin and plan owner only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Plan with Exercises",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Advanced Full Body\",\n  \"description\": \"Progressive overload program\",\n  \"exercises\": [\n    {\n      \"exerciseId\": \"{{exercise_id}}\",\n      \"sortOrder\": 1,\n      \"sets\": 5,\n      \"reps\": 5,\n      \"tempo\": \"4-0-2\",\n      \"defaultWeight\": 80\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"]
+            },
+            "description": "Updates plan with new exercise configuration. Replaces all exercises."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Plan Visibility",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isHidden\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"]
+            },
+            "description": "Updates plan visibility using PUT endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Plan (Soft)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"]
+            },
+            "description": "Soft deletes a plan (sets is_hidden to true). Admin and plan owner only."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Plan (Hard)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}?hard=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}"],
+              "query": [
+                {
+                  "key": "hard",
+                  "value": "true",
+                  "description": "Physical delete from database"
+                }
+              ]
+            },
+            "description": "Hard deletes a plan (physical removal). Admin and plan owner only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Core CRUD operations for training plans"
+    },
+    {
+      "name": "Plan Visibility",
+      "item": [
+        {
+          "name": "Show Plan to Client",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isHidden\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/visibility",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "visibility"]
+            },
+            "description": "Makes plan visible to client (isHidden = false). Admin and plan owner only."
+          },
+          "response": []
+        },
+        {
+          "name": "Hide Plan from Client",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isHidden\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/visibility",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "visibility"]
+            },
+            "description": "Hides plan from client (isHidden = true). Admin and plan owner only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Toggle plan visibility for clients"
+    },
+    {
+      "name": "Plan Exercises",
+      "item": [
+        {
+          "name": "Add Exercise to Plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set(\"plan_exercise_id\", response.exerciseId);",
+                  "    console.log(\"Exercise added to plan:\", response.exerciseId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": \"{{exercise_id}}\",\n  \"sortOrder\": 3,\n  \"sets\": 4,\n  \"reps\": 10,\n  \"tempo\": \"3-0-3\",\n  \"defaultWeight\": 70\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises"]
+            },
+            "description": "Adds a single exercise to existing plan. Admin and plan owner only."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Exercise (Minimal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": \"{{exercise_id}}\",\n  \"sortOrder\": 1,\n  \"sets\": 3,\n  \"reps\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises"]
+            },
+            "description": "Adds exercise with only required fields (exerciseId, sortOrder, sets, reps)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Exercise in Plan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sets\": 5,\n  \"reps\": 8,\n  \"defaultWeight\": 80\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}"]
+            },
+            "description": "Updates parameters of an exercise in plan. All fields optional. Admin and plan owner only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Exercise Sort Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sortOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}"]
+            },
+            "description": "Changes the order of exercise in the plan."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Exercise Tempo",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tempo\": \"4-0-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}"]
+            },
+            "description": "Updates only the tempo of an exercise."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Exercise from Plan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}"]
+            },
+            "description": "Removes an exercise from the training plan. Admin and plan owner only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Manage exercises within training plans"
+    },
+    {
+      "name": "Exercise Completion",
+      "item": [
+        {
+          "name": "Mark Exercise Completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}/completion",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}", "completion"]
+            },
+            "description": "Marks an exercise as completed. Clients mark their own exercises."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Exercise Not Completed (with Reason ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": false,\n  \"reasonId\": \"{{reason_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}/completion",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}", "completion"]
+            },
+            "description": "Marks exercise as not completed with predefined reason. Either reasonId or customReason required when completed=false."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Exercise Not Completed (with Custom Reason)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": false,\n  \"customReason\": \"Had to leave gym early due to emergency\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/exercises/{{plan_exercise_id}}/completion",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "exercises", "{{plan_exercise_id}}", "completion"]
+            },
+            "description": "Marks exercise as not completed with custom reason text."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Plan Completion Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/plans/{{plan_id}}/completion",
+              "host": ["{{base_url}}"],
+              "path": ["api", "plans", "{{plan_id}}", "completion"]
+            },
+            "description": "Gets completion status for all exercises in the plan. Admin, trainer, and client (own plans) can access."
+          },
+          "response": []
+        }
+      ],
+      "description": "Track exercise completion by clients"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "plan_id",
+      "value": "",
+      "type": "string",
+      "description": "Plan ID saved from Create Plan request"
+    },
+    {
+      "key": "trainer_id",
+      "value": "",
+      "type": "string",
+      "description": "Trainer user ID"
+    },
+    {
+      "key": "client_id",
+      "value": "",
+      "type": "string",
+      "description": "Client user ID"
+    },
+    {
+      "key": "exercise_id",
+      "value": "",
+      "type": "string",
+      "description": "Exercise ID from exercises collection"
+    },
+    {
+      "key": "exercise_id_2",
+      "value": "",
+      "type": "string",
+      "description": "Second exercise ID for testing multiple exercises"
+    },
+    {
+      "key": "plan_exercise_id",
+      "value": "",
+      "type": "string",
+      "description": "Exercise ID within a plan (saved from Add Exercise to Plan)"
+    },
+    {
+      "key": "reason_id",
+      "value": "",
+      "type": "string",
+      "description": "Reason ID for not completing exercise"
+    }
+  ]
+}
