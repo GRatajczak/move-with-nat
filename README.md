@@ -9,12 +9,14 @@ A responsive web application enabling personal trainers and administrators to cr
 ## Table of Contents
 
 1. [Tech Stack](#tech-stack)
-2. [Getting Started Locally](#getting-started-locally)
-3. [Available Scripts](#available-scripts)
-4. [Project Scope (MVP)](#project-scope-mvp)
-5. [Project Status](#project-status)
-6. [License](#license)
-7. [Additional Resources](#additional-resources)
+2. [Project Architecture](#project-architecture)
+3. [Getting Started Locally](#getting-started-locally)
+4. [Available Scripts](#available-scripts)
+5. [API Testing](#api-testing)
+6. [Project Scope (MVP)](#project-scope-mvp)
+7. [Project Status](#project-status)
+8. [License](#license)
+9. [Additional Resources](#additional-resources)
 
 ## Tech Stack
 
@@ -25,6 +27,40 @@ A responsive web application enabling personal trainers and administrators to cr
 - **Email**: SendGrid transactional emails
 - **Build & Tooling**: Vite · GitHub Actions · DigitalOcean App Platform
 - **Utilities**: tailwind-merge · lucide-react · tw-animate-css
+
+## Project Architecture
+
+### Service Layer
+
+The application follows a clean service-oriented architecture with dedicated services for business logic:
+
+- **`auth.service.ts`** — Authentication & session management
+- **`email.service.ts`** — SendGrid email notifications (activation, reset, plan updates)
+- **`exercises.service.ts`** — Exercise CRUD operations with visibility control
+- **`plan-exercises.service.ts`** — Exercise assignments within plans, completion tracking
+- **`plans.service.ts`** — Training plan management with RLS-based access control
+- **`reasons.service.ts`** — Standard reasons for incomplete exercises (admin-managed)
+- **`users.service.ts`** — User management, invitations, and role assignments
+
+Each service encapsulates domain logic, database operations via Supabase clients, and authorization checks. API endpoints (`src/pages/api/**/*.ts`) act as thin controllers delegating to these services.
+
+### Directory Structure
+
+```
+src/
+├── layouts/          # Astro layouts
+├── pages/            # Astro pages & API endpoints
+│   └── api/          # RESTful API routes
+├── middleware/       # Astro middleware (auth, logging)
+├── db/               # Supabase clients & database types
+├── types.ts          # Shared TypeScript types (entities, DTOs)
+├── components/       # UI components (Astro static + React dynamic)
+│   └── ui/           # Shadcn/ui component library
+├── lib/              # Utilities, helpers, mappers
+├── services/         # Business logic layer
+├── assets/           # Internal static assets
+public/               # Public static assets
+```
 
 ## Getting Started Locally
 
@@ -79,6 +115,46 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - `npm run lint` — Run ESLint
 - `npm run lint:fix` — Run ESLint with auto-fix
 - `npm run format` — Format code with Prettier
+
+## API Testing
+
+The `.postman/` directory contains comprehensive Postman collections for testing all API endpoints:
+
+### Available Collections
+
+- **`Exercises-API.postman_collection.json`** — Complete CRUD operations for exercises
+  - List exercises with pagination & search
+  - Create, update, delete exercises
+  - Visibility control (admin only)
+  
+- **`Plans-API.postman_collection.json`** — Training plans management
+  - List, create, update, delete plans
+  - Assign exercises to plans
+  - Mark exercises as complete/incomplete with reasons
+  - Plan visibility control
+  - Exercise reordering and weight updates
+  
+- **`Users-API.postman_collection.json`** — User management operations
+  - List users with role-based filtering
+  - Create, update, delete users
+  - Role assignments (admin, trainer, client)
+  - Profile management
+  
+- **`Reasons-API.postman_collection.json`** — Standard reasons for incomplete exercises
+  - List, create, update, delete reasons
+  - Admin-only operations
+
+### Using the Collections
+
+1. Import the desired collection(s) into Postman
+2. Create an environment with the following variable:
+   ```
+   base_url = http://localhost:3000
+   ```
+3. Authenticate using your Supabase session token (set in request headers)
+4. Collections include pagination examples, search queries, and error cases
+
+All collections follow RESTful conventions with proper HTTP methods, status codes, and JSON payloads. Each request includes descriptions explaining authorization rules and expected behavior.
 
 ## Project Scope (MVP)
 

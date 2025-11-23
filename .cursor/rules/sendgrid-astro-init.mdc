@@ -1,0 +1,223 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# SendGrid Astro Initialization
+
+This document provides a reproducible guide to create the necessary file structure for integrating SendGrid with your Astro project.
+
+## Prerequisites
+
+- Your project should use Astro 5, TypeScript 5, React 19, and Tailwind 4.
+- Install the `@sendgrid/mail` package.
+- Ensure that you have a SendGrid API key from your SendGrid account.
+- Ensure that you have verified sender email addresses in your SendGrid account.
+
+IMPORTANT: Check prerequisites before performing actions below. If they're not met, stop and ask a user for the fix.
+
+## File Structure and Setup
+
+### 1. SendGrid Client Initialization
+
+Create the file `/src/lib/sendgrid.client.ts` with the following content:
+
+```ts
+import sgMail from "@sendgrid/mail";
+
+const sendgridApiKey = import.meta.env.SENDGRID_API_KEY;
+
+if (!sendgridApiKey) {
+  throw new Error("SENDGRID_API_KEY is not defined in environment variables");
+}
+
+sgMail.setApiKey(sendgridApiKey);
+
+export const sendgridClient = sgMail;
+```
+
+This file initializes the SendGrid client using the environment variable `SENDGRID_API_KEY`.
+
+### 2. SendGrid Service Helper
+
+Create the file `/src/services/sendgrid.service.ts` with the following content:
+
+```ts
+import { sendgridClient } from "../lib/sendgrid.client";
+import type { MailDataRequired } from "@sendgrid/mail";
+
+export interface SendEmailOptions {
+  to: string | string[];
+  from?: string;
+  subject: string;
+  text?: string;
+  html?: string;
+  templateId?: string;
+  dynamicTemplateData?: Record<string, unknown>;
+}
+
+export class SendGridService {
+  private defaultFrom: string;
+
+  constructor(defaultFrom?: string) {
+    this.defaultFrom = defaultFrom || import.meta.env.SENDGRID_FROM_EMAIL || "";
+
+    if (!this.defaultFrom) {
+      throw new Error(
+        "Default sender email is required. Set SENDGRID_FROM_EMAIL in environment variables or provide it in constructor"
+      );
+    }
+  }
+
+  async sendEmail(options: SendEmailOptions): Promise<void> {
+    const msg: MailDataRequired = {
+      to: options.to,
+      from: options.from || this.defaultFrom,
+      subject: options.subject,
+      ...(options.text && { text: options.text }),
+      ...(options.html && { html: options.html }),
+      ...(options.templateId && { templateId: options.templateId }),
+      ...(options.dynamicTemplateData && { dynamicTemplateData: options.dynamicTemplateData }),
+    };
+
+    try {
+      await sendgridClient.send(msg);
+    } catch (error) {
+      console.error("SendGrid error:", error);
+      throw new Error("Failed to send email");
+    }
+  }
+
+  async sendMultipleEmails(messages: SendEmailOptions[]): Promise<void> {
+    const msgs: MailDataRequired[] = messages.map((options) => ({
+      to: options.to,
+      from: options.from || this.defaultFrom,
+      subject: options.subject,
+      ...(options.text && { text: options.text }),
+      ...(options.html && { html: options.html }),
+      ...(options.templateId && { templateId: options.templateId }),
+      ...(options.dynamicTemplateData && { dynamicTemplateData: options.dynamicTemplateData }),
+    }));
+
+    try {
+      await sendgridClient.send(msgs);
+    } catch (error) {
+      console.error("SendGrid error:", error);
+      throw new Error("Failed to send emails");
+    }
+  }
+}
+
+export const sendgridService = new SendGridService();
+```
+
+This service provides a clean interface for sending emails with SendGrid, supporting both single and multiple emails.
+
+### 3. TypeScript Environment Definitions
+
+Update the file `src/env.d.ts` to include SendGrid environment variables:
+
+```ts
+/// <reference types="astro/client" />
+
+interface ImportMetaEnv {
+  readonly SENDGRID_API_KEY: string;
+  readonly SENDGRID_FROM_EMAIL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+```
+
+This file defines the required environment variables for SendGrid integration.
+
+## Usage Examples
+
+### Basic Email Sending
+
+```ts
+import { sendgridService } from "../services/sendgrid.service";
+
+// Send a simple email
+await sendgridService.sendEmail({
+  to: "recipient@example.com",
+  subject: "Welcome!",
+  text: "Welcome to our platform!",
+  html: "<strong>Welcome to our platform!</strong>",
+});
+```
+
+### Using SendGrid Templates
+
+```ts
+import { sendgridService } from "../services/sendgrid.service";
+
+// Send email with dynamic template
+await sendgridService.sendEmail({
+  to: "recipient@example.com",
+  subject: "Welcome!",
+  templateId: "d-1234567890abcdef",
+  dynamicTemplateData: {
+    userName: "John Doe",
+    verificationLink: "https://example.com/verify?token=abc123",
+  },
+});
+```
+
+### Sending Multiple Emails
+
+```ts
+import { sendgridService } from "../services/sendgrid.service";
+
+// Send multiple emails at once
+await sendgridService.sendMultipleEmails([
+  {
+    to: "user1@example.com",
+    subject: "Welcome User 1",
+    html: "<p>Hello User 1</p>",
+  },
+  {
+    to: "user2@example.com",
+    subject: "Welcome User 2",
+    html: "<p>Hello User 2</p>",
+  },
+]);
+```
+
+### API Endpoint Example
+
+```ts
+// src/pages/api/send-email.ts
+import type { APIRoute } from "astro";
+import { sendgridService } from "../../services/sendgrid.service";
+
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    const { to, subject, text, html } = await request.json();
+
+    await sendgridService.sendEmail({
+      to,
+      subject,
+      text,
+      html,
+    });
+
+    return new Response(JSON.stringify({ message: "Email sent successfully" }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "Failed to send email" }), { status: 500 });
+  }
+};
+```
+
+## Environment Variables
+
+Add the following environment variables to your `.env` file:
+
+```
+SENDGRID_API_KEY=your_sendgrid_api_key_here
+SENDGRID_FROM_EMAIL=your_verified_sender@example.com
+```
+
+Make sure to add `.env` to your `.gitignore` file to prevent committing sensitive credentials.

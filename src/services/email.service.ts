@@ -1,6 +1,7 @@
 // src/services/email.service.ts
 
 import { EmailError } from "../lib/errors";
+import { sendgridService } from "./sendgrid.service";
 
 interface EmailOptions {
   to: string;
@@ -10,40 +11,86 @@ interface EmailOptions {
 }
 
 /**
- * Send email using email provider
- * For MVP: logs to console instead of sending actual emails
- * TODO: Implement actual email sending with SendGrid/Resend/etc.
+ * Template ID mapping for SendGrid dynamic templates
+ * TODO: Replace with actual SendGrid template IDs from your SendGrid account
+ */
+const TEMPLATE_IDS: Record<string, string> = {
+  activation: import.meta.env.SENDGRID_TEMPLATE_ACTIVATION || "",
+  "password-reset": import.meta.env.SENDGRID_TEMPLATE_PASSWORD_RESET || "",
+};
+
+/**
+ * Send email using SendGrid
  *
  * @param options - Email configuration
  */
 export async function sendEmail(options: EmailOptions): Promise<void> {
   try {
-    // MVP implementation: log to console
-    console.log("📧 Email would be sent:", {
-      to: options.to,
-      subject: options.subject,
-      template: options.template,
-      data: options.data,
-    });
+    const templateId = TEMPLATE_IDS[options.template];
 
-    // TODO: Implement actual email sending
-    // Example with SendGrid:
-    // const sgMail = require('@sendgrid/mail');
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    // await sgMail.send({
-    //   to: options.to,
-    //   from: process.env.FROM_EMAIL,
-    //   subject: options.subject,
-    //   templateId: getTemplateId(options.template),
-    //   dynamicTemplateData: options.data,
-    // });
+    if (templateId) {
+      // Use SendGrid dynamic template
+      await sendgridService.sendEmail({
+        to: options.to,
+        subject: options.subject,
+        templateId,
+        dynamicTemplateData: options.data,
+      });
+    } else {
+      // Fallback: send as HTML email if no template is configured
+      // eslint-disable-next-line no-console
+      console.warn(`No SendGrid template ID found for '${options.template}'. Sending as plain HTML email.`);
 
-    // Simulate async operation
-    await new Promise((resolve) => setTimeout(resolve, 100));
+      const htmlContent = generateFallbackHtml(options.template, options.data);
+
+      await sendgridService.sendEmail({
+        to: options.to,
+        subject: options.subject,
+        html: htmlContent,
+      });
+    }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("❌ Email sending failed:", error);
     throw new EmailError("Failed to send email");
   }
+}
+
+/**
+ * Generate fallback HTML for emails when no template is configured
+ */
+function generateFallbackHtml(template: string, data: Record<string, unknown>): string {
+  const dataString = Object.entries(data)
+    .map(([key, value]) => `<li><strong>${key}:</strong> ${value}</li>`)
+    .join("");
+
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background-color: #f4f4f4; padding: 20px; text-align: center; }
+          .content { padding: 20px; }
+          ul { list-style: none; padding: 0; }
+          li { margin: 10px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Move with Nat</h1>
+          </div>
+          <div class="content">
+            <p><strong>Template:</strong> ${template}</p>
+            <ul>${dataString}</ul>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
 }
 
 /**

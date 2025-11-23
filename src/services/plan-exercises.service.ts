@@ -239,7 +239,7 @@ export async function removePlanExercise(
  *
  * Authorization:
  * - Admin: Can mark completion for any plan
- * - Trainer: No access (can't mark completion for trainees)
+ * - Trainer: No access (can't mark completion for clients)
  * - Client: Can mark only for own plans
  */
 export async function markExerciseCompletion(

@@ -130,7 +130,7 @@ export async function createUser(
   const insertData: Database["public"]["Tables"]["users"]["Insert"] = {
     email: command.email.toLowerCase(),
     role: dbRole,
-    is_active: true,
+    is_active: false,
     first_name: command.firstName,
     last_name: command.lastName,
   };

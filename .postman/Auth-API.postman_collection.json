@@ -1,0 +1,475 @@
+{
+  "info": {
+    "name": "Auth API",
+    "_postman_id": "auth-api-collection",
+    "description": "Authentication and email-related operations for Move with Nat application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Send Invitation Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 202) {",
+              "    console.log(\"Invitation email sent successfully\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"role\": \"client\",\n  \"resend\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Sends activation/invitation email to a user. User must already exist in database with is_active=false. The email will contain an activation link with a token (24h expiry)."
+      },
+      "response": []
+    },
+    {
+      "name": "Resend Invitation Email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"role\": \"client\",\n  \"resend\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Resends activation email to an existing inactive user. Useful when the original invitation expired or was lost."
+      },
+      "response": []
+    },
+    {
+      "name": "Send Invitation to Trainer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"trainer@example.com\",\n  \"role\": \"trainer\",\n  \"resend\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Sends activation email to a trainer user."
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Account",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["if (pm.response.code === 200) {", "    console.log(\"Account activated successfully\");", "}"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{activation_token}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/activate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "activate"]
+        },
+        "description": "Activates user account using the token from the invitation email. Token is valid for 24 hours. Sets is_active=true in the database."
+      },
+      "response": []
+    },
+    {
+      "name": "Request Password Reset",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 202) {",
+              "    console.log(\"Password reset email sent (if email exists)\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{test_email}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/reset-password/request",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "reset-password", "request"]
+        },
+        "description": "Requests a password reset email. Always returns success to prevent email enumeration. If the email exists and user is active, sends a reset link with token (1h expiry)."
+      },
+      "response": []
+    },
+    {
+      "name": "Confirm Password Reset",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["if (pm.response.code === 200) {", "    console.log(\"Password reset successfully\");", "}"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{reset_token}}\",\n  \"newPassword\": \"NewSecureP@ssw0rd!\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/reset-password/confirm",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "reset-password", "confirm"]
+        },
+        "description": "Confirms password reset using token from email. New password must meet requirements: at least 8 characters with uppercase, lowercase, number, and special character."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: User Not Found",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"nonexistent@example.com\",\n  \"role\": \"client\",\n  \"resend\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Test case: Attempting to send invite to non-existent user should return 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: User Already Active",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"active@example.com\",\n  \"role\": \"client\",\n  \"resend\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Test case: Attempting to send invite to already active user should return 409 Conflict."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Email Format",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"invalid-email\",\n  \"role\": \"client\",\n  \"resend\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Test case: Invalid email format should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Missing Required Fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/invite",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "invite"]
+        },
+        "description": "Test case: Missing required 'role' field should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Activation Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"invalid_token_string\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/activate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "activate"]
+        },
+        "description": "Test case: Invalid or malformed activation token should return 401 Unauthorized."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Expired Activation Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{expired_token}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/activate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "activate"]
+        },
+        "description": "Test case: Expired activation token (>24h) should return 401 Unauthorized."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Account Already Activated",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{valid_token_for_active_user}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/activate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "activate"]
+        },
+        "description": "Test case: Attempting to activate already active account should return 409 Conflict."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Weak Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{reset_token}}\",\n  \"newPassword\": \"weak\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/reset-password/confirm",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "reset-password", "confirm"]
+        },
+        "description": "Test case: Password not meeting strength requirements should return 400 Bad Request. Password must have at least 8 characters with uppercase, lowercase, number, and special character."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Reset Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"invalid_reset_token\",\n  \"newPassword\": \"ValidP@ssw0rd123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/reset-password/confirm",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "reset-password", "confirm"]
+        },
+        "description": "Test case: Invalid password reset token should return 401 Unauthorized."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Expired Reset Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{expired_reset_token}}\",\n  \"newPassword\": \"ValidP@ssw0rd123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/reset-password/confirm",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "reset-password", "confirm"]
+        },
+        "description": "Test case: Expired reset token (>1h) should return 401 Unauthorized."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4321",
+      "type": "string"
+    },
+    {
+      "key": "test_email",
+      "value": "test@example.com",
+      "type": "string",
+      "description": "Email address for testing"
+    },
+    {
+      "key": "activation_token",
+      "value": "",
+      "type": "string",
+      "description": "Activation token received via email"
+    },
+    {
+      "key": "reset_token",
+      "value": "",
+      "type": "string",
+      "description": "Password reset token received via email"
+    },
+    {
+      "key": "expired_token",
+      "value": "",
+      "type": "string",
+      "description": "An expired token for testing error cases"
+    },
+    {
+      "key": "valid_token_for_active_user",
+      "value": "",
+      "type": "string",
+      "description": "Valid token for an already active user (for testing conflict scenario)"
+    },
+    {
+      "key": "expired_reset_token",
+      "value": "",
+      "type": "string",
+      "description": "Expired password reset token for testing"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}
