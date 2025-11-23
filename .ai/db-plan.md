@@ -35,32 +35,45 @@
 Na podstawie PRD i stosu technologicznego zaplanowaliśmy następujące kluczowe elementy schematu PostgreSQL dla MVP:
 
 - Encje:
-  • `users` (administrator, trener, podopieczny)  
+  • `users` (administrator, trener, podopieczny) - rozszerza `auth.users` z Supabase Authentication
   • `exercises`  
   • `plans`  
   • `plan_exercises` (łączenie ćwiczeń z planami)
 - Relacje:
+  • `users.id` referencjonuje `auth.users(id)` ON DELETE CASCADE - integracja z Supabase Auth
   • Jeden trener ma wielu podopiecznych (`users.trainer_id → users.id`)  
   • Wiele ćwiczeń może należeć do wielu planów (tabela łącznikowa)
 - Typy danych i ograniczenia:
-  • UUID jako klucze główne dla dystrybucji i skalowalności  
+  • UUID jako klucze główne (dla `users` - pochodzące z `auth.users`, dla innych tabel - auto-generowane)
   • TEXT/TIMESTAMPTZ/JSONB dla opisów, znaczników czasu i szczegółów audytu  
   • ENUM dla roli użytkownika
+- Integracja z Supabase Authentication:
+  • Tabela `users` NIE generuje własnego UUID - używa ID z `auth.users`
+  • FK constraint z `ON DELETE CASCADE` zapewnia spójność danych
+  • JWT claims (`request.jwt.claims.sub`) zawierają `auth.users.id`
 - Indeksy i wydajność:
   • Indeksy B-TREE na polach filtrowanych i sortowanych (`email`, `trainer_id`, `created_at`, `name`)  
   • Indeks wielokolumnowy dla paginacji
 - Bezpieczeństwo:
-  • RLS na `users` i `plans` z autoryzacją opartą na `jwt.claims.user_id`  
+  • RLS na `users` i `plans` z autoryzacją opartą na `jwt.claims.sub` (UUID z auth.users)
   • Polityki zapewniające, że trener widzi tylko swoje plany, a podopieczny tylko własne dane
 - Integralność danych:
-  • Klucze obce z regułami `ON DELETE`  
-   • Transakcje przy wielotabelowych operacjach CRUD  
+  • Klucze obce z regułami `ON DELETE CASCADE/RESTRICT`
+  • Transakcje przy wielotabelowych operacjach CRUD  
   </database_planning_summary>
+
+<resolved_issues>
+
+- ✅ Integracja tabeli `users` z Supabase Authentication (`auth.users`)
+- ✅ Trigger automatyczny do synchronizacji `auth.users` → `public.users`
+- ✅ Przepływ tworzenia użytkownika: najpierw `auth.users`, potem `public.users`
+- ✅ RLS policies używają `auth.jwt()` claims dla autoryzacji
+
+</resolved_issues>
 
 <unresolved_issues>
 
 - Szczegółowe zdefiniowanie struktury tabeli `plans` (nazwa, opis, terminy, status).
-- Pełen zestaw pól profilowych w tabeli `users` (imię, e-mail, kontakt).
 - Mechanizm automatycznego zarządzania partycjami i harmonogram usuwania danych starszych niż 90 dni.
 - Dokładne zasady RLS dla operacji `UPDATE` i `INSERT` w tabeli `exercises` i `plan_exercises` (kto może modyfikować).  
   </unresolved_issues>

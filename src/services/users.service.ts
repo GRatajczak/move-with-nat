@@ -126,8 +126,31 @@ export async function createUser(
   // Map API role to database role
   const dbRole = mapUserRoleFromDTO(command.role);
 
-  // Prepare insert data
+  // Step 1: Create user in Supabase Auth first
+  // This generates the UUID that will be used in public.users
+  const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+    email: command.email.toLowerCase(),
+    email_confirm: false, // User must activate account via email
+    user_metadata: {
+      first_name: command.firstName,
+      last_name: command.lastName,
+      role: dbRole,
+    },
+  });
+
+  if (authError || !authUser.user) {
+    console.error("Failed to create auth user:", {
+      error: authError,
+      message: authError?.message,
+      status: authError?.status,
+      code: authError?.code,
+    });
+    throw new DatabaseError("Failed to create user in authentication system");
+  }
+
+  // Step 2: Create profile in public.users with the auth user's ID
   const insertData: Database["public"]["Tables"]["users"]["Insert"] = {
+    id: authUser.user.id, // Use the ID from auth.users
     email: command.email.toLowerCase(),
     role: dbRole,
     is_active: false,
@@ -140,12 +163,16 @@ export async function createUser(
     insertData.trainer_id = command.trainerId;
   }
 
-  // Insert user
+  // Insert user profile
   const { data: newUser, error } = await supabase.from("users").insert(insertData).select().single();
 
   if (error) {
-    console.error("Failed to create user:", error);
-    throw new DatabaseError("Failed to create user");
+    console.error("Failed to create user profile:", error);
+
+    // Cleanup: delete the auth user if profile creation fails
+    await supabase.auth.admin.deleteUser(authUser.user.id);
+
+    throw new DatabaseError("Failed to create user profile");
   }
 
   // Send activation email (non-blocking for MVP)

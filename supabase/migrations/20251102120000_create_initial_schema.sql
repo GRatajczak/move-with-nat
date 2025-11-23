@@ -5,9 +5,10 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 drop type if exists user_role;
 CREATE TYPE user_role AS ENUM ('admin','trainer','client');
 
--- Users table
+-- Users table (extends auth.users)
+-- This table stores additional profile data for authenticated users
 CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID NOT NULL PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT NOT NULL UNIQUE,
   role user_role NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT FALSE,
