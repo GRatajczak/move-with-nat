@@ -57,7 +57,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     // Call service layer
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await listPlans(locals.supabase, validatedQuery, mockUser);
 
     return new Response(JSON.stringify(result), {
@@ -120,7 +120,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Create plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await createPlan(locals.supabase, validatedCommand, mockUser);
 
     return new Response(JSON.stringify(result), {

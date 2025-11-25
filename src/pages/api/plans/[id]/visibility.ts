@@ -55,7 +55,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
 
     // Toggle visibility
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await togglePlanVisibility(locals.supabase, planId, validatedCommand.isHidden, mockUser);
 
     return new Response(JSON.stringify(result), {

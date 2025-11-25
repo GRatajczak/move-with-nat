@@ -1,8 +1,23 @@
 // src/types.ts
 
 import type { Database } from "./db/database.types";
+import type { SupabaseClient as BaseSupabaseClient } from "@supabase/supabase-js";
 
 export type UserRole = Database["public"]["Enums"]["user_role"];
+
+// Re-export Database type for convenience
+export type { Database };
+
+/** SUPABASE CLIENT **/
+export type SupabaseClient = BaseSupabaseClient<Database>;
+
+/** DB ROW TYPES (Mappers) **/
+export type ExerciseRow = Database["public"]["Tables"]["exercises"]["Row"];
+export type PlanRow = Database["public"]["Tables"]["plans"]["Row"];
+export type PlanExerciseRow = Database["public"]["Tables"]["plan_exercises"]["Row"];
+export type UserRow = Database["public"]["Tables"]["users"]["Row"];
+export type StandardReasonRow = Database["public"]["Tables"]["standard_reasons"]["Row"];
+export type DbUserRole = Database["public"]["Enums"]["user_role"];
 
 /** COMMON RESPONSE TYPES **/
 /** Standard message response **/
@@ -32,6 +47,14 @@ export interface RequestPasswordResetCommand {
 export interface ConfirmPasswordResetCommand {
   token: string;
   newPassword: string;
+}
+
+/** JWT Token Payload **/
+export interface TokenPayload {
+  userId: string;
+  email: string;
+  purpose: "activation" | "password-reset";
+  exp: number;
 }
 
 /** USERS **/
@@ -156,7 +179,7 @@ export interface CreatePlanCommand {
   clientId: Database["public"]["Tables"]["plans"]["Insert"]["client_id"];
   trainerId: Database["public"]["Tables"]["plans"]["Insert"]["trainer_id"];
   isHidden?: IsHidden;
-  description?: string;
+  description?: string | null;
   exercises: Exercise[];
 }
 
@@ -246,4 +269,29 @@ export interface PaginationMetaDto {
 export interface PaginatedResponse<T> {
   data: T[];
   meta: PaginationMetaDto;
+}
+
+/** SERVICES **/
+/** SendGrid Email Options **/
+export interface SendEmailOptions {
+  to: string | string[];
+  from?: string;
+  subject: string;
+  text?: string;
+  html?: string;
+  templateId?: string;
+  dynamicTemplateData?: Record<string, unknown>;
+}
+
+export interface EmailOptions {
+  to: string;
+  subject: string;
+  template: string;
+  data: Record<string, unknown>;
+}
+
+export interface AuthenticatedUser {
+  id: string;
+  role: UserRole;
+  email: string;
 }

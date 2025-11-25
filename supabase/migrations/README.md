@@ -1,85 +1,155 @@
 # Database Migrations
 
-Migracje są uruchamiane automatycznie w kolejności według timestampu w nazwie pliku.
+## Struktura migracji
 
-## Dostępne migracje:
+### Plik główny: `00000000000000_complete_schema.sql`
+
+**Status:** ✅ Plik konsolidujący wszystkie migracje
+
+Jest to **kompletny plik migracyjny**, który zawiera pełną strukturę bazy danych połączając wszystkie wcześniejsze migracje w jeden spójny schemat.
+
+#### Zawartość:
+
+1. **Rozszerzenia (Extensions)**
+   - `pgcrypto` - dla generowania UUID
+   - `pg_trgm` - dla wyszukiwania rozmytego/trigramowego
+
+2. **Typy (Enums)**
+   - `user_role` - ('admin', 'trainer', 'client')
+
+3. **Tabele (Tables)**
+   - `users` - użytkownicy (rozszerza auth.users)
+     - Podstawowe pola: id, email, role, is_active
+     - Pola profilu: first_name, last_name
+     - Relacje: trainer_id (dla klientów)
+   - `exercises` - ćwiczenia
+   - `plans` - plany treningowe
+   - `standard_reasons` - standardowe powody niepełnych ćwiczeń
+   - `plan_exercises` - tabela łącząca plany z ćwiczeniami
+
+4. **Constrainty (Constraints)**
+   - `check_trainer_id_only_for_clients` - tylko klienci mogą mieć przypisanego trenera
+
+5. **Indeksy (Indexes)**
+   - Standardowe indeksy dla wydajności (created_at, foreign keys)
+   - Specjalne indeksy dla exercises:
+     - `idx_exercises_name` - dla wyszukiwania po nazwie
+     - `idx_exercises_is_hidden` - dla filtrowania widoczności
+     - `idx_exercises_visible_created_at` - partial index dla widocznych ćwiczeń
+     - `idx_exercises_name_trgm` - trigram index dla fuzzy search
+
+6. **Polityki RLS (Row Level Security)**
+   - **users**: SELECT (admin + self), UPDATE (self)
+   - **exercises**: SELECT (wszyscy), INSERT/UPDATE/DELETE (tylko admin)
+   - **plans**: pełne CRUD z kontrolą dostępu (admin, trainer, client)
+   - **plan_exercises**: pełne CRUD z kontrolą dostępu przez plany
+   - **standard_reasons**: SELECT (wszyscy uwierzytelnieni)
+
+7. **Cleanup**
+   - Usunięcie niepotrzebnego triggera `on_auth_user_created`
+
+---
+
+## Historia migracji (zarchiwizowane)
+
+Poniższe migracje zostały połączone w jeden plik główny. Są przechowywane dla celów historycznych:
 
 ### 1. `20251102120000_create_initial_schema.sql`
 
-**Status:** ✅ Uruchomiona
-
-Tworzy podstawową strukturę bazy danych:
-
-- Tabele: `users`, `exercises`, `plans`, `plan_exercises`, `standard_reasons`
-- Indeksy dla wydajności
-- Podstawowe polityki RLS (SELECT dla większości tabel)
-
-**⚠️ Uwaga:** Ta migracja **NIE** zawiera polityk INSERT/UPDATE/DELETE dla tabeli `exercises`.
+Początkowa struktura bazy danych z podstawowymi tabelami i politykami RLS.
 
 ### 2. `20251112000000_add_exercises_rls_policies.sql`
 
-**Status:** ✅ Uruchomiona (lokalnie i zdalnie)
+Dodanie brakujących polityk INSERT/UPDATE/DELETE dla tabeli exercises.
 
-Dodaje brakujące polityki RLS dla tabeli `exercises`:
+### 3. `20251115000000_add_exercises_list_indexes.sql`
 
-- INSERT (tylko admin)
-- UPDATE (tylko admin)
-- DELETE (tylko admin)
+Indeksy dla optymalizacji wydajności listowania i wyszukiwania ćwiczeń.
 
-**Ta migracja została już zastosowana!**
+### 4. `20251116000000_add_trainer_id_to_users.sql`
 
-Jeśli potrzebujesz ją zastosować ponownie (np. w innym środowisku):
+Dodanie kolumny trainer_id i relacji między klientami a trenerami.
+
+### 5. `20251116100000_add_user_profile_fields.sql`
+
+Dodanie pól first_name i last_name oraz modyfikacja constraintów.
+
+### 6. `20251123100000_remove_auth_user_sync_trigger.sql`
+
+Usunięcie problematycznego triggera dla automatycznej synchronizacji użytkowników.
+
+---
+
+## Uruchamianie migracji
+
+### Dla nowego środowiska
+
+Jeśli konfigurujesz bazę danych od zera, użyj pliku głównego:
 
 ```bash
-# Sposób 1: Reset lokalnej bazy (zastosuje wszystkie migracje)
+# Reset lokalnej bazy (zastosuje wszystkie migracje w kolejności)
 supabase db reset
 
-# Sposób 2: Push do zdalnej bazy
+# Lub push do zdalnej bazy
 supabase db push
-
-# Sposób 3: Ręcznie w Supabase Dashboard
-# 1. Przejdź do SQL Editor
-# 2. Skopiuj zawartość pliku
-# 3. Wklej i uruchom
 ```
 
-## Dla developmentu (testowanie lokalne):
+### Dla istniejącego środowiska
 
-**Aktualny stan:** Wszystkie migracje są już zastosowane lokalnie! 🎉
+Jeśli Twoja baza już ma zastosowane wcześniejsze migracje, **nie musisz** ponownie uruchamiać pliku głównego. Supabase automatycznie śledzi, które migracje zostały zastosowane.
 
-Masz dwie opcje testowania:
+### Ręczne zastosowanie w Supabase Dashboard
 
-**Opcja A: Z service_role key (omija RLS)** - Szybkie, do podstawowych testów
+1. Przejdź do SQL Editor w dashboardzie Supabase
+2. Skopiuj zawartość `00000000000000_complete_schema.sql`
+3. Wklej i uruchom
+
+---
+
+## Development vs Production
+
+### Development (lokalne testowanie)
+
+**Opcja A: Z service_role key** (omija RLS - szybkie testy)
 
 ```bash
-# W .env dodaj:
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
+# W .env:
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
-Zobacz: `.ai/QUICK-FIX-RLS.md`
+**Opcja B: Z anon key + RLS** (prawdziwe testy z politykami bezpieczeństwa)
 
-**Opcja B: Z anon key + RLS** - Prawdziwe testy z politykami bezpieczeństwa
+- Skonfiguruj JWT tokeny z odpowiednią rolą
+- Używaj anon key
+- Testuj pełne polityki RLS
 
-- Polityki RLS są już w bazie
-- Skonfiguruj autentykację JWT z rolą `admin`
-- Zobacz: `.ai/RLS-SETUP.md`
+### Production
 
-## Dla produkcji:
+**WYMAGANE:**
 
-**MUSISZ** uruchomić wszystkie migracje i używać:
+- JWT tokeny z Supabase Auth
+- Anon key (NIE service_role!)
+- Pełne polityki RLS aktywne
 
-- JWT tokenów z Supabase Auth
-- Anon key (nie service_role!)
-- Pełne polityki RLS
+---
 
-Zobacz: `.ai/RLS-SETUP.md`
-
-## Tworzenie nowych migracji:
+## Tworzenie nowych migracji
 
 ```bash
 # Format nazwy: YYYYMMDDHHMMSS_opis_migracji.sql
 # Przykład:
-20251112120000_add_exercise_categories.sql
+20251125120000_add_exercise_categories.sql
 ```
 
 Timestamp zapewnia właściwą kolejność wykonywania migracji.
+
+**Uwaga:** Nowe migracje będą stosowane DODATKOWO do schematu zdefiniowanego w pliku głównym.
+
+---
+
+## Informacje dodatkowe
+
+- Wszystkie migracje są uruchamiane w transakcjach
+- Timestamp w nazwie pliku określa kolejność wykonania
+- Supabase CLI automatycznie śledzi zastosowane migracje
+- Plik `00000000000000_complete_schema.sql` ma timestamp "0", więc będzie wykonany jako pierwszy

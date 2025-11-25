@@ -7,18 +7,13 @@ import type {
   CreatePlanCommand,
   PlanDto,
   UpdatePlanCommand,
-  UserRole,
   ListPlansQuery,
   PaginatedResponse,
+  AuthenticatedUser,
 } from "../types";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
 import { mapPlanToDTO, mapPlanWithExercisesToDTO } from "../lib/mappers";
-
-interface User {
-  id: string;
-  role: UserRole;
-}
 
 /**
  * Validation schema for creating a plan
@@ -136,7 +131,7 @@ async function validateExerciseExists(supabase: SupabaseClient, exerciseId: stri
 export async function listPlans(
   supabase: SupabaseClient,
   query: ListPlansQuery,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PaginatedResponse<PlanDto>> {
   const { trainerId, clientId, visible, page = 1, limit = 20, sortBy = "created_at" } = query;
 
@@ -197,7 +192,7 @@ export async function listPlans(
 export async function createPlan(
   supabase: SupabaseClient,
   command: CreatePlanCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanDto> {
   // Check authorization
   if (currentUser.role === "client") {
@@ -285,7 +280,7 @@ export async function createPlan(
  * - Trainer: Can view own plans only
  * - Client: Can view own plans only
  */
-export async function getPlan(supabase: SupabaseClient, planId: string, currentUser: User): Promise<PlanDto> {
+export async function getPlan(supabase: SupabaseClient, planId: string, currentUser: AuthenticatedUser): Promise<PlanDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {
     throw new ValidationError({ id: "Invalid UUID format" });
@@ -338,7 +333,7 @@ export async function updatePlan(
   supabase: SupabaseClient,
   planId: string,
   command: UpdatePlanCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {
@@ -422,7 +417,7 @@ export async function updatePlan(
 export async function deletePlan(
   supabase: SupabaseClient,
   planId: string,
-  currentUser: User,
+  currentUser: AuthenticatedUser,
   hard = false
 ): Promise<void> {
   // Validate UUID
@@ -477,7 +472,7 @@ export async function togglePlanVisibility(
   supabase: SupabaseClient,
   planId: string,
   isHidden: boolean,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {

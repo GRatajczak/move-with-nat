@@ -1,15 +1,6 @@
 import { sendgridClient } from "../lib/sendgrid.client";
 import type { MailDataRequired } from "@sendgrid/mail";
-
-export interface SendEmailOptions {
-  to: string | string[];
-  from?: string;
-  subject: string;
-  text?: string;
-  html?: string;
-  templateId?: string;
-  dynamicTemplateData?: Record<string, unknown>;
-}
+import type { SendEmailOptions } from "../types";
 
 export class SendGridService {
   private defaultFrom: string;

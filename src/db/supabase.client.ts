@@ -1,9 +1,10 @@
-import { createClient, type SupabaseClient as BaseSupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "../db/database.types.ts";
+import type { SupabaseClient } from "../types";
 
 // Export typed SupabaseClient for use across the application
-export type SupabaseClient = BaseSupabaseClient<Database>;
+export type { SupabaseClient };
 
 const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_KEY;

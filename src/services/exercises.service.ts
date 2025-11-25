@@ -10,15 +10,11 @@ import type {
   UserRole,
   ListExercisesQuery,
   PaginatedResponse,
+  AuthenticatedUser,
 } from "../types";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
 import { mapExerciseToDTO } from "../lib/mappers";
-
-interface User {
-  id: string;
-  role: UserRole;
-}
 
 /**
  * Validation schema for creating an exercise
@@ -50,7 +46,7 @@ export const UpdateExerciseCommandSchema = z
 export async function createExercise(
   supabase: SupabaseClient,
   command: CreateExerciseCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<ExerciseDto> {
   // Check admin only
   if (currentUser.role !== "admin") {
@@ -92,7 +88,7 @@ export async function createExercise(
 export async function getExercise(
   supabase: SupabaseClient,
   exerciseId: string,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<ExerciseDto> {
   // Validate UUID
   if (!isValidUUID(exerciseId)) {
@@ -121,7 +117,7 @@ export async function updateExercise(
   supabase: SupabaseClient,
   exerciseId: string,
   command: UpdateExerciseCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<ExerciseDto> {
   // Check admin only
   if (currentUser.role !== "admin") {
@@ -191,7 +187,7 @@ export async function updateExercise(
 export async function deleteExercise(
   supabase: SupabaseClient,
   exerciseId: string,
-  currentUser: User,
+  currentUser: AuthenticatedUser,
   hard = false
 ): Promise<void> {
   // Check admin only
@@ -271,7 +267,7 @@ export async function deleteExercise(
 export async function listExercises(
   supabase: SupabaseClient,
   query: ListExercisesQuery,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PaginatedResponse<ExerciseDto>> {
   const { search, page = 1, limit = 20 } = query;
 

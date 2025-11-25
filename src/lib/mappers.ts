@@ -1,14 +1,21 @@
 // src/lib/mappers.ts
 
 import type { Database } from "../db/database.types";
-import type { ExerciseDto, ExerciseSummaryDto, PlanDto, PlanExerciseDto, ReasonDto, UserDto, UserRole } from "../types";
-
-type ExerciseRow = Database["public"]["Tables"]["exercises"]["Row"];
-type PlanRow = Database["public"]["Tables"]["plans"]["Row"];
-type PlanExerciseRow = Database["public"]["Tables"]["plan_exercises"]["Row"] & { exercise: ExerciseRow };
-type UserRow = Database["public"]["Tables"]["users"]["Row"];
-type StandardReasonRow = Database["public"]["Tables"]["standard_reasons"]["Row"];
-type DbUserRole = Database["public"]["Enums"]["user_role"];
+import type {
+  DbUserRole,
+  ExerciseDto,
+  ExerciseRow,
+  ExerciseSummaryDto,
+  PlanDto,
+  PlanExerciseDto,
+  PlanExerciseRow,
+  PlanRow,
+  ReasonDto,
+  StandardReasonRow,
+  UserDto,
+  UserRole,
+  UserRow,
+} from "../types";
 
 /**
  * Maps database exercise row to ExerciseDto

@@ -58,7 +58,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
     // Get plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await getPlan(locals.supabase, planId, mockUser);
 
     return new Response(JSON.stringify(result), {
@@ -133,8 +133,8 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
 
     // Update plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
-    const result = await updatePlan(locals.supabase, planId, validatedCommand, mockUser);
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
+    const result = await updatePlan(locals.supabase, planId, { ...validatedCommand, id: planId }, mockUser);
 
     return new Response(JSON.stringify(result), {
       status: 200,
@@ -189,7 +189,7 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
 
     // Delete plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     await deletePlan(locals.supabase, planId, mockUser, hard);
 
     return new Response(null, {

@@ -9,17 +9,11 @@ import type {
   MarkExerciseCompletionCommand,
   CompletionRecordDto,
   PlanCompletionDto,
-  UserRole,
+  AuthenticatedUser,
+  PlanExerciseRow,
 } from "../types";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError, ConflictError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
-
-interface User {
-  id: string;
-  role: UserRole;
-}
-
-type PlanExerciseRow = Database["public"]["Tables"]["plan_exercises"]["Row"];
 
 /**
  * Add a single exercise to an existing training plan
@@ -33,7 +27,7 @@ export async function addExerciseToPlan(
   supabase: SupabaseClient,
   planId: string,
   command: AddExerciseToPlanCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanExerciseDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {
@@ -113,7 +107,7 @@ export async function updatePlanExercise(
   planId: string,
   exerciseId: string,
   command: UpdateExerciseInPlanCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanExerciseDto> {
   // Validate UUIDs
   if (!isValidUUID(planId)) {
@@ -189,7 +183,7 @@ export async function removePlanExercise(
   supabase: SupabaseClient,
   planId: string,
   exerciseId: string,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<void> {
   // Validate UUIDs
   if (!isValidUUID(planId)) {
@@ -247,7 +241,7 @@ export async function markExerciseCompletion(
   planId: string,
   exerciseId: string,
   command: MarkExerciseCompletionCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<CompletionRecordDto> {
   // Validate UUIDs
   if (!isValidUUID(planId)) {
@@ -347,7 +341,7 @@ export async function markExerciseCompletion(
 export async function getPlanCompletion(
   supabase: SupabaseClient,
   planId: string,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PlanCompletionDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {

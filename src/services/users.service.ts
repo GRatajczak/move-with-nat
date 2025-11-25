@@ -9,6 +9,7 @@ import type {
   ListUsersQuery,
   UpdateUserCommand,
   UserRole,
+  AuthenticatedUser,
 } from "../types";
 import { mapUserToDTO, mapUserRoleFromDTO } from "../lib/mappers";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
@@ -16,32 +17,23 @@ import { sendActivationEmail } from "./email.service";
 import { isValidUUID } from "../lib/validation";
 
 /**
- * Simple User interface for authorization checks
- * Matches the type from locals.user in Astro context
- */
-interface User {
-  id: string;
-  role: UserRole;
-}
-
-/**
  * Helper: Check if user is admin
  */
-function isAdmin(user: User): boolean {
+function isAdmin(user: AuthenticatedUser): boolean {
   return user.role === "admin";
 }
 
 /**
  * Helper: Check if user is trainer
  */
-function isTrainer(user: User): boolean {
+function isTrainer(user: AuthenticatedUser): boolean {
   return user.role === "trainer";
 }
 
 /**
  * Helper: Check if user is client
  */
-function isClient(user: User): boolean {
+function isClient(user: AuthenticatedUser): boolean {
   return user.role === "client";
 }
 
@@ -105,7 +97,7 @@ async function validateTrainer(supabase: SupabaseClient, trainerId: string): Pro
 export async function createUser(
   supabase: SupabaseClient,
   command: CreateUserCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<UserDto> {
   // Authorization check: only admins can create users
   if (!isAdmin(currentUser)) {
@@ -202,7 +194,7 @@ export async function createUser(
 export async function listUsers(
   supabase: SupabaseClient,
   query: ListUsersQuery,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<PaginatedResponse<UserDto>> {
   // Authorization check: clients cannot list users
   if (isClient(currentUser)) {
@@ -287,7 +279,7 @@ export async function listUsers(
  * @throws {NotFoundError} If user doesn't exist or access is denied
  * @throws {DatabaseError} If database operation fails
  */
-export async function getUser(supabase: SupabaseClient, userId: string, currentUser: User): Promise<UserDto> {
+export async function getUser(supabase: SupabaseClient, userId: string, currentUser: AuthenticatedUser): Promise<UserDto> {
   // Validate UUID format
   if (!isValidUUID(userId)) {
     throw new ValidationError({ id: "Invalid UUID format" });
@@ -360,7 +352,7 @@ export async function updateUser(
   supabase: SupabaseClient,
   userId: string,
   command: UpdateUserCommand,
-  currentUser: User
+  currentUser: AuthenticatedUser
 ): Promise<UserDto> {
   // Validate UUID format
   if (!isValidUUID(userId)) {

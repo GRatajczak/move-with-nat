@@ -64,7 +64,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
 
     // Update plan exercise
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await updatePlanExercise(locals.supabase, planId, exerciseId, validatedCommand, mockUser);
 
     return new Response(JSON.stringify(result), {
@@ -112,7 +112,7 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
 
     // Remove exercise from plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     await removePlanExercise(locals.supabase, planId, exerciseId, mockUser);
 
     return new Response(null, {

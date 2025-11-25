@@ -16,7 +16,7 @@
 #### 1. Request Activation / Invitation Email
 
 - Method: POST
-- URL: `/auth/invite`
+- URL: `/invite`
 - Description: Send activation link to a new user (trainer or trainee) or re-send invitation
 - Request Body:
   ```json
@@ -31,7 +31,7 @@
 #### 2. Activate Account
 
 - Method: POST
-- URL: `/auth/activate`
+- URL: `/activate`
 - Description: Activate account using token
 - Request Body:
   ```json
@@ -43,7 +43,7 @@
 #### 3. Request Password Reset
 
 - Method: POST
-- URL: `/auth/reset-password/request`
+- URL: `/reset-password/request`
 - Description: Send password reset link (1h expiry)
 - Request Body: `{ "email": "user@example.com" }`
 - Success (202): `{ "message": "Reset link sent" }`
@@ -52,7 +52,7 @@
 #### 4. Reset Password
 
 - Method: POST
-- URL: `/auth/reset-password/confirm`
+- URL: `/reset-password/confirm`
 - Description: Reset password using token
 - Request Body:
   ```json

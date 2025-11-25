@@ -63,7 +63,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
     // Get plan completion status
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await getPlanCompletion(locals.supabase, planId, mockUser);
 
     return new Response(JSON.stringify(result), {

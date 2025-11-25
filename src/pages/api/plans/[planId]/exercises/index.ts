@@ -65,7 +65,7 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
 
     // Add exercise to plan
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await addExerciseToPlan(locals.supabase, planId, validatedCommand, mockUser);
 
     return new Response(JSON.stringify(result), {

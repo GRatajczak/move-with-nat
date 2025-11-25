@@ -33,7 +33,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
     // Get exercise
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await getExercise(locals.supabase, id, mockUser);
 
     return new Response(JSON.stringify(result), {
@@ -69,7 +69,7 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
 
     // Update exercise
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     const result = await updateExercise(locals.supabase, id, validatedCommand, mockUser);
 
     return new Response(JSON.stringify(result), {
@@ -106,7 +106,7 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
 
     // Delete exercise
     // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const };
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
     await deleteExercise(locals.supabase, id, mockUser, hard);
 
     return new Response(null, { status: 204 });

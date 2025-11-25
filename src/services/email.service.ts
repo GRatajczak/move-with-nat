@@ -2,13 +2,7 @@
 
 import { EmailError } from "../lib/errors";
 import { sendgridService } from "./sendgrid.service";
-
-interface EmailOptions {
-  to: string;
-  subject: string;
-  template: string;
-  data: Record<string, unknown>;
-}
+import type { EmailOptions } from "../types";
 
 /**
  * Template ID mapping for SendGrid dynamic templates

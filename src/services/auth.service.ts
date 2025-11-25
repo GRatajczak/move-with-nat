@@ -7,19 +7,10 @@ import type {
   RequestPasswordResetCommand,
   ConfirmPasswordResetCommand,
   MessageResponse,
+  TokenPayload,
 } from "../types";
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../lib/errors";
 import { sendActivationEmail, sendPasswordResetEmail } from "./email.service";
-
-/**
- * JWT token payload for activation and password reset
- */
-interface TokenPayload {
-  userId: string;
-  email: string;
-  purpose: "activation" | "password-reset";
-  exp: number;
-}
 
 /**
  * Generate JWT token for activation or password reset

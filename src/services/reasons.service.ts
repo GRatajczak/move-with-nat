@@ -2,7 +2,7 @@
 
 import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type { CreateReasonCommand, ReasonDto, UpdateReasonCommand, UserDto } from "../types";
+import type { AuthenticatedUser, CreateReasonCommand, ReasonDto, UpdateReasonCommand } from "../types";
 import { DatabaseError, ForbiddenError, NotFoundError, ConflictError, ValidationError } from "../lib/errors";
 import { mapStandardReasonToDTO } from "../lib/mappers";
 import { isValidUUID } from "../lib/validation";
@@ -28,7 +28,7 @@ export async function listReasons(supabase: SupabaseClient): Promise<ReasonDto[]
 export async function createReason(
   supabase: SupabaseClient,
   command: CreateReasonCommand,
-  currentUser: UserDto
+  currentUser: AuthenticatedUser
 ): Promise<ReasonDto> {
   // Authorization check
   if (currentUser.role !== "admin") {
@@ -71,7 +71,7 @@ export async function updateReason(
   supabase: SupabaseClient,
   reasonId: string,
   command: UpdateReasonCommand,
-  currentUser: UserDto
+  currentUser: AuthenticatedUser
 ): Promise<ReasonDto> {
   // Authorization check
   if (currentUser.role !== "admin") {
@@ -135,7 +135,11 @@ export async function updateReason(
  * Authorization: Admin only
  * Cannot delete if reason is in use
  */
-export async function deleteReason(supabase: SupabaseClient, reasonId: string, currentUser: UserDto): Promise<void> {
+export async function deleteReason(
+  supabase: SupabaseClient,
+  reasonId: string,
+  currentUser: AuthenticatedUser
+): Promise<void> {
   // Authorization check
   if (currentUser.role !== "admin") {
     throw new ForbiddenError("Only administrators can delete reasons");
