@@ -15,20 +15,15 @@ import type { ExerciseViewModel } from "@/interface";
 import { QueryProvider } from "../QueryProvider";
 
 const ExercisesListContent: React.FC = () => {
-  // State for URL params sync would ideally be handled here or passed as initial props
-  // For simplicity, we're using local state managed by the hook
   const { exercises, pagination, isLoading, error, search, setSearch, setPage } = useExercisesList();
 
   const { mutateAsync: deleteExercise, isPending: isDeleting } = useDeleteExercise();
 
-  // Local UI state
   const [previewExercise, setPreviewExercise] = useState<ExerciseViewModel | null>(null);
   const [deleteModalExercise, setDeleteModalExercise] = useState<ExerciseViewModel | null>(null);
 
-  // Responsive check
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Handlers
   const handleCreateClick = () => {
     window.location.href = "/admin/exercises/new";
   };

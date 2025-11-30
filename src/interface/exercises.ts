@@ -134,3 +134,29 @@ export interface ExerciseCardsProps {
   onView: (id: string) => void;
   onDelete: (exercise: ExerciseViewModel) => void;
 }
+
+export interface VimeoPreviewWidgetProps {
+  videoId: string;
+  className?: string;
+}
+
+export interface PaginationProps {
+  meta: PaginationMetaDto;
+  onPageChange: (page: number) => void;
+}
+
+export interface ExercisesTableProps {
+  exercises: ExerciseViewModel[];
+  isLoading: boolean;
+  onRowClick: (exercise: ExerciseViewModel) => void;
+  onEdit: (id: string) => void;
+  onView: (id: string) => void;
+  onDelete: (exercise: ExerciseViewModel) => void;
+}
+
+export interface ExercisesFilterToolbarProps {
+  search: string;
+  onSearchChange: (value: string) => void;
+  onCreateClick: () => void;
+  isLoading?: boolean;
+}

@@ -1,4 +1,3 @@
-import React from "react";
 import { useAdminDashboard } from "@/hooks/useAdminDashboard";
 import { StatsCard } from "./StatsCard";
 import { QuickActions } from "./QuickActions";

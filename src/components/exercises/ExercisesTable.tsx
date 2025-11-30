@@ -1,26 +1,9 @@
-import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ExerciseActionMenu } from "./ExerciseActionMenu";
-import type { ExerciseViewModel } from "@/interface";
+import type { ExercisesTableProps } from "@/interface";
 
-interface ExercisesTableProps {
-  exercises: ExerciseViewModel[];
-  isLoading: boolean;
-  onRowClick: (exercise: ExerciseViewModel) => void;
-  onEdit: (id: string) => void;
-  onView: (id: string) => void;
-  onDelete: (exercise: ExerciseViewModel) => void;
-}
-
-export const ExercisesTable: React.FC<ExercisesTableProps> = ({
-  exercises,
-  isLoading,
-  onRowClick,
-  onEdit,
-  onView,
-  onDelete,
-}) => {
+export const ExercisesTable = ({ exercises, isLoading, onRowClick, onEdit, onView, onDelete }: ExercisesTableProps) => {
   if (isLoading) {
     return <TableSkeleton />;
   }

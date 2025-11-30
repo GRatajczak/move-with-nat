@@ -40,3 +40,8 @@ export interface PendingActivationsWidgetProps {
   isLoading: boolean;
   onResendInvite: (email: string, role: UserRole) => Promise<void>;
 }
+
+export interface RecentUsersWidgetProps {
+  users: UserDto[];
+  isLoading: boolean;
+}

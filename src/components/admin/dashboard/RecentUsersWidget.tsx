@@ -1,13 +1,7 @@
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserRowItem } from "./UserRowItem";
-import type { UserDto } from "@/interface";
 import { Skeleton } from "@/components/ui/skeleton";
-
-interface RecentUsersWidgetProps {
-  users: UserDto[];
-  isLoading: boolean;
-}
+import type { RecentUsersWidgetProps } from "@/interface";
 
 export const RecentUsersWidget = ({ users, isLoading }: RecentUsersWidgetProps) => {
   return (

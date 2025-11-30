@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ExerciseForm } from "./ExerciseForm";
 import { useCreateExercise } from "@/hooks/exercises/useCreateExercise";
 import type { ExerciseFormData } from "@/interface";
@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 
-const CreateExerciseContent: React.FC = () => {
+const CreateExerciseContent = () => {
   const { mutateAsync: createExercise, isPending } = useCreateExercise();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 

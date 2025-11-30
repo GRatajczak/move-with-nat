@@ -1,14 +1,8 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { PaginationMetaDto } from "@/interface";
+import type { PaginationProps } from "@/interface";
 
-interface PaginationProps {
-  meta: PaginationMetaDto;
-  onPageChange: (page: number) => void;
-}
-
-export const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange }) => {
+export const Pagination = ({ meta, onPageChange }: PaginationProps) => {
   const { page, limit, total } = meta;
   const totalPages = Math.ceil(total / limit);
 

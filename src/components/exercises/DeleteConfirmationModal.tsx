@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,13 +13,13 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { DeleteConfirmationModalProps } from "@/interface";
 
-export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+export const DeleteConfirmationModal = ({
   exercise,
   isOpen,
   onConfirm,
   onCancel,
   isDeleting,
-}) => {
+}: DeleteConfirmationModalProps) => {
   const [isHardDelete, setIsHardDelete] = useState(false);
 
   // Reset state when modal opens

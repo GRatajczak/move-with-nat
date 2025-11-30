@@ -9,11 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { QueryProvider } from "../QueryProvider";
 
-interface EditExerciseContainerProps {
-  id: string;
-}
-
-const EditExerciseContent: React.FC<EditExerciseContainerProps> = ({ id }) => {
+const EditExerciseContent = ({ id }: { id: string }) => {
   const { data: exercise, isLoading, error } = useExercise(id);
   const { mutateAsync: updateExercise, isPending } = useUpdateExercise();
 
@@ -71,7 +67,7 @@ const EditExerciseContent: React.FC<EditExerciseContainerProps> = ({ id }) => {
   );
 };
 
-export const EditExerciseContainer: React.FC<EditExerciseContainerProps> = (props) => {
+export const EditExerciseContainer = (props: { id: string }) => {
   return (
     <QueryProvider>
       <EditExerciseContent {...props} />

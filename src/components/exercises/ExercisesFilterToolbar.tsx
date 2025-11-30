@@ -1,21 +1,14 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus } from "lucide-react";
+import type { ExercisesFilterToolbarProps } from "@/interface";
 
-interface ExercisesFilterToolbarProps {
-  search: string;
-  onSearchChange: (value: string) => void;
-  onCreateClick: () => void;
-  isLoading?: boolean;
-}
-
-export const ExercisesFilterToolbar: React.FC<ExercisesFilterToolbarProps> = ({
+export const ExercisesFilterToolbar = ({
   search,
   onSearchChange,
   onCreateClick,
   isLoading = false,
-}) => {
+}: ExercisesFilterToolbarProps) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:px-0 px-4">
       <div className="relative w-full sm:w-72">

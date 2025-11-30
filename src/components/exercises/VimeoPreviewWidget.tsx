@@ -1,14 +1,9 @@
-import React from "react";
 import ReactPlayer from "react-player";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useVimeoPreview } from "@/hooks/exercises/useVimeoPreview";
+import type { VimeoPreviewWidgetProps } from "@/interface";
 
-interface VimeoPreviewWidgetProps {
-  videoId: string;
-  className?: string;
-}
-
-export const VimeoPreviewWidget: React.FC<VimeoPreviewWidgetProps> = ({ videoId, className = "" }) => {
+export const VimeoPreviewWidget = ({ videoId, className = "" }: VimeoPreviewWidgetProps) => {
   const { isValid, isLoading } = useVimeoPreview(videoId);
 
   if (!videoId) {
