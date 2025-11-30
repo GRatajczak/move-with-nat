@@ -28,6 +28,7 @@ export interface Database {
           id: string;
           is_hidden: boolean;
           name: string;
+          tempo: string | null;
           updated_at: string;
           vimeo_token: string;
         };
@@ -38,6 +39,7 @@ export interface Database {
           id?: string;
           is_hidden?: boolean;
           name: string;
+          tempo?: string | null;
           updated_at?: string;
           vimeo_token: string;
         };
@@ -48,6 +50,7 @@ export interface Database {
           id?: string;
           is_hidden?: boolean;
           name?: string;
+          tempo?: string | null;
           updated_at?: string;
           vimeo_token?: string;
         };
@@ -202,7 +205,7 @@ export interface Database {
           created_at?: string;
           email: string;
           first_name?: string | null;
-          id?: string;
+          id: string;
           is_active?: boolean;
           last_name?: string | null;
           role: Database["public"]["Enums"]["user_role"];

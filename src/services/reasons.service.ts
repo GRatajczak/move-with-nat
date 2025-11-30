@@ -2,7 +2,8 @@
 
 import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type { AuthenticatedUser, CreateReasonCommand, ReasonDto, UpdateReasonCommand } from "../types";
+import type { AuthenticatedUser, ReasonDto } from "../interface";
+import type { CreateReasonCommand, UpdateReasonCommand } from "../types/completion";
 import { DatabaseError, ForbiddenError, NotFoundError, ConflictError, ValidationError } from "../lib/errors";
 import { mapStandardReasonToDTO } from "../lib/mappers";
 import { isValidUUID } from "../lib/validation";

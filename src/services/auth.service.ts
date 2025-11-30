@@ -8,7 +8,7 @@ import type {
   ConfirmPasswordResetCommand,
   MessageResponse,
   TokenPayload,
-} from "../types";
+} from "../interface";
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../lib/errors";
 import { sendActivationEmail, sendPasswordResetEmail } from "./email.service";
 

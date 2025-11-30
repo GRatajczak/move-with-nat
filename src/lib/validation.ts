@@ -269,3 +269,23 @@ export function isValidUUID(uuid: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }
+
+/**
+ * Validation schema for Exercise Form
+ */
+export const ExerciseFormSchema = z.object({
+  name: z.string().min(3, "Nazwa musi mieć minimum 3 znaki").max(100, "Nazwa może mieć maksymalnie 100 znaków").trim(),
+
+  vimeoToken: z.string().min(1, "Link Vimeo jest wymagany").max(50, "Link Vimeo jest zbyt długi").trim(),
+
+  description: z.string().max(2000, "Opis może mieć maksymalnie 2000 znaków").trim(),
+
+  tips: z.string().max(1000, "Wskazówki mogą mieć maksymalnie 1000 znaków").trim(),
+
+  tempo: z
+    .string()
+    .regex(/^(\d{4}|\d+-\d+-\d+)$/, "Tempo powinno być w formacie X-X-X (np. 3-1-3) lub XXXX (np. 2020)")
+    .or(z.literal("")),
+
+  defaultWeight: z.number().min(0, "Ciężar musi być liczbą dodatnią").nullable(),
+});

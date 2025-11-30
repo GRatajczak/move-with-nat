@@ -11,7 +11,7 @@ import type {
   PlanCompletionDto,
   AuthenticatedUser,
   PlanExerciseRow,
-} from "../types";
+} from "../interface";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError, ConflictError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
 

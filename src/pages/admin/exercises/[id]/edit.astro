@@ -1,0 +1,16 @@
+---
+import Layout from "../../../../layouts/Layout.astro";
+import { EditExerciseContainer } from "../../../../components/exercises/EditExerciseContainer";
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/admin/exercises");
+}
+---
+
+<Layout title="Edytuj ćwiczenie">
+  <div class="container mx-auto py-6">
+    <EditExerciseContainer id={id} client:load />
+  </div>
+</Layout>

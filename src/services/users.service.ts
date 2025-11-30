@@ -8,9 +8,8 @@ import type {
   PaginatedResponse,
   ListUsersQuery,
   UpdateUserCommand,
-  UserRole,
   AuthenticatedUser,
-} from "../types";
+} from "../interface";
 import { mapUserToDTO, mapUserRoleFromDTO } from "../lib/mappers";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { sendActivationEmail } from "./email.service";
@@ -279,7 +278,11 @@ export async function listUsers(
  * @throws {NotFoundError} If user doesn't exist or access is denied
  * @throws {DatabaseError} If database operation fails
  */
-export async function getUser(supabase: SupabaseClient, userId: string, currentUser: AuthenticatedUser): Promise<UserDto> {
+export async function getUser(
+  supabase: SupabaseClient,
+  userId: string,
+  currentUser: AuthenticatedUser
+): Promise<UserDto> {
   // Validate UUID format
   if (!isValidUUID(userId)) {
     throw new ValidationError({ id: "Invalid UUID format" });

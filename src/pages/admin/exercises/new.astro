@@ -1,0 +1,10 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { CreateExerciseContainer } from "../../../components/exercises/CreateExerciseContainer";
+---
+
+<Layout title="Dodaj nowe ćwiczenie">
+  <div class="container mx-auto py-6">
+    <CreateExerciseContainer client:load />
+  </div>
+</Layout>

@@ -2,7 +2,7 @@
 
 import { EmailError } from "../lib/errors";
 import { sendgridService } from "./sendgrid.service";
-import type { EmailOptions } from "../types";
+import type { EmailOptions } from "../interface";
 
 /**
  * Template ID mapping for SendGrid dynamic templates

@@ -1,21 +1,10 @@
 // src/lib/mappers.ts
 
-import type { Database } from "../db/database.types";
-import type {
-  DbUserRole,
-  ExerciseDto,
-  ExerciseRow,
-  ExerciseSummaryDto,
-  PlanDto,
-  PlanExerciseDto,
-  PlanExerciseRow,
-  PlanRow,
-  ReasonDto,
-  StandardReasonRow,
-  UserDto,
-  UserRole,
-  UserRow,
-} from "../types";
+import type { ExerciseRow } from "@/types/db";
+import type { ExerciseDto, ExerciseSummaryDto, PlanDto, PlanExerciseDto, UserDto } from "@/interface";
+import type { PlanRow, PlanExerciseRow, StandardReasonRow } from "@/types/db";
+import type { DbUserRole, UserRole, UserRow } from "@/types/db";
+import type { ReasonDto } from "@/interface";
 
 /**
  * Maps database exercise row to ExerciseDto
@@ -28,6 +17,8 @@ export function mapExerciseToDTO(exercise: ExerciseRow): ExerciseDto {
     vimeoToken: exercise.vimeo_token,
     defaultWeight: exercise.default_weight,
     isHidden: exercise.is_hidden,
+    tempo: exercise.tempo,
+    createdAt: exercise.created_at,
   };
 }
 

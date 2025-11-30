@@ -3,14 +3,8 @@
 import { z } from "zod";
 import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type {
-  CreatePlanCommand,
-  PlanDto,
-  UpdatePlanCommand,
-  ListPlansQuery,
-  PaginatedResponse,
-  AuthenticatedUser,
-} from "../types";
+import type { CreatePlanCommand, PlanDto, ListPlansQuery, PaginatedResponse, AuthenticatedUser } from "../interface";
+import type { UpdatePlanCommand } from "../types/plans";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
 import { mapPlanToDTO, mapPlanWithExercisesToDTO } from "../lib/mappers";
@@ -280,7 +274,11 @@ export async function createPlan(
  * - Trainer: Can view own plans only
  * - Client: Can view own plans only
  */
-export async function getPlan(supabase: SupabaseClient, planId: string, currentUser: AuthenticatedUser): Promise<PlanDto> {
+export async function getPlan(
+  supabase: SupabaseClient,
+  planId: string,
+  currentUser: AuthenticatedUser
+): Promise<PlanDto> {
   // Validate UUID
   if (!isValidUUID(planId)) {
     throw new ValidationError({ id: "Invalid UUID format" });

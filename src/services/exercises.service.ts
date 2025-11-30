@@ -6,12 +6,11 @@ import type { Database } from "../db/database.types";
 import type {
   CreateExerciseCommand,
   ExerciseDto,
-  UpdateExerciseCommand,
-  UserRole,
   ListExercisesQuery,
   PaginatedResponse,
   AuthenticatedUser,
-} from "../types";
+} from "../interface";
+import type { UpdateExerciseCommand } from "../types/exercises";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
 import { mapExerciseToDTO } from "../lib/mappers";
@@ -24,6 +23,7 @@ export const CreateExerciseCommandSchema = z.object({
   description: z.string().max(1000).trim().optional(),
   vimeoToken: z.string().min(1).max(50).trim(),
   defaultWeight: z.number().min(0).optional(),
+  tempo: z.string().optional().nullable(),
 });
 
 /**
@@ -35,6 +35,7 @@ export const UpdateExerciseCommandSchema = z
     description: z.string().max(1000).trim().optional(),
     vimeoToken: z.string().min(1).max(50).trim().optional(),
     defaultWeight: z.number().min(0).optional(),
+    tempo: z.string().optional().nullable(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided",
@@ -68,6 +69,7 @@ export async function createExercise(
       description: command.description || null,
       vimeo_token: command.vimeoToken,
       default_weight: command.defaultWeight || null,
+      tempo: command.tempo || null,
       is_hidden: false,
     })
     .select()
@@ -97,7 +99,7 @@ export async function getExercise(
 
   // Fetch exercise
   const { data: exercise, error } = await supabase.from("exercises").select("*").eq("id", exerciseId).single();
-
+  console.log(exercise);
   if (error || !exercise) {
     throw new NotFoundError("Exercise not found");
   }
@@ -163,6 +165,7 @@ export async function updateExercise(
   if (command.description !== undefined) updateData.description = command.description || null;
   if (command.vimeoToken !== undefined) updateData.vimeo_token = command.vimeoToken;
   if (command.defaultWeight !== undefined) updateData.default_weight = command.defaultWeight || null;
+  if (command.tempo !== undefined) updateData.tempo = command.tempo || null;
 
   // Execute update
   const { data: updated, error } = await supabase
