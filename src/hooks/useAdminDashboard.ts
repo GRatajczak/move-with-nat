@@ -7,6 +7,7 @@ import type {
   UserDto,
   PlanSummaryDto,
   ExerciseSummaryDto,
+  ReasonViewModel,
 } from "@/interface";
 import type { UserRole } from "@/types/db";
 
@@ -24,14 +25,16 @@ export const useAdminDashboard = () => {
       const headers = { "Content-Type": "application/json" };
 
       // Parallel requests for dashboard data
-      const [trainersRes, clientsRes, recentUsersRes, pendingUsersRes, plansRes, exercisesRes] = await Promise.all([
-        fetch("/api/users?role=trainer&limit=1", { headers }),
-        fetch("/api/users?role=client&limit=1", { headers }),
-        fetch("/api/users?limit=5", { headers }),
-        fetch("/api/users?status=pending&limit=5", { headers }),
-        fetch("/api/plans?limit=1", { headers }),
-        fetch("/api/exercises?limit=1", { headers }),
-      ]);
+      const [trainersRes, clientsRes, recentUsersRes, pendingUsersRes, plansRes, exercisesRes, reasonsRes] =
+        await Promise.all([
+          fetch("/api/users?role=trainer&limit=1", { headers }),
+          fetch("/api/users?role=client&limit=1", { headers }),
+          fetch("/api/users?limit=5", { headers }),
+          fetch("/api/users?status=pending&limit=5", { headers }),
+          fetch("/api/plans?limit=1", { headers }),
+          fetch("/api/exercises?limit=1", { headers }),
+          fetch("/api/reasons?limit=1", { headers }),
+        ]);
 
       // Helper to safe parse JSON
       const parseJson = async <T>(res: Response): Promise<PaginatedResponse<T> | null> => {
@@ -39,7 +42,7 @@ export const useAdminDashboard = () => {
         return res.json();
       };
 
-      const [trainersData, clientsData, recentUsersData, pendingUsersData, plansData, exercisesData] =
+      const [trainersData, clientsData, recentUsersData, pendingUsersData, plansData, exercisesData, reasonsData] =
         await Promise.all([
           parseJson<UserDto>(trainersRes),
           parseJson<UserDto>(clientsRes),
@@ -47,6 +50,7 @@ export const useAdminDashboard = () => {
           parseJson<UserDto>(pendingUsersRes),
           parseJson<PlanSummaryDto>(plansRes),
           parseJson<ExerciseSummaryDto>(exercisesRes),
+          parseJson<ReasonViewModel>(reasonsRes),
         ]);
 
       const data: DashboardData = {
@@ -55,6 +59,7 @@ export const useAdminDashboard = () => {
           totalClients: clientsData?.meta?.total || 0,
           totalPlans: plansData?.meta?.total || 0,
           totalExercises: exercisesData?.meta?.total || 0,
+          totalReasons: reasonsData?.meta?.total || 0,
         },
         recentUsers: recentUsersData?.data || [],
         pendingUsers: pendingUsersData?.data || [],

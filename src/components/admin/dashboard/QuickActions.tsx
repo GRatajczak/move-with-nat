@@ -16,6 +16,12 @@ export const QuickActions = () => {
           Dodaj Ćwiczenie
         </a>
       </Button>
+      <Button asChild variant="outline">
+        <a href="/admin/reasons">
+          <Plus className="mr-2 h-4 w-4" />
+          Zarządzaj Powodami
+        </a>
+      </Button>
     </div>
   );
 };

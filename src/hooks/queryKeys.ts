@@ -7,3 +7,11 @@ export const exerciseKeys = {
   details: () => [...exerciseKeys.all, "detail"] as const,
   detail: (id: string) => [...exerciseKeys.details(), id] as const,
 };
+
+export const QUERY_KEYS = {
+  exercises: exerciseKeys,
+  reasons: {
+    all: ["reasons"] as const,
+    detail: (id: string) => ["reasons", id] as const,
+  },
+};

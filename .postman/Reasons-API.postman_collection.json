@@ -47,7 +47,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"INJURY\",\n  \"label\": \"Injury or pain\"\n}"
+          "raw": "{\n  \"code\": \"injury\",\n  \"label\": \"Injury or pain\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -70,7 +70,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"EQUIPMENT\",\n  \"label\": \"Equipment not available\"\n}"
+          "raw": "{\n  \"code\": \"equipment\",\n  \"label\": \"Equipment not available\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -93,7 +93,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"TIME\",\n  \"label\": \"Not enough time\"\n}"
+          "raw": "{\n  \"code\": \"time_constraint\",\n  \"label\": \"Not enough time\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -116,7 +116,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"INJURY_PAIN\"\n}"
+          "raw": "{\n  \"code\": \"injury_pain\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons/{{reason_id}}",
@@ -162,7 +162,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"MEDICAL\",\n  \"label\": \"Medical reasons or injury\"\n}"
+          "raw": "{\n  \"code\": \"medical\",\n  \"label\": \"Medical reasons or injury\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons/{{reason_id}}",
@@ -188,10 +188,19 @@
       "response": []
     },
     {
-      "name": "Error: Invalid UUID",
+      "name": "Error: Invalid UUID (Update)",
       "request": {
-        "method": "GET",
-        "header": [],
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"label\": \"This should fail\"\n}"
+        },
         "url": {
           "raw": "{{base_url}}/api/reasons/invalid-uuid",
           "host": ["{{base_url}}"],
@@ -202,16 +211,39 @@
       "response": []
     },
     {
-      "name": "Error: Reason Not Found",
+      "name": "Error: Reason Not Found (Update)",
       "request": {
-        "method": "GET",
-        "header": [],
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"label\": \"This should fail - not found\"\n}"
+        },
         "url": {
           "raw": "{{base_url}}/api/reasons/00000000-0000-0000-0000-999999999999",
           "host": ["{{base_url}}"],
           "path": ["api", "reasons", "00000000-0000-0000-0000-999999999999"]
         },
         "description": "Test case: Non-existent reason ID should return 404 Not Found."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Reason Not Found (Delete)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/reasons/00000000-0000-0000-0000-999999999999",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons", "00000000-0000-0000-0000-999999999999"]
+        },
+        "description": "Test case: Deleting non-existent reason should return 404 Not Found."
       },
       "response": []
     },
@@ -227,7 +259,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"INJURY\",\n  \"label\": \"Another injury reason\"\n}"
+          "raw": "{\n  \"code\": \"injury\",\n  \"label\": \"Another injury reason\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -250,7 +282,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"EQUIPMENT\"\n}"
+          "raw": "{\n  \"code\": \"equipment\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons/{{reason_id}}",
@@ -273,7 +305,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"INCOMPLETE\"\n}"
+          "raw": "{\n  \"code\": \"incomplete\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -319,7 +351,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"VALID_CODE\",\n  \"label\": \"\"\n}"
+          "raw": "{\n  \"code\": \"valid_code\",\n  \"label\": \"\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -327,6 +359,144 @@
           "path": ["api", "reasons"]
         },
         "description": "Test case: Empty label should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Code Too Short",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"ab\",\n  \"label\": \"Valid label\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Code must be at least 3 characters. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Code Too Long",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"this_is_a_very_long_code_that_exceeds_fifty_characters_limit_abcdefghijklmnop\",\n  \"label\": \"Valid label\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Code must be at most 50 characters. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Code Invalid Characters",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"invalid-code!\",\n  \"label\": \"Valid label\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Code must be lowercase alphanumeric with underscores only. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Code with Spaces",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"invalid code\",\n  \"label\": \"Valid label\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Code cannot contain spaces. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Label Too Short",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"valid_code\",\n  \"label\": \"ab\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Label must be at least 3 characters. Should return 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Label Too Long",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"valid_code\",\n  \"label\": \"This is a very long label that exceeds the maximum allowed length of two hundred characters which should trigger a validation error and return a bad request status code because the system enforces strict limits on field lengths for data integrity and consistency purposes throughout the application and this helps prevent potential issues\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/reasons",
+          "host": ["{{base_url}}"],
+          "path": ["api", "reasons"]
+        },
+        "description": "Test case: Label must be at most 200 characters. Should return 400 Bad Request."
       },
       "response": []
     },
@@ -365,7 +535,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"code\": \"FORBIDDEN_TEST\",\n  \"label\": \"Should not be created\"\n}"
+          "raw": "{\n  \"code\": \"forbidden_test\",\n  \"label\": \"Should not be created\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/reasons",
@@ -448,4 +618,3 @@
     }
   ]
 }
-

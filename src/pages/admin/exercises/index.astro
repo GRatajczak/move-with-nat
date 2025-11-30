@@ -1,10 +1,8 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { ExercisesListPage } from "../../../components/exercises/ExercisesListPage";
 ---
 
-<Layout title="Zarządzanie ćwiczeniami">
-  <div class="container mx-auto py-6">
-    <ExercisesListPage client:load />
-  </div>
-</Layout>
+<AdminLayout title="Ćwiczenia">
+  <ExercisesListPage client:load />
+</AdminLayout>

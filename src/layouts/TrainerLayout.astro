@@ -1,0 +1,46 @@
+---
+import Layout from "./Layout.astro";
+import { MainLayout } from "./MainLayout";
+import { Toaster } from "../components/ui/sonner";
+import { QueryProvider } from "../components/QueryProvider";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Trainer Dashboard" } = Astro.props;
+
+// Get user from context (set by middleware)
+const user = Astro.locals.user;
+
+// If no user, redirect to login
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+// Check if user is trainer
+if (user.role !== "trainer") {
+  return Astro.redirect(`/${user.role}`);
+}
+
+// Get current path
+const currentPath = Astro.url.pathname;
+
+// Mock user data for now (will be replaced with actual user data from auth)
+const fullUser = {
+  id: user.id,
+  email: user.email,
+  firstName: "Trener", // TODO: Get from database
+  lastName: "User", // TODO: Get from database
+  role: user.role,
+};
+---
+
+<Layout title={title}>
+  <QueryProvider client:only="react">
+    <MainLayout client:only="react" user={fullUser} currentPath={currentPath} requiredRole="trainer">
+      <slot />
+    </MainLayout>
+    <Toaster client:only="react" />
+  </QueryProvider>
+</Layout>

@@ -3,7 +3,7 @@ import { StatsCard } from "./StatsCard";
 import { QuickActions } from "./QuickActions";
 import { RecentUsersWidget } from "./RecentUsersWidget";
 import { PendingActivationsWidget } from "./PendingActivationsWidget";
-import { Users, UserCheck, Dumbbell, Calendar } from "lucide-react";
+import { Users, UserCheck, Dumbbell, Calendar, ClipboardList } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "../../QueryProvider";
 
@@ -23,7 +23,7 @@ const AdminDashboardContent = () => {
       <Toaster />
       <QuickActions />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <StatsCard
           title="Podopieczni"
           value={data?.stats.totalClients}
@@ -51,6 +51,13 @@ const AdminDashboardContent = () => {
           icon={Dumbbell}
           isLoading={isLoading}
           description="Wszystkie ćwiczenia"
+        />
+        <StatsCard
+          title="Powody"
+          value={data?.stats.totalReasons}
+          icon={ClipboardList}
+          isLoading={isLoading}
+          description="Dostępne powody"
         />
       </div>
 

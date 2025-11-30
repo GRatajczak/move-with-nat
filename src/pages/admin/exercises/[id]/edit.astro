@@ -1,5 +1,5 @@
 ---
-import Layout from "../../../../layouts/Layout.astro";
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
 import { EditExerciseContainer } from "../../../../components/exercises/EditExerciseContainer";
 
 const { id } = Astro.params;
@@ -9,8 +9,6 @@ if (!id) {
 }
 ---
 
-<Layout title="Edytuj ćwiczenie">
-  <div class="container mx-auto py-6">
-    <EditExerciseContainer id={id} client:load />
-  </div>
-</Layout>
+<AdminLayout title="Edytuj ćwiczenie">
+  <EditExerciseContainer id={id} client:load />
+</AdminLayout>

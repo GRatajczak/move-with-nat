@@ -2,20 +2,31 @@
 
 import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type { AuthenticatedUser, ReasonDto } from "../interface";
-import type { CreateReasonCommand, UpdateReasonCommand } from "../types/completion";
-import { DatabaseError, ForbiddenError, NotFoundError, ConflictError, ValidationError } from "../lib/errors";
+import type {
+  ReasonDto,
+  ReasonViewModel,
+  CreateReasonCommand,
+  UpdateReasonCommand,
+  AuthenticatedUser,
+} from "../interface";
+import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
+import { isValidUUID } from "../lib/api-helpers";
 import { mapStandardReasonToDTO } from "../lib/mappers";
-import { isValidUUID } from "../lib/validation";
 
 /**
- * Lists all standard reasons
- * Authorization: All authenticated users
+ * Lists all standard reasons with basic info (for dropdowns, etc.)
+ *
+ * Authorization:
+ * - All authenticated users can view reasons
+ *
+ * @param supabase - Supabase client instance
+ * @returns Array of reason DTOs
  */
 export async function listReasons(supabase: SupabaseClient): Promise<ReasonDto[]> {
   const { data, error } = await supabase.from("standard_reasons").select("*").order("code");
 
   if (error) {
+    console.error("Failed to fetch reasons:", error);
     throw new DatabaseError("Failed to fetch reasons");
   }
 
@@ -23,15 +34,81 @@ export async function listReasons(supabase: SupabaseClient): Promise<ReasonDto[]
 }
 
 /**
+ * Lists all standard reasons with extended info (usage count, timestamps)
+ * Useful for admin UI views
+ *
+ * Authorization:
+ * - All authenticated users can view reasons
+ *
+ * @param supabase - Supabase client instance
+ * @returns Array of ReasonViewModel
+ */
+export async function listReasonsWithMetadata(supabase: SupabaseClient): Promise<ReasonViewModel[]> {
+  // Fetch all reasons
+  const { data: reasons, error: reasonsError } = await supabase.from("standard_reasons").select("*").order("code");
+
+  if (reasonsError) {
+    console.error("Failed to fetch reasons:", reasonsError);
+    throw new DatabaseError("Failed to fetch reasons with metadata");
+  }
+
+  if (!reasons || reasons.length === 0) {
+    return [];
+  }
+
+  // Get usage counts for all reasons in one query
+  const reasonIds = reasons.map((r) => r.id);
+  const { data: usageCounts, error: usageError } = await supabase
+    .from("plan_exercises")
+    .select("reason_id")
+    .in("reason_id", reasonIds)
+    .not("reason_id", "is", null);
+
+  if (usageError) {
+    console.error("Failed to fetch usage counts:", usageError);
+    // Continue with zero counts if usage query fails
+  }
+
+  // Count occurrences of each reason_id
+  const usageMap = new Map<string, number>();
+  (usageCounts || []).forEach((record) => {
+    if (record.reason_id) {
+      usageMap.set(record.reason_id, (usageMap.get(record.reason_id) || 0) + 1);
+    }
+  });
+
+  // Map to ReasonViewModel
+  return reasons.map((reason) => ({
+    id: reason.id,
+    code: reason.code,
+    label: reason.label,
+    usageCount: usageMap.get(reason.id) || 0,
+    createdAt: reason.created_at,
+    updatedAt: reason.updated_at,
+  }));
+}
+
+/**
  * Creates a new standard reason
- * Authorization: Admin only
+ *
+ * Authorization:
+ * - Admin only
+ *
+ * Business Rules:
+ * - Code must be unique
+ * - Code will be automatically converted to lowercase
+ *
+ * @param supabase - Supabase client instance
+ * @param command - Command with code and label
+ * @param currentUser - Current authenticated user
+ * @returns Created reason DTO
  */
 export async function createReason(
   supabase: SupabaseClient,
   command: CreateReasonCommand,
   currentUser: AuthenticatedUser
 ): Promise<ReasonDto> {
-  // Authorization check
+  // Authorization: Admin only
   if (currentUser.role !== "admin") {
     throw new ForbiddenError("Only administrators can create reasons");
   }
@@ -57,7 +134,8 @@ export async function createReason(
     .select()
     .single();
 
-  if (error) {
+  if (error || !reason) {
+    console.error("Failed to create reason:", error);
     throw new DatabaseError("Failed to create reason");
   }
 
@@ -66,7 +144,19 @@ export async function createReason(
 
 /**
  * Updates an existing standard reason
- * Authorization: Admin only
+ *
+ * Authorization:
+ * - Admin only
+ *
+ * Business Rules:
+ * - If code is changed, new code must be unique
+ * - At least one field must be provided for update
+ *
+ * @param supabase - Supabase client instance
+ * @param reasonId - UUID of the reason to update
+ * @param command - Command with optional code and label
+ * @param currentUser - Current authenticated user
+ * @returns Updated reason DTO
  */
 export async function updateReason(
   supabase: SupabaseClient,
@@ -74,12 +164,12 @@ export async function updateReason(
   command: UpdateReasonCommand,
   currentUser: AuthenticatedUser
 ): Promise<ReasonDto> {
-  // Authorization check
+  // Authorization: Admin only
   if (currentUser.role !== "admin") {
     throw new ForbiddenError("Only administrators can update reasons");
   }
 
-  // Validate UUID format
+  // Validate UUID
   if (!isValidUUID(reasonId)) {
     throw new ValidationError({ id: "Invalid UUID format" });
   }
@@ -95,7 +185,7 @@ export async function updateReason(
     throw new NotFoundError("Reason not found");
   }
 
-  // Check code uniqueness if code is being changed
+  // Check code uniqueness (if changing code)
   if (command.code && command.code !== existing.code) {
     const { data: duplicate } = await supabase
       .from("standard_reasons")
@@ -116,7 +206,7 @@ export async function updateReason(
   if (command.code !== undefined) updateData.code = command.code;
   if (command.label !== undefined) updateData.label = command.label;
 
-  // Update reason
+  // Execute update
   const { data: updated, error } = await supabase
     .from("standard_reasons")
     .update(updateData)
@@ -124,7 +214,8 @@ export async function updateReason(
     .select()
     .single();
 
-  if (error) {
+  if (error || !updated) {
+    console.error("Failed to update reason:", error);
     throw new DatabaseError("Failed to update reason");
   }
 
@@ -133,20 +224,28 @@ export async function updateReason(
 
 /**
  * Deletes a standard reason
- * Authorization: Admin only
- * Cannot delete if reason is in use
+ *
+ * Authorization:
+ * - Admin only
+ *
+ * Business Rules:
+ * - Cannot delete a reason that is in use (referenced in plan_exercises)
+ *
+ * @param supabase - Supabase client instance
+ * @param reasonId - UUID of the reason to delete
+ * @param currentUser - Current authenticated user
  */
 export async function deleteReason(
   supabase: SupabaseClient,
   reasonId: string,
   currentUser: AuthenticatedUser
 ): Promise<void> {
-  // Authorization check
+  // Authorization: Admin only
   if (currentUser.role !== "admin") {
     throw new ForbiddenError("Only administrators can delete reasons");
   }
 
-  // Validate UUID format
+  // Validate UUID
   if (!isValidUUID(reasonId)) {
     throw new ValidationError({ id: "Invalid UUID format" });
   }
@@ -162,7 +261,7 @@ export async function deleteReason(
     throw new NotFoundError("Reason not found");
   }
 
-  // Check if reason is used in plan_exercises
+  // Check if reason is in use in plan_exercises
   const { count } = await supabase
     .from("plan_exercises")
     .select("id", { count: "exact", head: true })
@@ -172,10 +271,11 @@ export async function deleteReason(
     throw new ConflictError("Cannot delete reason that is in use");
   }
 
-  // Delete reason
+  // Execute delete
   const { error } = await supabase.from("standard_reasons").delete().eq("id", reasonId);
 
   if (error) {
+    console.error("Failed to delete reason:", error);
     throw new DatabaseError("Failed to delete reason");
   }
 }

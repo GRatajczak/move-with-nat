@@ -8,6 +8,7 @@ export interface DashboardStats {
   totalTrainers: number;
   totalPlans: number;
   totalExercises: number;
+  totalReasons: number;
 }
 
 export interface DashboardData {

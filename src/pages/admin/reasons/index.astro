@@ -1,0 +1,8 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { ReasonsListPage } from "../../../components/admin/reasons/ReasonsListPage";
+---
+
+<AdminLayout title="Powody niewykonania">
+  <ReasonsListPage client:load />
+</AdminLayout>
