@@ -15,7 +15,9 @@ export function NavigationItem({
   onToggleExpand,
 }: NavigationItemProps) {
   const Icon = item.icon;
-  const hasChildren = item.expandable && item.children && item.children.length > 0;
+  // Item is treated as having children whenever nested items exist,
+  // regardless of the optional `expandable` flag
+  const hasChildren = Array.isArray(item.children) && item.children.length > 0;
 
   // Base classes for the item
   const baseClasses = cn(

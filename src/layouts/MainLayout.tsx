@@ -6,6 +6,7 @@ import { useBreadcrumbs } from "../hooks/useBreadcrumbs";
 import { useIsMobile } from "../hooks/useMediaQuery";
 import { toast } from "sonner";
 import type { MainLayoutProps } from "../interface";
+import { QueryProvider } from "../components/QueryProvider";
 
 function MainLayoutContent({ children, user, requiredRole }: Omit<MainLayoutProps, "currentPath">) {
   const {
@@ -84,10 +85,12 @@ function MainLayoutContent({ children, user, requiredRole }: Omit<MainLayoutProp
 
 export function MainLayout({ children, user, currentPath, requiredRole }: MainLayoutProps) {
   return (
-    <LayoutProvider currentPath={currentPath}>
-      <MainLayoutContent user={user} requiredRole={requiredRole}>
-        {children}
-      </MainLayoutContent>
-    </LayoutProvider>
+    <QueryProvider>
+      <LayoutProvider currentPath={currentPath}>
+        <MainLayoutContent user={user} requiredRole={requiredRole}>
+          {children}
+        </MainLayoutContent>
+      </LayoutProvider>
+    </QueryProvider>
   );
 }

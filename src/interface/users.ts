@@ -40,3 +40,66 @@ export interface UpdateUserCommand {
   isActive?: boolean;
   trainerId?: string;
 }
+
+/** Profile view models **/
+
+/** Dane formularza edycji profilu */
+export interface ProfileEditFormData {
+  firstName: string;
+  lastName: string;
+  // email nie jest edytowalny, więc nie ma go w formData
+}
+
+/** Propsy głównego kontenera profilu */
+export interface ProfileContainerProps {
+  userId: string;
+  userRole: UserRole;
+}
+
+/** Propsy nagłówka profilu */
+export interface ProfileHeaderProps {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+}
+
+/** Propsy formularza edycji profilu */
+export interface ProfileEditFormProps {
+  userId: string;
+  initialData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+}
+
+/** Dane formularza zmiany hasła */
+export interface ChangePasswordFormData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+/** Propsy formularza zmiany hasła */
+export interface ChangePasswordFormProps {
+  // Brak propsów - komponent autonomiczny
+}
+
+/** Propsy karty informacyjnej o trenerze */
+export interface TrainerInfoCardProps {
+  trainer: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null;
+}
+
+/** ViewModel dla trenera (uproszczony) */
+export interface TrainerViewModel {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}

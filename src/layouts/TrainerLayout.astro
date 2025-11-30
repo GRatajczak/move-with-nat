@@ -2,7 +2,6 @@
 import Layout from "./Layout.astro";
 import { MainLayout } from "./MainLayout";
 import { Toaster } from "../components/ui/sonner";
-import { QueryProvider } from "../components/QueryProvider";
 
 interface Props {
   title?: string;
@@ -37,10 +36,8 @@ const fullUser = {
 ---
 
 <Layout title={title}>
-  <QueryProvider client:only="react">
-    <MainLayout client:only="react" user={fullUser} currentPath={currentPath} requiredRole="trainer">
-      <slot />
-    </MainLayout>
-    <Toaster client:only="react" />
-  </QueryProvider>
+  <MainLayout client:only="react" user={fullUser} currentPath={currentPath} requiredRole="trainer">
+    <slot />
+  </MainLayout>
+  <Toaster client:only="react" />
 </Layout>
