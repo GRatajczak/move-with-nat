@@ -1,13 +1,25 @@
+import type { CreateUserFormData, EditUserFormData } from "@/types/users";
 import type { Database, UserRole } from "../types/db";
 
 /** USERS **/
 /** List users query parameters **/
 export interface ListUsersQuery {
+  search?: string;
   role?: UserRole;
   status?: "active" | "pending" | "suspended";
   trainerId?: string;
   page?: number;
   limit?: number;
+}
+
+/** Users filters for UI state **/
+export interface UsersFilters {
+  search?: string;
+  role?: "administrator" | "trainer" | "client";
+  status?: "active" | "pending" | "suspended";
+  trainerId?: string;
+  page: number;
+  limit: number;
 }
 
 /** User DTO for responses **/
@@ -81,11 +93,6 @@ export interface ChangePasswordFormData {
   confirmPassword: string;
 }
 
-/** Propsy formularza zmiany hasła */
-export interface ChangePasswordFormProps {
-  // Brak propsów - komponent autonomiczny
-}
-
 /** Propsy karty informacyjnej o trenerze */
 export interface TrainerInfoCardProps {
   trainer: {
@@ -102,4 +109,52 @@ export interface TrainerViewModel {
   firstName: string;
   lastName: string;
   email: string;
+}
+
+export interface UsersFilterToolbarProps {
+  filters: UsersFilters;
+  onFiltersChange: (filters: Partial<UsersFilters>) => void;
+  onCreateClick: () => void;
+  isLoading?: boolean;
+}
+
+export interface UsersTableProps {
+  users: UserDto[];
+  isLoading: boolean;
+  onRowClick: (user: UserDto) => void;
+  onEdit: (userId: string) => void;
+  onToggleActive: (user: UserDto) => void;
+  onResendInvite: (user: UserDto) => void;
+  onDelete: (user: UserDto) => void;
+}
+
+export interface UsersCardsProps {
+  users: UserDto[];
+  isLoading: boolean;
+  onCardClick: (user: UserDto) => void;
+  onEdit: (userId: string) => void;
+  onToggleActive: (user: UserDto) => void;
+  onResendInvite: (user: UserDto) => void;
+  onDelete: (user: UserDto) => void;
+}
+
+export interface UserActionMenuProps {
+  user: UserDto;
+  onEdit: () => void;
+  onToggleActive: () => void;
+  onResendInvite: () => void;
+  onDelete: () => void;
+}
+
+export interface EditUserFormProps {
+  user: UserDto;
+  onSubmit: (data: EditUserFormData) => Promise<void>;
+  onCancel: () => void;
+  isSubmitting: boolean;
+}
+
+export interface CreateUserFormProps {
+  onSubmit: (data: CreateUserFormData) => Promise<void>;
+  onCancel: () => void;
+  isSubmitting: boolean;
 }

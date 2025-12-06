@@ -200,7 +200,7 @@ export async function listUsers(
     throw new ForbiddenError("Clients cannot list users");
   }
 
-  const { role, status, trainerId, page = 1, limit = 20 } = query;
+  const { search, role, status, trainerId, page = 1, limit = 20 } = query;
 
   // Force filters for trainers: they can only see their own clients
   let effectiveRole = role;
@@ -213,6 +213,14 @@ export async function listUsers(
 
   // Build Supabase query
   let dbQuery = supabase.from("users").select("*", { count: "exact", head: false });
+
+  // Apply search filter (email, first_name, last_name)
+  if (search && search.trim()) {
+    const searchTerm = search.trim().toLowerCase();
+    dbQuery = dbQuery.or(
+      `email.ilike.%${searchTerm}%,first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%`
+    );
+  }
 
   // Apply role filter
   if (effectiveRole) {
@@ -439,4 +447,57 @@ export async function updateUser(
   }
 
   return mapUserToDTO(updatedUser);
+}
+
+/**
+ * Delete user by ID
+ *
+ * @param supabase - Supabase client instance
+ * @param userId - User ID to delete
+ * @param currentUser - Currently authenticated user
+ * @returns void
+ *
+ * @throws {ValidationError} If user ID format is invalid
+ * @throws {ForbiddenError} If current user doesn't have permission
+ * @throws {NotFoundError} If user doesn't exist
+ * @throws {DatabaseError} If database operation fails
+ */
+export async function deleteUser(
+  supabase: SupabaseClient,
+  userId: string,
+  currentUser: AuthenticatedUser
+): Promise<void> {
+  // Authorization check: only admins can delete users
+  if (!isAdmin(currentUser)) {
+    throw new ForbiddenError("Only administrators can delete users");
+  }
+
+  // Validate UUID format
+  if (!isValidUUID(userId)) {
+    throw new ValidationError({ id: "Invalid UUID format" });
+  }
+
+  // Fetch target user to ensure they exist
+  const { data: targetUser, error: fetchError } = await supabase.from("users").select("id").eq("id", userId).single();
+
+  if (fetchError || !targetUser) {
+    throw new NotFoundError("User not found");
+  }
+
+  // Delete from public.users (will cascade if needed)
+  const { error: deleteError } = await supabase.from("users").delete().eq("id", userId);
+
+  if (deleteError) {
+    console.error("Failed to delete user from database:", deleteError);
+    throw new DatabaseError("Failed to delete user");
+  }
+
+  // Delete from auth.users
+  const { error: authDeleteError } = await supabase.auth.admin.deleteUser(userId);
+
+  if (authDeleteError) {
+    console.error("Failed to delete user from auth:", authDeleteError);
+    // Don't throw here - user profile is already deleted
+    // This is a cleanup operation that can fail without breaking the main operation
+  }
 }

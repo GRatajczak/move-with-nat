@@ -17,31 +17,8 @@ const adminNavigation: NavigationItemConfig[] = [
     id: "users",
     label: "Użytkownicy",
     icon: Users,
+    href: "/admin/users",
     roles: ["admin"],
-    expandable: true,
-    children: [
-      {
-        id: "users-admins",
-        label: "Administratorzy",
-        icon: Users,
-        href: "/admin/users?role=admin",
-        roles: ["admin"],
-      },
-      {
-        id: "users-trainers",
-        label: "Trenerzy",
-        icon: Users,
-        href: "/admin/users?role=trainer",
-        roles: ["admin"],
-      },
-      {
-        id: "users-clients",
-        label: "Podopieczni",
-        icon: Users,
-        href: "/admin/users?role=client",
-        roles: ["admin"],
-      },
-    ],
   },
   {
     id: "exercises",

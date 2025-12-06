@@ -1,7 +1,7 @@
 // src/pages/api/users/[id].ts
 
 import type { APIRoute } from "astro";
-import { getUser, updateUser } from "../../../services/users.service";
+import { getUser, updateUser, deleteUser } from "../../../services/users.service";
 import { UserIdParamSchema, UpdateUserCommandSchema } from "../../../lib/validation";
 import { handleAPIError } from "../../../lib/api-helpers";
 import { UnauthorizedError } from "../../../lib/errors";
@@ -87,6 +87,40 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    return handleAPIError(error);
+  }
+};
+
+/**
+ * DELETE /api/users/:id
+ * Delete user by ID
+ *
+ * URL Parameters:
+ * - id: string (required) - User ID (UUID)
+ *
+ * Authorization:
+ * - Only administrators can delete users
+ *
+ * Response: 204 No Content
+ * - Returns empty response on success
+ */
+export const DELETE: APIRoute = async ({ params, locals }) => {
+  try {
+    // Check authentication
+    if (!locals.user || !locals.supabase) {
+      throw new UnauthorizedError("Authentication required");
+    }
+
+    // Validate user ID parameter
+    const { id: userId } = UserIdParamSchema.parse(params);
+
+    // Delete user
+    await deleteUser(locals.supabase, userId, locals.user);
+
+    return new Response(null, {
+      status: 204,
     });
   } catch (error) {
     return handleAPIError(error);

@@ -64,6 +64,11 @@ export const CreateUserCommandSchema = z
  * Validation schema for GET /api/users query parameters
  */
 export const ListUsersQuerySchema = z.object({
+  search: z
+    .string()
+    .max(100, "Search query too long")
+    .transform((val) => val.trim())
+    .optional(),
   role: z.enum(["admin", "trainer", "client"]).optional(),
   status: z.enum(["active", "pending", "suspended"]).optional(),
   trainerId: z.string().uuid("Invalid trainer ID format").optional(),
@@ -321,3 +326,66 @@ export const ExerciseFormSchema = z.object({
 
   defaultWeight: z.number().min(0, "Ciężar musi być liczbą dodatnią").nullable(),
 });
+
+/**
+ * Validation schema for Create User Form
+ */
+export const CreateUserFormSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "Email jest wymagany")
+      .email("Nieprawidłowy format email")
+      .toLowerCase()
+      .transform((val) => val.trim()),
+    role: z.enum(["administrator", "trainer", "client"], {
+      errorMap: () => ({ message: "Wybierz rolę użytkownika" }),
+    }),
+    firstName: z
+      .string()
+      .min(2, "Imię musi mieć minimum 2 znaki")
+      .max(50, "Imię może mieć maksymalnie 50 znaków")
+      .transform((val) => val.trim()),
+    lastName: z
+      .string()
+      .min(2, "Nazwisko musi mieć minimum 2 znaki")
+      .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+      .transform((val) => val.trim()),
+    trainerId: z.string().uuid("Nieprawidłowy format ID trenera").optional(),
+  })
+  .refine((data) => data.role !== "client" || !!data.trainerId, {
+    message: "Trener jest wymagany dla podopiecznego",
+    path: ["trainerId"],
+  });
+
+/**
+ * Validation schema for Edit User Form
+ */
+export const EditUserFormSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "Email jest wymagany")
+      .email("Nieprawidłowy format email")
+      .toLowerCase()
+      .transform((val) => val.trim()),
+    firstName: z
+      .string()
+      .min(2, "Imię musi mieć minimum 2 znaki")
+      .max(50, "Imię może mieć maksymalnie 50 znaków")
+      .transform((val) => val.trim()),
+    lastName: z
+      .string()
+      .min(2, "Nazwisko musi mieć minimum 2 znaki")
+      .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+      .transform((val) => val.trim()),
+    role: z.enum(["administrator", "trainer", "client"], {
+      errorMap: () => ({ message: "Wybierz rolę użytkownika" }),
+    }),
+    isActive: z.boolean(),
+    trainerId: z.string().uuid("Nieprawidłowy format ID trenera").optional(),
+  })
+  .refine((data) => data.role !== "client" || !!data.trainerId, {
+    message: "Trener jest wymagany dla podopiecznego",
+    path: ["trainerId"],
+  });

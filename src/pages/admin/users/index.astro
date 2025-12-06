@@ -1,0 +1,8 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { AdminUsersPage } from "../../../components/admin/users/AdminUsersPage";
+---
+
+<AdminLayout title="Użytkownicy">
+  <AdminUsersPage client:load />
+</AdminLayout>

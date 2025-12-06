@@ -1,0 +1,8 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { CreateUserPage } from "../../../components/admin/users/CreateUserPage";
+---
+
+<AdminLayout title="Dodaj użytkownika">
+  <CreateUserPage client:load />
+</AdminLayout>

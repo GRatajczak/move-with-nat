@@ -10,6 +10,12 @@ export const QuickActions = () => {
           Dodaj Użytkownika
         </a>
       </Button>
+      <Button asChild>
+        <a href="/admin/plans/new">
+          <Plus className="mr-2 h-4 w-4" />
+          Dodaj Plan Treningowy
+        </a>
+      </Button>
       <Button asChild variant="outline">
         <a href="/admin/exercises/new">
           <Plus className="mr-2 h-4 w-4" />

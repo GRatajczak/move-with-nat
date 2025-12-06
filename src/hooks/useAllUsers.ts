@@ -4,6 +4,7 @@ import type { UserDto } from "@/interface";
 /**
  * Fetch all clients (for admin use)
  * Admin can see all clients regardless of trainer assignment
+ * Note: Limited to 100 results due to API constraints
  */
 async function fetchAllClients(): Promise<UserDto[]> {
   const response = await fetch("/api/users?role=client&limit=100");
@@ -30,7 +31,7 @@ async function fetchAllClients(): Promise<UserDto[]> {
  * Admin can see all trainers in the system
  */
 async function fetchAllTrainers(): Promise<UserDto[]> {
-  const response = await fetch("/api/users?role=trainer&limit=1000");
+  const response = await fetch("/api/users?role=trainer&limit=100");
 
   if (!response.ok) {
     let message = "Failed to fetch trainers";

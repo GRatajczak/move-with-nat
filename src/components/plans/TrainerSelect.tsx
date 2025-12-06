@@ -53,13 +53,18 @@ export const TrainerSelect = ({
     );
   }
 
+  const handleValueChange = (selectedValue: string) => {
+    // Convert "none" back to empty string for the form
+    onChange(selectedValue === "none" ? "" : selectedValue);
+  };
+
   return (
-    <Select value={value} onValueChange={onChange} disabled={disabled}>
+    <Select value={value || "none"} onValueChange={handleValueChange} disabled={disabled}>
       <SelectTrigger>
         <SelectValue placeholder="Wybierz trenera (opcjonalnie)" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="">-</SelectItem>
+        <SelectItem value="none">Brak trenera</SelectItem>
         {activeTrainers.map((trainer) => (
           <SelectItem key={trainer.id} value={trainer.id}>
             <div className="flex flex-col">

@@ -1,4 +1,4 @@
-import type { ListExercisesQuery, ListPlansQuery } from "../interface";
+import type { ListExercisesQuery, ListPlansQuery, ListUsersQuery } from "../interface";
 
 export const exerciseKeys = {
   all: ["exercises"] as const,
@@ -17,9 +17,18 @@ export const plansKeys = {
   completion: (planId: string) => [...plansKeys.all, "completion", planId] as const,
 };
 
+export const usersKeys = {
+  all: ["users"] as const,
+  lists: () => [...usersKeys.all, "list"] as const,
+  list: (query: ListUsersQuery) => [...usersKeys.lists(), query] as const,
+  details: () => [...usersKeys.all, "detail"] as const,
+  detail: (id: string) => [...usersKeys.details(), id] as const,
+};
+
 export const QUERY_KEYS = {
   exercises: exerciseKeys,
   plans: plansKeys,
+  users: usersKeys,
   reasons: {
     all: ["reasons"] as const,
     detail: (id: string) => ["reasons", id] as const,

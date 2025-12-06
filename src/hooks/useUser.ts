@@ -20,10 +20,11 @@ async function fetchUser(userId: string): Promise<UserDto> {
   return response.json();
 }
 
-export function useUser(userId: string) {
+export function useUser(userId: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ["users", userId],
     queryFn: () => fetchUser(userId),
     staleTime: 5 * 60 * 1000,
+    enabled: options?.enabled ?? true,
   });
 }

@@ -48,13 +48,18 @@ export const AdminClientSelect = ({ value, onChange, disabled = false }: AdminCl
     );
   }
 
+  const handleValueChange = (selectedValue: string) => {
+    // Convert "none" back to empty string for the form
+    onChange(selectedValue === "none" ? "" : selectedValue);
+  };
+
   return (
-    <Select value={value} onValueChange={onChange} disabled={disabled}>
+    <Select className="w-full" value={value || "none"} onValueChange={handleValueChange} disabled={disabled}>
       <SelectTrigger>
         <SelectValue placeholder="Wybierz podopiecznego (opcjonalnie)" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="">Brak (wybierz później)</SelectItem>
+        <SelectItem value="none">Brak (wybierz później)</SelectItem>
         {activeClients.map((client) => (
           <SelectItem key={client.id} value={client.id}>
             <div className="flex flex-col">
