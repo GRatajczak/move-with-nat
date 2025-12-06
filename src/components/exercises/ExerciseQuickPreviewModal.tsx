@@ -5,12 +5,7 @@ import { Pencil } from "lucide-react";
 import ReactPlayer from "react-player";
 import type { ExerciseQuickPreviewModalProps } from "@/interface";
 
-export const ExerciseQuickPreviewModal: React.FC<ExerciseQuickPreviewModalProps> = ({
-  exercise,
-  isOpen,
-  onClose,
-  onEdit,
-}) => {
+export const ExerciseQuickPreviewModal = ({ exercise, isOpen, onClose, onEdit }: ExerciseQuickPreviewModalProps) => {
   if (!exercise) return null;
 
   return (
@@ -50,10 +45,12 @@ export const ExerciseQuickPreviewModal: React.FC<ExerciseQuickPreviewModalProps>
         </div>
 
         <DialogFooter className="p-6 pt-2 bg-muted/20 flex justify-between items-center sm:justify-between">
-          <Button className="ml-auto" onClick={() => onEdit(exercise.id)}>
-            <Pencil className="mr-2 h-4 w-4" />
-            Edytuj
-          </Button>
+          {onEdit && (
+            <Button className="ml-auto" onClick={() => onEdit(exercise.id)}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Edytuj
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

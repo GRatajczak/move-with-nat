@@ -1,0 +1,18 @@
+---
+import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import { PlanDetailContainer } from "../../../components/plans/PlanDetailContainer";
+
+// Check authorization in middleware
+const { locals, params } = Astro;
+const user = locals.user;
+
+if (!user || user.role !== "trainer") {
+  return Astro.redirect("/");
+}
+
+const planId = params.id || "";
+---
+
+<TrainerLayout>
+  <PlanDetailContainer client:load planId={planId} userRole="trainer" />
+</TrainerLayout>

@@ -15,7 +15,9 @@ import type { ExerciseViewModel } from "@/interface";
 import { QueryProvider } from "../QueryProvider";
 
 const ExercisesListContent: React.FC = () => {
-  const { exercises, pagination, isLoading, error, search, setSearch, setPage } = useExercisesList();
+  const [search, setSearch] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const { exercises, pagination, isLoading, error } = useExercisesList({ search, page });
 
   const { mutateAsync: deleteExercise, isPending: isDeleting } = useDeleteExercise();
 
@@ -79,7 +81,7 @@ const ExercisesListContent: React.FC = () => {
 
       <ExercisesFilterToolbar
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={(value) => setSearch(value)}
         onCreateClick={handleCreateClick}
         isLoading={isLoading}
       />

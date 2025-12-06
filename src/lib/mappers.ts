@@ -40,9 +40,12 @@ export function mapPlanToDTO(plan: PlanRow): PlanDto {
   return {
     id: plan.id,
     name: plan.name,
+    description: plan.description,
     clientId: plan.client_id,
     trainerId: plan.trainer_id,
     isHidden: plan.is_hidden,
+    createdAt: plan.created_at,
+    updatedAt: plan.updated_at,
     exercises: [],
   };
 }
@@ -50,15 +53,23 @@ export function mapPlanToDTO(plan: PlanRow): PlanDto {
 /**
  * Maps plan exercise with nested exercise data to PlanExerciseDto
  */
-export function mapPlanExerciseToDTO(planExercise: PlanExerciseRow): PlanExerciseDto {
-  return {
+export function mapPlanExerciseToDTO(planExercise: PlanExerciseRow & { exercise?: ExerciseRow }): PlanExerciseDto {
+  const dto: PlanExerciseDto = {
+    id: planExercise.id,
     exerciseId: planExercise.exercise_id,
     sortOrder: planExercise.exercise_order,
-    sets: 0, // These fields are not stored in DB yet, default to 0
-    reps: 0,
+    sets: planExercise.sets || 0,
+    reps: planExercise.reps || 0,
     tempo: planExercise.tempo,
     defaultWeight: planExercise.default_weight,
   };
+
+  // Add full exercise details if available
+  if (planExercise.exercise) {
+    dto.exercise = mapExerciseToDTO(planExercise.exercise);
+  }
+
+  return dto;
 }
 
 /**

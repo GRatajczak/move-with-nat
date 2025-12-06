@@ -3,21 +3,29 @@
 import { z } from "zod";
 import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
-import type { CreatePlanCommand, PlanDto, ListPlansQuery, PaginatedResponse, AuthenticatedUser } from "../interface";
+import type {
+  CreatePlanCommand,
+  PlanDto,
+  PlanExerciseDto,
+  ListPlansQuery,
+  PaginatedResponse,
+  AuthenticatedUser,
+} from "../interface";
 import type { UpdatePlanCommand } from "../types/plans";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
-import { mapPlanToDTO, mapPlanWithExercisesToDTO } from "../lib/mappers";
+import { mapPlanToDTO, mapPlanWithExercisesToDTO, mapPlanExerciseToDTO } from "../lib/mappers";
 
 /**
  * Validation schema for creating a plan
+ * Both trainerId and clientId are optional (can be null in DB)
  */
 export const CreatePlanCommandSchema = z.object({
   name: z.string().min(3).max(100).trim(),
-  trainerId: z.string().uuid(),
-  clientId: z.string().uuid(),
+  trainerId: z.string().uuid().optional().nullable(),
+  clientId: z.string().uuid().optional().nullable(),
   isHidden: z.boolean().default(false),
-  description: z.string().max(1000).trim().optional(),
+  description: z.string().max(1000).trim().optional().or(z.literal("")).nullable(),
   exercises: z
     .array(
       z.object({
@@ -37,14 +45,15 @@ export const CreatePlanCommandSchema = z.object({
 
 /**
  * Validation schema for updating a plan
+ * trainerId and clientId can be set to null to unassign
  */
 export const UpdatePlanCommandSchema = z
   .object({
     name: z.string().min(3).max(100).trim().optional(),
     description: z.string().max(1000).trim().optional().nullable(),
     isHidden: z.boolean().optional(),
-    trainerId: z.string().uuid().optional(),
-    clientId: z.string().uuid().optional(),
+    trainerId: z.string().uuid().optional().nullable(),
+    clientId: z.string().uuid().optional().nullable(),
     exercises: z
       .array(
         z.object({
@@ -127,7 +136,15 @@ export async function listPlans(
   query: ListPlansQuery,
   currentUser: AuthenticatedUser
 ): Promise<PaginatedResponse<PlanDto>> {
-  const { trainerId, clientId, visible, page = 1, limit = 20, sortBy = "created_at" } = query;
+  const {
+    trainerId,
+    clientId,
+    visible,
+    page = 1,
+    limit = 20,
+    sortBy = "created_at",
+    includeExerciseDetails = false,
+  } = query;
 
   // Build query
   let dbQuery = supabase.from("plans").select("*", { count: "exact", head: false });
@@ -162,8 +179,39 @@ export async function listPlans(
     throw new DatabaseError("Failed to fetch plans");
   }
 
-  // Map to DTOs
-  const planDTOs = (data || []).map(mapPlanToDTO);
+  // Fetch exercises for all plans
+  const planIds = (data || []).map((plan) => plan.id);
+  const exercisesByPlan: Record<string, PlanExerciseDto[]> = {};
+
+  if (planIds.length > 0) {
+    // Build select query based on includeExerciseDetails flag
+    const selectQuery = includeExerciseDetails ? "*, exercise:exercises(*)" : "*";
+
+    const { data: planExercises, error: exError } = await supabase
+      .from("plan_exercises")
+      .select(selectQuery)
+      .in("plan_id", planIds)
+      .order("exercise_order");
+
+    if (exError) {
+      console.error("Failed to fetch plan exercises:", exError);
+    } else {
+      // Group exercises by plan ID
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (planExercises || []).forEach((pe: any) => {
+        if (!exercisesByPlan[pe.plan_id]) {
+          exercisesByPlan[pe.plan_id] = [];
+        }
+        exercisesByPlan[pe.plan_id].push(mapPlanExerciseToDTO(pe));
+      });
+    }
+  }
+
+  // Map to DTOs with exercises
+  const planDTOs = (data || []).map((plan) => ({
+    ...mapPlanToDTO(plan),
+    exercises: exercisesByPlan[plan.id] || [],
+  }));
 
   return {
     data: planDTOs,
@@ -194,30 +242,36 @@ export async function createPlan(
   }
 
   if (currentUser.role === "trainer") {
-    // Must be creating for self
-    if (command.trainerId !== currentUser.id) {
+    // Trainer must set themselves as the trainer
+    if (command.trainerId && command.trainerId !== currentUser.id) {
       throw new ForbiddenError("Trainers can only create plans for themselves");
     }
 
-    // Must be own client - check trainer_id in users table
-    const { data: client } = await supabase.from("users").select("id, role").eq("id", command.clientId).single();
+    // If clientId is provided, validate it's a client
+    if (command.clientId) {
+      const { data: client } = await supabase.from("users").select("id, role").eq("id", command.clientId).single();
 
-    if (!client) {
-      throw new NotFoundError("Client not found");
+      if (!client) {
+        throw new NotFoundError("Client not found");
+      }
+
+      if (client.role !== "client") {
+        throw new ValidationError({ clientId: "User is not a client" });
+      }
+
+      // TODO: Add trainer_id check when client-trainer relationship is implemented
+      // For now, we skip the client ownership check
     }
-
-    if (client.role !== "client") {
-      throw new ValidationError({ clientId: "User is not a client" });
-    }
-
-    // TODO: Add trainer_id check when migration is applied
-    // For now, we skip the client ownership check
   }
 
-  // Validate trainer and client exist (admin can create for anyone)
+  // Validate trainer and client exist (admin can create for anyone, but only if provided)
   if (currentUser.role === "admin") {
-    await validateTrainer(supabase, command.trainerId);
-    await validateClient(supabase, command.clientId);
+    if (command.trainerId) {
+      await validateTrainer(supabase, command.trainerId);
+    }
+    if (command.clientId) {
+      await validateClient(supabase, command.clientId);
+    }
   }
 
   // Validate exercises exist
@@ -229,9 +283,10 @@ export async function createPlan(
   const { data: plan, error } = await supabase
     .from("plans")
     .insert({
-      trainer_id: command.trainerId,
-      client_id: command.clientId,
+      trainer_id: command.trainerId || null,
+      client_id: command.clientId || null,
       name: command.name,
+      description: command.description || null,
       is_hidden: command.isHidden ?? false,
     })
     .select()
@@ -247,23 +302,31 @@ export async function createPlan(
     plan_id: plan.id,
     exercise_id: ex.exerciseId,
     exercise_order: ex.sortOrder,
+    sets: ex.sets,
+    reps: ex.reps,
     tempo: ex.tempo || "3-0-3",
     default_weight: ex.defaultWeight ?? null,
     is_completed: false,
   }));
 
-  const { error: exError } = await supabase.from("plan_exercises").insert(planExercises);
+  const { data: insertedExercises, error: exError } = await supabase
+    .from("plan_exercises")
+    .insert(planExercises)
+    .select();
 
-  if (exError) {
+  if (exError || !insertedExercises) {
     // Rollback plan
     await supabase.from("plans").delete().eq("id", plan.id);
     console.error("Failed to add exercises to plan:", exError);
     throw new DatabaseError("Failed to add exercises to plan");
   }
 
-  // TODO: Send email notification to client
+  // TODO: Send email notification to client if clientId is provided
 
-  return mapPlanToDTO(plan);
+  return {
+    ...mapPlanToDTO(plan),
+    exercises: insertedExercises.map(mapPlanExerciseToDTO),
+  };
 }
 
 /**
@@ -299,7 +362,7 @@ export async function getPlan(
     throw new NotFoundError("Plan not found");
   }
 
-  // Fetch plan exercises with exercise details
+  // Fetch plan exercises with exercise details (always include full details in getPlan)
   const { data: planExercises, error: exError } = await supabase
     .from("plan_exercises")
     .select(
@@ -359,9 +422,10 @@ export async function updatePlan(
   };
 
   if (command.name !== undefined) updateData.name = command.name;
+  if (command.description !== undefined) updateData.description = command.description;
   if (command.isHidden !== undefined) updateData.is_hidden = command.isHidden;
-  if (command.trainerId !== undefined) updateData.trainer_id = command.trainerId;
-  if (command.clientId !== undefined) updateData.client_id = command.clientId;
+  if (command.trainerId !== undefined) updateData.trainer_id = command.trainerId || null;
+  if (command.clientId !== undefined) updateData.client_id = command.clientId || null;
 
   // Update plan
   const { data: updated, error } = await supabase.from("plans").update(updateData).eq("id", planId).select().single();
@@ -386,22 +450,42 @@ export async function updatePlan(
       plan_id: planId,
       exercise_id: ex.exerciseId,
       exercise_order: ex.sortOrder,
+      sets: ex.sets,
+      reps: ex.reps,
       tempo: ex.tempo || "3-0-3",
       default_weight: ex.defaultWeight ?? null,
       is_completed: false,
     }));
 
-    const { error: insertError } = await supabase.from("plan_exercises").insert(planExercises);
+    const { data: insertedExercises, error: insertError } = await supabase
+      .from("plan_exercises")
+      .insert(planExercises)
+      .select();
 
-    if (insertError) {
+    if (insertError || !insertedExercises) {
       console.error("Failed to update plan exercises:", insertError);
       throw new DatabaseError("Failed to update plan exercises");
     }
 
     // TODO: Send email notification if exercises changed
+
+    return {
+      ...mapPlanToDTO(updated),
+      exercises: insertedExercises.map(mapPlanExerciseToDTO),
+    };
   }
 
-  return mapPlanToDTO(updated);
+  // Fetch exercises for the response if not updated
+  const { data: planExercises } = await supabase
+    .from("plan_exercises")
+    .select("*")
+    .eq("plan_id", planId)
+    .order("exercise_order");
+
+  return {
+    ...mapPlanToDTO(updated),
+    exercises: (planExercises || []).map(mapPlanExerciseToDTO),
+  };
 }
 
 /**
@@ -508,5 +592,15 @@ export async function togglePlanVisibility(
     throw new DatabaseError("Failed to update plan visibility");
   }
 
-  return mapPlanToDTO(updated);
+  // Fetch exercises for the response
+  const { data: planExercises } = await supabase
+    .from("plan_exercises")
+    .select("*")
+    .eq("plan_id", planId)
+    .order("exercise_order");
+
+  return {
+    ...mapPlanToDTO(updated),
+    exercises: (planExercises || []).map(mapPlanExerciseToDTO),
+  };
 }

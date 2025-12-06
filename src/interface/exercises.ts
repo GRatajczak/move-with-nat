@@ -123,7 +123,7 @@ export interface ExerciseQuickPreviewModalProps {
   exercise: ExerciseViewModel | null;
   isOpen: boolean;
   onClose: () => void;
-  onEdit: (id: string) => void;
+  onEdit?: (id: string) => void;
 }
 
 export interface ExerciseCardsProps {

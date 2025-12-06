@@ -1,4 +1,4 @@
-import type { ListExercisesQuery } from "../interface";
+import type { ListExercisesQuery, ListPlansQuery } from "../interface";
 
 export const exerciseKeys = {
   all: ["exercises"] as const,
@@ -8,8 +8,18 @@ export const exerciseKeys = {
   detail: (id: string) => [...exerciseKeys.details(), id] as const,
 };
 
+export const plansKeys = {
+  all: ["plans"] as const,
+  lists: () => [...plansKeys.all, "list"] as const,
+  list: (filters: ListPlansQuery) => [...plansKeys.lists(), filters] as const,
+  details: () => [...plansKeys.all, "detail"] as const,
+  detail: (id: string) => [...plansKeys.details(), id] as const,
+  completion: (planId: string) => [...plansKeys.all, "completion", planId] as const,
+};
+
 export const QUERY_KEYS = {
   exercises: exerciseKeys,
+  plans: plansKeys,
   reasons: {
     all: ["reasons"] as const,
     detail: (id: string) => ["reasons", id] as const,

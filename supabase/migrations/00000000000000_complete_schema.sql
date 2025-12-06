@@ -65,9 +65,10 @@ CREATE TABLE exercises (
 -- Plans table
 CREATE TABLE plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  trainer_id UUID NOT NULL REFERENCES users(id),
-  client_id UUID NOT NULL REFERENCES users(id),
+  trainer_id UUID REFERENCES users(id),
+  client_id UUID REFERENCES users(id),
   name TEXT NOT NULL,
+  description TEXT,
   is_hidden BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

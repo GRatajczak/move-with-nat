@@ -6,6 +6,7 @@ import type { Database } from "../db/database.types";
 import type {
   CreateExerciseCommand,
   ExerciseDto,
+  ExerciseViewModel,
   ListExercisesQuery,
   PaginatedResponse,
   AuthenticatedUser,
@@ -84,14 +85,14 @@ export async function createExercise(
 }
 
 /**
- * Gets a single exercise by ID
+ * Gets a single exercise by ID with usage count
  * Non-admin users cannot see hidden exercises
  */
 export async function getExercise(
   supabase: SupabaseClient,
   exerciseId: string,
   currentUser: AuthenticatedUser
-): Promise<ExerciseDto> {
+): Promise<ExerciseViewModel> {
   // Validate UUID
   if (!isValidUUID(exerciseId)) {
     throw new ValidationError({ id: "Invalid UUID format" });
@@ -99,7 +100,7 @@ export async function getExercise(
 
   // Fetch exercise
   const { data: exercise, error } = await supabase.from("exercises").select("*").eq("id", exerciseId).single();
-  console.log(exercise);
+
   if (error || !exercise) {
     throw new NotFoundError("Exercise not found");
   }
@@ -109,7 +110,16 @@ export async function getExercise(
     throw new NotFoundError("Exercise not found");
   }
 
-  return mapExerciseToDTO(exercise);
+  // Fetch usage count
+  const { count: usageCount } = await supabase
+    .from("plan_exercises")
+    .select("id", { count: "exact", head: true })
+    .eq("exercise_id", exerciseId);
+
+  return {
+    ...mapExerciseToDTO(exercise),
+    usageCount: usageCount || 0,
+  };
 }
 
 /**
@@ -265,13 +275,13 @@ export async function deleteExercise(
  * @param supabase - Supabase client instance
  * @param query - Query parameters for filtering and pagination
  * @param currentUser - Current authenticated user
- * @returns Paginated list of exercises
+ * @returns Paginated list of exercises with usage counts
  */
 export async function listExercises(
   supabase: SupabaseClient,
   query: ListExercisesQuery,
   currentUser: AuthenticatedUser
-): Promise<PaginatedResponse<ExerciseDto>> {
+): Promise<PaginatedResponse<ExerciseViewModel>> {
   const { search, page = 1, limit = 20 } = query;
 
   // Determine if user can view hidden exercises
@@ -302,8 +312,29 @@ export async function listExercises(
     throw new DatabaseError("Failed to fetch exercises");
   }
 
-  // Map to DTOs
-  const exerciseDTOs = (data || []).map(mapExerciseToDTO);
+  // Fetch usage counts for all exercises in a single query
+  const exerciseIds = (data || []).map((ex) => ex.id);
+  const usageCounts: Record<string, number> = {};
+
+  if (exerciseIds.length > 0) {
+    const { data: usageData, error: usageError } = await supabase
+      .from("plan_exercises")
+      .select("exercise_id")
+      .in("exercise_id", exerciseIds);
+
+    if (!usageError && usageData) {
+      // Count occurrences of each exercise_id
+      usageData.forEach((item) => {
+        usageCounts[item.exercise_id] = (usageCounts[item.exercise_id] || 0) + 1;
+      });
+    }
+  }
+
+  // Map to DTOs with usage counts
+  const exerciseDTOs = (data || []).map((exercise) => ({
+    ...mapExerciseToDTO(exercise),
+    usageCount: usageCounts[exercise.id] || 0,
+  }));
 
   return {
     data: exerciseDTOs,

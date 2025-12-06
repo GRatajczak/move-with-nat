@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useDebounce } from "../useDebounce";
 import { exerciseKeys } from "../queryKeys";
 import type { ListExercisesQuery, PaginatedResponse, ExerciseViewModel } from "../../interface";
@@ -19,26 +19,19 @@ async function fetchExercises(query: ListExercisesQuery): Promise<PaginatedRespo
   return response.json();
 }
 
-export function useExercisesList(initialQuery?: Partial<ListExercisesQuery>) {
-  const [search, setSearch] = useState(initialQuery?.search || "");
-  const [page, setPage] = useState(initialQuery?.page || 1);
-  const limit = initialQuery?.limit || 20;
+export function useExercisesList(initialQuery?: ListExercisesQuery) {
+  const debouncedSearch = useDebounce(initialQuery?.search || "", 300);
 
-  // Debounce search query
-  const debouncedSearch = useDebounce(search, 300);
-
-  // Build query object
   const query: ListExercisesQuery = useMemo(
     () => ({
       search: debouncedSearch || undefined,
-      page,
-      limit,
+      page: initialQuery?.page || 1,
+      limit: initialQuery?.limit || 20,
     }),
-    [debouncedSearch, page, limit]
+    [debouncedSearch, initialQuery?.page, initialQuery?.limit]
   );
 
-  // Fetch exercises
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: exerciseKeys.list(query),
     queryFn: () => fetchExercises(query),
     placeholderData: (previousData) => previousData, // Keep previous data while fetching new page
@@ -49,10 +42,5 @@ export function useExercisesList(initialQuery?: Partial<ListExercisesQuery>) {
     pagination: data?.meta,
     isLoading,
     error,
-    search,
-    setSearch,
-    page,
-    setPage,
-    refetch,
   };
 }

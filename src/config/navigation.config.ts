@@ -51,6 +51,13 @@ const adminNavigation: NavigationItemConfig[] = [
     roles: ["admin"],
   },
   {
+    id: "plans",
+    label: "Plany treningowe",
+    icon: ClipboardList,
+    href: "/admin/plans",
+    roles: ["admin"],
+  },
+  {
     id: "reasons",
     label: "Powody niewykonania",
     icon: AlertCircle,
