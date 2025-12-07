@@ -23,6 +23,8 @@ const CreateUserContent: React.FC = () => {
     email: string;
     firstName: string;
     lastName: string;
+    phone?: string;
+    dateOfBirth?: string;
     role: "administrator" | "trainer" | "client";
     trainerId?: string;
   }) => {
@@ -38,6 +40,8 @@ const CreateUserContent: React.FC = () => {
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
+      phone: data.phone || undefined,
+      dateOfBirth: data.dateOfBirth || undefined,
       role: mapRoleToAPI(data.role),
       trainerId: data.trainerId,
     };

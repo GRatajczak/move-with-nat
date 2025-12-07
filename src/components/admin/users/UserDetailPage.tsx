@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Pencil, Trash, ArrowLeft, Mail, Calendar, User, UserCheck, UserX, Users } from "lucide-react";
+import { Pencil, Trash, ArrowLeft, Mail, Calendar, User, UserCheck, UserX, Users, Phone } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -248,6 +248,26 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
                   <p className="text-sm text-muted-foreground">{user.email}</p>
                 </div>
               </div>
+              {user.phone && (
+                <div className="flex items-start gap-3">
+                  <Phone className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium">Telefon</p>
+                    <p className="text-sm text-muted-foreground">{user.phone}</p>
+                  </div>
+                </div>
+              )}
+              {user.dateOfBirth && (
+                <div className="flex items-start gap-3">
+                  <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium">Data urodzenia</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(user.dateOfBirth).toLocaleDateString("pl-PL", { dateStyle: "long" })}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Account Details */}

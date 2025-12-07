@@ -53,6 +53,17 @@ export const CreateUserCommandSchema = z
       .min(2, "Last name must be at least 2 characters")
       .max(50, "Last name must be at most 50 characters")
       .transform((val) => val.trim()),
+    phone: z
+      .string()
+      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Invalid phone number format")
+      .optional()
+      .nullable(),
+    dateOfBirth: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format")
+      .refine((date) => new Date(date) <= new Date(), "Date of birth cannot be in the future")
+      .optional()
+      .nullable(),
     trainerId: z.string().uuid("Invalid trainer ID format").optional(),
   })
   .refine((data) => data.role !== "client" || !!data.trainerId, {
@@ -306,3 +317,164 @@ export const ExerciseFormSchema = z.object({
 
   defaultWeight: z.number().min(0, "Ciężar musi być liczbą dodatnią").nullable(),
 });
+
+export const planExerciseSchema = z.object({
+  exerciseId: z.string().uuid("Nieprawidłowy ID ćwiczenia"),
+  sortOrder: z.number().int().min(0),
+  sets: z.number().int().min(1, "Min. 1 seria").max(100, "Max. 100 serii"),
+  reps: z.number().int().min(1, "Min. 1 powtórzenie").max(1000, "Max. 1000 powtórzeń"),
+  tempo: z
+    .string()
+    .regex(/^\d{4}$|^\d+-\d+-\d+(-\d+)?$/, "Format: XXXX lub X-X-X (np. 3-0-3)")
+    .optional()
+    .or(z.literal("")),
+  defaultWeight: z.number().min(0, "Ciężar nie może być ujemny").nullable().optional(),
+  exercise: z.any().optional(), // Denormalized exercise data for UI
+});
+
+export const planFormSchema = z.object({
+  name: z.string().min(3, "Nazwa musi mieć min. 3 znaki").max(100, "Nazwa może mieć max. 100 znaków").trim(),
+  description: z.string().max(1000, "Opis może mieć max. 1000 znaków").trim().optional().or(z.literal("")),
+  clientId: z.string().uuid("Wybierz podopiecznego"),
+  isHidden: z.boolean(),
+  exercises: z.array(planExerciseSchema).min(1, "Dodaj przynajmniej jedno ćwiczenie"),
+});
+
+// Admin plan form schema with additional trainerId field
+// Both clientId and trainerId are optional for admin (can be null in DB)
+export const adminPlanFormSchema = z.object({
+  name: z.string().min(3, "Nazwa musi mieć min. 3 znaki").max(100, "Nazwa może mieć max. 100 znaków").trim(),
+  description: z.string().max(1000, "Opis może mieć max. 1000 znaków").trim().optional().or(z.literal("")),
+  clientId: z.string().uuid("Nieprawidłowy ID podopiecznego").optional().or(z.literal("")),
+  trainerId: z.string().uuid("Nieprawidłowy ID trenera").optional().or(z.literal("")),
+  isHidden: z.boolean(),
+  exercises: z.array(planExerciseSchema).min(1, "Dodaj przynajmniej jedno ćwiczenie"),
+});
+
+/**
+ * Schema walidacji dla formularza edycji profilu
+ * Zawiera podstawowe pola: imię i nazwisko
+ */
+export const ProfileEditFormSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, "Imię jest wymagane")
+    .min(2, "Imię musi mieć co najmniej 2 znaki")
+    .max(50, "Imię może mieć maksymalnie 50 znaków")
+    .trim(),
+  lastName: z
+    .string()
+    .min(1, "Nazwisko jest wymagane")
+    .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
+    .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+    .trim(),
+});
+
+/**
+ * Schema walidacji dla formularza zmiany hasła
+ * Zawiera walidację siły hasła oraz potwierdzenia
+ */
+export const ChangePasswordFormSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Obecne hasło jest wymagane"),
+    newPassword: z
+      .string()
+      .min(8, "Hasło musi mieć co najmniej 8 znaków")
+      .regex(/[A-Z]/, "Hasło musi zawierać co najmniej jedną wielką literę")
+      .regex(/[a-z]/, "Hasło musi zawierać co najmniej jedną małą literę")
+      .regex(/[0-9]/, "Hasło musi zawierać co najmniej jedną cyfrę")
+      .regex(/[^A-Za-z0-9]/, "Hasło musi zawierać co najmniej jeden znak specjalny"),
+    confirmPassword: z.string().min(1, "Potwierdzenie hasła jest wymagane"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Hasła muszą być identyczne",
+    path: ["confirmPassword"],
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    message: "Nowe hasło musi być różne od obecnego",
+    path: ["newPassword"],
+  });
+
+/**
+ * Schema walidacji dla formularza tworzenia użytkownika
+ */
+export const CreateUserFormSchema = z
+  .object({
+    email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
+    role: z.enum(["administrator", "trainer", "client"], {
+      required_error: "Rola jest wymagana",
+      invalid_type_error: "Nieprawidłowa rola",
+    }),
+    firstName: z
+      .string()
+      .min(1, "Imię jest wymagane")
+      .min(2, "Imię musi mieć co najmniej 2 znaki")
+      .max(50, "Imię może mieć maksymalnie 50 znaków")
+      .trim(),
+    lastName: z
+      .string()
+      .min(1, "Nazwisko jest wymagane")
+      .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
+      .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+      .trim(),
+    phone: z
+      .string()
+      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+      .optional()
+      .or(z.literal("")),
+    dateOfBirth: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
+      .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
+      .optional()
+      .or(z.literal("")),
+    trainerId: z.string().uuid("Nieprawidłowy identyfikator trenera").optional(),
+  })
+  .refine((data) => data.role !== "client" || !!data.trainerId, {
+    message: "Trener jest wymagany dla podopiecznego",
+    path: ["trainerId"],
+  });
+
+/**
+ * Schema walidacji dla formularza edycji użytkownika (administrator)
+ */
+export const EditUserFormSchema = z
+  .object({
+    email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
+    firstName: z
+      .string()
+      .min(1, "Imię jest wymagane")
+      .min(2, "Imię musi mieć co najmniej 2 znaki")
+      .max(50, "Imię może mieć maksymalnie 50 znaków")
+      .trim(),
+    lastName: z
+      .string()
+      .min(1, "Nazwisko jest wymagane")
+      .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
+      .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+      .trim(),
+    phone: z
+      .string()
+      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+      .optional()
+      .or(z.literal("")),
+    dateOfBirth: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
+      .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
+      .optional()
+      .or(z.literal("")),
+    role: z.enum(["administrator", "trainer", "client"], {
+      required_error: "Rola jest wymagana",
+      invalid_type_error: "Nieprawidłowa rola",
+    }),
+    status: z.enum(["pending", "active", "suspended"], {
+      required_error: "Status jest wymagany",
+      invalid_type_error: "Nieprawidłowy status",
+    }),
+    trainerId: z.string().uuid("Nieprawidłowy identyfikator trenera").nullable().optional(),
+  })
+  .refine((data) => data.role !== "client" || !!data.trainerId, {
+    message: "Trener jest wymagany dla podopiecznego",
+    path: ["trainerId"],
+  });

@@ -41,20 +41,22 @@ export interface UserDto {
 export interface CreateUserCommand {
   email: Database["public"]["Tables"]["users"]["Insert"]["email"];
   role: UserRole; // "admin" | "trainer" | "client"
-  firstName: string;
-  lastName: string;
-  trainerId?: string; // required when role='client'
+  firstName: Database["public"]["Tables"]["users"]["Insert"]["first_name"];
+  lastName: Database["public"]["Tables"]["users"]["Insert"]["last_name"];
+  phone?: Database["public"]["Tables"]["users"]["Insert"]["phone"];
+  dateOfBirth?: Database["public"]["Tables"]["users"]["Insert"]["date_of_birth"];
+  trainerId?: Database["public"]["Tables"]["users"]["Insert"]["trainer_id"]; // required when role='client'
 }
 
 /** Update user **/
 export interface UpdateUserCommand {
   email?: Database["public"]["Tables"]["users"]["Insert"]["email"];
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  dateOfBirth?: string;
+  firstName?: Database["public"]["Tables"]["users"]["Insert"]["first_name"];
+  lastName?: Database["public"]["Tables"]["users"]["Insert"]["last_name"];
+  phone?: Database["public"]["Tables"]["users"]["Insert"]["phone"];
+  dateOfBirth?: Database["public"]["Tables"]["users"]["Insert"]["date_of_birth"];
   status?: Database["public"]["Tables"]["users"]["Row"]["status"];
-  trainerId?: string;
+  trainerId?: Database["public"]["Tables"]["users"]["Insert"]["trainer_id"];
 }
 
 /** Profile view models **/

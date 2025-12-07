@@ -96,7 +96,7 @@ function generateFallbackHtml(template: string, data: Record<string, unknown>): 
  */
 export async function sendActivationEmail(email: string, firstName: string, token: string): Promise<void> {
   // Get base URL from environment or use default for development
-  const baseUrl = import.meta.env.PUBLIC_APP_URL || "http://localhost:4321";
+  const baseUrl = import.meta.env.PUBLIC_APP_URL || "http://localhost:3000";
   const activationLink = `${baseUrl}/auth/activate?token=${token}`;
 
   await sendEmail({

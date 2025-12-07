@@ -1,7 +1,7 @@
 import type { Database } from "../types/db";
 import type { IsHidden } from "../types/plans";
 import type { ExerciseDto } from "./exercises";
-import type { AdminPlanFormSchema, PlanFormSchema } from "@/lib/validation/planFormSchema";
+import type { AdminPlanFormSchema, PlanFormSchema } from "@/types/plans";
 
 /** PLANS **/
 /** List plans query **/

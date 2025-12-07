@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "../navigation/Breadcrumbs";
-import type { AdminPlanFormSchema } from "@/lib/validation/planFormSchema";
+import type { AdminPlanFormSchema } from "@/lib/validation";
 import { QueryProvider } from "../QueryProvider";
 
 const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {

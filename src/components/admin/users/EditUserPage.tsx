@@ -15,6 +15,8 @@ const EditUserContent = ({ userId }: { userId: string }) => {
     email: string;
     firstName: string;
     lastName: string;
+    phone?: string;
+    dateOfBirth?: string;
     role: "administrator" | "trainer" | "client";
     status: "pending" | "active" | "suspended";
     trainerId?: string | null;
@@ -22,6 +24,8 @@ const EditUserContent = ({ userId }: { userId: string }) => {
     const command: UpdateUserCommand = {
       firstName: data.firstName,
       lastName: data.lastName,
+      phone: data.phone || null,
+      dateOfBirth: data.dateOfBirth || null,
       status: data.status,
       trainerId: data.trainerId || undefined,
     };

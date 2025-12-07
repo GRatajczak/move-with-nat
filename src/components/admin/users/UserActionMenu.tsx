@@ -12,7 +12,6 @@ import type { UserActionMenuProps } from "@/interface";
 export const UserActionMenu = ({ user, onEdit, onToggleActive, onResendInvite, onDelete }: UserActionMenuProps) => {
   const isPending = user.status === "pending";
   const isActive = user.status === "active";
-  const isSuspended = user.status === "suspended";
 
   return (
     <DropdownMenu>

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import type { ChangePasswordFormData } from "@/interface";
-import { ChangePasswordFormSchema } from "@/lib/validation/userSchema";
+import { ChangePasswordFormSchema } from "@/lib/validation";
 import { useChangePassword } from "@/hooks/useChangePassword";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

@@ -147,6 +147,8 @@ export async function createUser(
     status: "pending",
     first_name: command.firstName,
     last_name: command.lastName,
+    phone: command.phone || null,
+    date_of_birth: command.dateOfBirth || null,
   };
 
   // Add trainer_id for clients
@@ -169,7 +171,7 @@ export async function createUser(
   // Send activation email (non-blocking for MVP)
   // In production, this should be handled by a background job
   try {
-    await sendActivationEmail(command.email, command.firstName, newUser.id);
+    await sendActivationEmail(command.email, command.firstName || "", newUser.id);
   } catch (emailError) {
     console.error("Failed to send activation email:", emailError);
     // Don't fail the request if email sending fails
@@ -392,7 +394,7 @@ export async function updateUser(
   }
 
   // Validate trainerId (if being changed, admin only)
-  if (command.trainerId !== undefined && isAdmin(currentUser)) {
+  if (command.trainerId !== undefined && command.trainerId !== null && isAdmin(currentUser)) {
     await validateTrainer(supabase, command.trainerId);
   }
 

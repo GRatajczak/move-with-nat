@@ -110,6 +110,8 @@ export function mapUserToDTO(user: UserRow): UserDto {
     status: user.status,
     firstName: user.first_name,
     lastName: user.last_name,
+    phone: user.phone,
+    dateOfBirth: user.date_of_birth,
     trainerId: user.trainer_id,
     createdAt: user.created_at,
     updatedAt: user.updated_at,

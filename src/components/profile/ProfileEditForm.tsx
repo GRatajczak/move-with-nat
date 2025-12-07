@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
 
 import type { ProfileEditFormData, ProfileEditFormProps } from "@/interface";
-import { ProfileEditFormSchema } from "@/lib/validation/userSchema";
+import { ProfileEditFormSchema } from "@/lib/validation";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -17,8 +17,8 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
   const form = useForm<ProfileEditFormData>({
     resolver: zodResolver(ProfileEditFormSchema),
     defaultValues: {
-      firstName: initialData.firstName,
-      lastName: initialData.lastName,
+      firstName: initialData.firstName || "",
+      lastName: initialData.lastName || "",
     },
   });
 
@@ -57,7 +57,7 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
             <FormItem>
               <FormLabel>Imię</FormLabel>
               <FormControl>
-                <Input placeholder="Wpisz swoje imię" autoComplete="given-name" {...field} />
+                <Input placeholder="Wpisz swoje imię" autoComplete="given-name" {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,7 +93,12 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
             <FormItem>
               <FormLabel>Nazwisko</FormLabel>
               <FormControl>
-                <Input placeholder="Wpisz swoje nazwisko" autoComplete="family-name" {...field} />
+                <Input
+                  placeholder="Wpisz swoje nazwisko"
+                  autoComplete="family-name"
+                  {...field}
+                  value={field.value || ""}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import type { AdminPlanFormSchema } from "@/lib/validation/planFormSchema";
+import type { AdminPlanFormSchema } from "@/types/plans";
 import { Breadcrumbs } from "../navigation/Breadcrumbs";
 import { QueryProvider } from "../QueryProvider";
 

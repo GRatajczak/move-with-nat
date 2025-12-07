@@ -9,7 +9,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { AlertTriangle, Plus } from "lucide-react";
-import { adminPlanFormSchema, type AdminPlanFormSchema } from "@/lib/validation/planFormSchema";
+import { adminPlanFormSchema } from "@/lib/validation";
+import type { AdminPlanFormSchema } from "@/types/plans";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { PlanExercisesList } from "./PlanExercisesList";
 import { AddExerciseModal } from "./AddExerciseModal";

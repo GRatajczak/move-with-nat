@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "../navigation/Breadcrumbs";
 import type { EditPlanContainerProps } from "@/interface/plans";
-import type { PlanFormSchema } from "@/lib/validation/planFormSchema";
+import type { PlanFormSchema } from "@/types/plans";
 import { QueryProvider } from "../QueryProvider";
 
 const EditPlanContent = ({ planId, userRole = "trainer" }: EditPlanContainerProps) => {

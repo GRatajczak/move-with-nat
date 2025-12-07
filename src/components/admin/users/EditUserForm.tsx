@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditUserFormSchema } from "@/lib/validation/userSchema";
+import { format } from "date-fns";
+import { pl } from "date-fns/locale";
+import { EditUserFormSchema } from "@/lib/validation";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TrainerSelect } from "@/components/plans/TrainerSelect";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { EditUserFormProps } from "@/interface";
 import type { EditUserFormData } from "@/types/users";
 import { toast } from "sonner";
@@ -23,6 +28,8 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
     email: user.email,
     firstName: user.firstName || "",
     lastName: user.lastName || "",
+    phone: user.phone || "",
+    dateOfBirth: user.dateOfBirth || "",
     role: mapRoleToForm(user.role),
     status: user.status,
     trainerId: user.trainerId || undefined,
@@ -127,6 +134,69 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
                 <FormControl>
                   <Input placeholder="Kowalski" {...field} disabled={isSubmitting} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Phone Field */}
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Telefon</FormLabel>
+                <FormControl>
+                  <Input type="tel" placeholder="+48 123 456 789" {...field} disabled={isSubmitting} />
+                </FormControl>
+                <FormDescription>Opcjonalny numer telefonu użytkownika</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Date of Birth Field */}
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Data urodzenia</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        disabled={isSubmitting}
+                        data-empty={!field.value}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? format(new Date(field.value), "PPP", { locale: pl }) : <span>Wybierz datę</span>}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) => {
+                        field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                      }}
+                      disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                      initialFocus
+                      captionLayout="dropdown-months"
+                      fromYear={1900}
+                      toYear={new Date().getFullYear()}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>Opcjonalna data urodzenia</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
