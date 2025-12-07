@@ -69,13 +69,6 @@ const trainerNavigation: NavigationItemConfig[] = [
     roles: ["trainer"],
   },
   {
-    id: "exercises",
-    label: "Ćwiczenia",
-    icon: Dumbbell,
-    href: "/trainer/exercises",
-    roles: ["trainer"],
-  },
-  {
     id: "plans",
     label: "Plany treningowe",
     icon: ClipboardList,
@@ -104,16 +97,9 @@ const clientNavigation: NavigationItemConfig[] = [
   },
   {
     id: "my-plans",
-    label: "Moje plany",
+    label: "Mój plan",
     icon: Calendar,
     href: "/client/plans",
-    roles: ["client"],
-  },
-  {
-    id: "exercises",
-    label: "Ćwiczenia",
-    icon: Dumbbell,
-    href: "/client/exercises",
     roles: ["client"],
   },
   {

@@ -18,7 +18,7 @@ import type { PlanViewModel, ListPlansQuery, DuplicatePlanData } from "@/interfa
 import type { PaginatedResponse } from "@/interface/common";
 import { QueryProvider } from "../QueryProvider";
 
-const PlansListContent = ({ userRole = "trainer" }: { userRole: "admin" | "trainer" }) => {
+const PlansListContent = ({ userRole = "trainer", userId }: { userRole: "admin" | "trainer"; userId: string }) => {
   const baseUrl = `/${userRole}`;
   // URL state management
   const searchParams =
@@ -48,6 +48,7 @@ const PlansListContent = ({ userRole = "trainer" }: { userRole: "admin" | "train
   const query: ListPlansQuery = {
     search: debouncedSearch || undefined,
     clientId: clientId || undefined,
+    trainerId: userId || undefined,
     visible: visible !== null ? !visible : undefined, // Convert isHidden to visible
     sortBy: sortBy as "created_at",
     page,
@@ -250,10 +251,10 @@ const PlansListContent = ({ userRole = "trainer" }: { userRole: "admin" | "train
   );
 };
 
-export const PlansListPage = ({ userRole = "trainer" }: { userRole: "admin" | "trainer" }) => {
+export const PlansListPage = ({ userRole = "trainer", userId }: { userRole: "admin" | "trainer"; userId: string }) => {
   return (
     <QueryProvider>
-      <PlansListContent userRole={userRole} />
+      <PlansListContent userRole={userRole} userId={userId} />
     </QueryProvider>
   );
 };

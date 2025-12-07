@@ -47,7 +47,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.user = {
     id: "c8296dc9-d343-4514-a74f-ab893aad7b19",
     email: "admin@example.com",
-    role: "admin",
+    role: "trainer",
   };
 
   return next();

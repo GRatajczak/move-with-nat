@@ -12,5 +12,5 @@ if (!user || user.role !== "trainer") {
 ---
 
 <TrainerLayout>
-  <PlansListPage client:load userRole="trainer" />
+  <PlansListPage client:load userRole="trainer" userId={user.id} />
 </TrainerLayout>
