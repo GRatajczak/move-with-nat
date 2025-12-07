@@ -1,6 +1,27 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreatePlanCommand } from "../../interface/plans";
-import { createPlan } from "../../lib/plans.client";
+import type { CreatePlanCommand, PlanDto } from "../../interface/plans";
+import { ValidationError } from "../../lib/errors";
+
+/**
+ * Creates a new training plan
+ */
+async function createPlan(data: CreatePlanCommand): Promise<PlanDto> {
+  const response = await fetch("/api/plans", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    if (response.status === 400) {
+      throw new ValidationError(error.details || { message: error.error });
+    }
+    throw new Error("Failed to create plan");
+  }
+
+  return response.json();
+}
 
 export function useCreatePlan() {
   const queryClient = useQueryClient();

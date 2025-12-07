@@ -1,6 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { deletePlan } from "../../lib/plans.client";
+import { NotFoundError } from "../../lib/errors";
+
+/**
+ * Deletes a training plan
+ */
+async function deletePlan(planId: string, hard = false): Promise<void> {
+  const params = hard ? "?hard=true" : "";
+  const response = await fetch(`/api/plans/${planId}${params}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new NotFoundError("Plan not found");
+    }
+    throw new Error("Failed to delete plan");
+  }
+}
 
 export function useDeletePlan() {
   const queryClient = useQueryClient();

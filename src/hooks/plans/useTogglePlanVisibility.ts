@@ -1,8 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { PlanDto } from "../../interface/plans";
-import { togglePlanVisibility } from "../../lib/plans.client";
 import { plansKeys } from "../queryKeys";
 import { toast } from "sonner";
+
+/**
+ * Toggles plan visibility for client
+ */
+async function togglePlanVisibility(planId: string, isHidden: boolean): Promise<PlanDto> {
+  const response = await fetch(`/api/plans/${planId}/visibility`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isHidden }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to toggle visibility");
+  }
+
+  return response.json();
+}
 
 export function useTogglePlanVisibility() {
   const queryClient = useQueryClient();
