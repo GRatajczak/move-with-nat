@@ -107,7 +107,7 @@ export function mapUserToDTO(user: UserRow): UserDto {
     id: user.id,
     email: user.email,
     role: mapUserRoleToDTO(user.role),
-    isActive: user.is_active,
+    status: user.status,
     firstName: user.first_name,
     lastName: user.last_name,
     trainerId: user.trainer_id,

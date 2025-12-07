@@ -89,11 +89,12 @@ const AdminUsersContent = () => {
     if (!toggleActiveUser) return;
 
     try {
+      const newStatus = toggleActiveUser.status === "active" ? "suspended" : "active";
       await updateUser({
         userId: toggleActiveUser.id,
-        command: { isActive: !toggleActiveUser.isActive },
+        command: { status: newStatus },
       });
-      toast.success(toggleActiveUser.isActive ? "Użytkownik został dezaktywowany" : "Użytkownik został aktywowany");
+      toast.success(newStatus === "active" ? "Użytkownik został aktywowany" : "Użytkownik został zawieszony");
       setToggleActiveUser(null);
     } catch {
       // Error is handled by the hook via toast
@@ -209,16 +210,16 @@ const AdminUsersContent = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {toggleActiveUser?.isActive ? "Dezaktywować użytkownika?" : "Aktywować użytkownika?"}
+              {toggleActiveUser?.status === "active" ? "Zawiesić użytkownika?" : "Aktywować użytkownika?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {toggleActiveUser?.isActive ? (
+              {toggleActiveUser?.status === "active" ? (
                 <>
                   Użytkownik{" "}
                   <strong>
                     {toggleActiveUser?.firstName} {toggleActiveUser?.lastName}
                   </strong>{" "}
-                  zostanie dezaktywowany i utraci dostęp do systemu.
+                  zostanie zawieszony i utraci dostęp do systemu.
                 </>
               ) : (
                 <>
@@ -234,7 +235,7 @@ const AdminUsersContent = () => {
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isUpdating}>Anuluj</AlertDialogCancel>
             <AlertDialogAction onClick={confirmToggleActive} disabled={isUpdating}>
-              {isUpdating ? "Zapisywanie..." : toggleActiveUser?.isActive ? "Dezaktywuj" : "Aktywuj"}
+              {isUpdating ? "Zapisywanie..." : toggleActiveUser?.status === "active" ? "Zawieś" : "Aktywuj"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CreateUserFormSchema, EditUserFormSchema } from "@/lib/validation";
+import { CreateUserFormSchema, EditUserFormSchema } from "@/lib/validation/userSchema";
 
 export type EditUserFormData = z.infer<typeof EditUserFormSchema>;
 

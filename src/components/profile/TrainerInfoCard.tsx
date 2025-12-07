@@ -25,12 +25,7 @@ export function TrainerInfoCard({ trainer }: TrainerInfoCardProps) {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
-          <UserAvatar
-            userId={trainer.id}
-            firstName={trainer.firstName}
-            lastName={trainer.lastName}
-            size="lg"
-          />
+          <UserAvatar userId={trainer.id} firstName={trainer.firstName} lastName={trainer.lastName} size="lg" />
           <div className="flex flex-col gap-1">
             <p className="font-semibold">
               {trainer.firstName} {trainer.lastName}
@@ -42,5 +37,3 @@ export function TrainerInfoCard({ trainer }: TrainerInfoCardProps) {
     </Card>
   );
 }
-
-

@@ -27,9 +27,11 @@ export interface UserDto {
   id: Database["public"]["Tables"]["users"]["Row"]["id"];
   email: Database["public"]["Tables"]["users"]["Row"]["email"];
   role: Database["public"]["Tables"]["users"]["Row"]["role"];
-  isActive: Database["public"]["Tables"]["users"]["Row"]["is_active"];
+  status: Database["public"]["Tables"]["users"]["Row"]["status"];
   firstName: Database["public"]["Tables"]["users"]["Row"]["first_name"];
   lastName: Database["public"]["Tables"]["users"]["Row"]["last_name"];
+  phone: Database["public"]["Tables"]["users"]["Row"]["phone"];
+  dateOfBirth: Database["public"]["Tables"]["users"]["Row"]["date_of_birth"];
   trainerId: Database["public"]["Tables"]["users"]["Row"]["trainer_id"];
   createdAt: Database["public"]["Tables"]["users"]["Row"]["created_at"];
   updatedAt: Database["public"]["Tables"]["users"]["Row"]["updated_at"];
@@ -38,7 +40,7 @@ export interface UserDto {
 /** Create user **/
 export interface CreateUserCommand {
   email: Database["public"]["Tables"]["users"]["Insert"]["email"];
-  role: Extract<UserRole, "trainer" | "client">;
+  role: UserRole; // "admin" | "trainer" | "client"
   firstName: string;
   lastName: string;
   trainerId?: string; // required when role='client'
@@ -49,7 +51,9 @@ export interface UpdateUserCommand {
   email?: Database["public"]["Tables"]["users"]["Insert"]["email"];
   firstName?: string;
   lastName?: string;
-  isActive?: boolean;
+  phone?: string;
+  dateOfBirth?: string;
+  status?: Database["public"]["Tables"]["users"]["Row"]["status"];
   trainerId?: string;
 }
 

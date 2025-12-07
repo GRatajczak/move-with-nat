@@ -34,8 +34,8 @@ export const ClientSelect = ({ value, onChange, disabled = false, className, all
     );
   }
 
-  // Filter only active clients (those who completed their profile)
-  const activeClients = clients.filter((client) => client.firstName && client.lastName && client.isActive);
+  // Filter only active clients (status === 'active')
+  const activeClients = clients.filter((client) => client.status === "active");
 
   if (activeClients.length === 0) {
     return (
@@ -56,7 +56,7 @@ export const ClientSelect = ({ value, onChange, disabled = false, className, all
         {activeClients.map((client) => (
           <SelectItem key={client.id} value={client.id}>
             {client.firstName} {client.lastName}
-            {!client.isActive && " (nieaktywny)"}
+            {client.status !== "active" && ` (${client.status === "pending" ? "oczekujący" : "zawieszony"})`}
           </SelectItem>
         ))}
       </SelectContent>

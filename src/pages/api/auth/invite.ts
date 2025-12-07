@@ -12,7 +12,7 @@ import { handleAPIError } from "../../../lib/api-helpers";
  *
  * @description
  * Sends an activation email with a token to the specified user.
- * The user must already exist in the database with is_active=false.
+ * The user must already exist in the database with status='pending' or status='suspended'.
  * Can be used to resend activation emails.
  *
  * @body {InviteUserCommand}
@@ -46,4 +46,3 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return handleAPIError(error);
   }
 };
-

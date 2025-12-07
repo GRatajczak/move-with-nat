@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Plus, X } from "lucide-react";
-import { TrainerSelect } from "@/components/plans/TrainerSelect";
 import type { UsersFilters, UsersFilterToolbarProps } from "@/interface/users";
 
 export const UsersFilterToolbar = ({
@@ -85,13 +84,6 @@ export const UsersFilterToolbar = ({
             <SelectItem value="suspended">Zawieszony</SelectItem>
           </SelectContent>
         </Select>
-
-        {/* Trainer Filter */}
-        <TrainerSelect
-          value={filters.trainerId || ""}
-          onChange={(value) => onFiltersChange({ trainerId: value || undefined, page: 1 })}
-          disabled={isLoading}
-        />
 
         {/* Clear Filters Button */}
         {hasActiveFilters && (

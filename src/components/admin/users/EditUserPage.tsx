@@ -1,4 +1,3 @@
-import React from "react";
 import { EditUserForm } from "./EditUserForm";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
@@ -17,36 +16,17 @@ const EditUserContent = ({ userId }: { userId: string }) => {
     firstName: string;
     lastName: string;
     role: "administrator" | "trainer" | "client";
-    isActive: boolean;
-    trainerId?: string;
+    status: "pending" | "active" | "suspended";
+    trainerId?: string | null;
   }) => {
-    // Map form role to API role
-    const mapRoleToAPI = (role: "administrator" | "trainer" | "client"): "trainer" | "client" | undefined => {
-      if (role === "administrator") {
-        // Skip role update for admin (or handle differently)
-        return undefined;
-      }
-      return role;
-    };
-
     const command: UpdateUserCommand = {
       firstName: data.firstName,
       lastName: data.lastName,
-      isActive: data.isActive,
-      trainerId: data.trainerId,
+      status: data.status,
+      trainerId: data.trainerId || undefined,
     };
 
-    // Only include role if it changed and is not admin
-    const apiRole = mapRoleToAPI(data.role);
-    if (apiRole) {
-      // Note: Role changes might need special handling in production
-      // For now, we're not changing roles via edit
-    }
-
     await updateUser({ userId, command });
-
-    // Navigate back to user detail after successful update
-    window.location.href = `/admin/users/${userId}`;
   };
 
   const handleCancel = () => {
@@ -98,11 +78,7 @@ const EditUserContent = ({ userId }: { userId: string }) => {
   );
 };
 
-interface EditUserPageProps {
-  userId: string;
-}
-
-export const EditUserPage: React.FC<EditUserPageProps> = ({ userId }) => {
+export const EditUserPage = ({ userId }: { userId: string }) => {
   return (
     <QueryProvider>
       <EditUserContent userId={userId} />

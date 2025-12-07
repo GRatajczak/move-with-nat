@@ -3,6 +3,7 @@ import { useUser } from "@/hooks/useUser";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { useUsersList } from "@/hooks/useUsersList";
+import { useResendInvite } from "@/hooks/useResendInvite";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -27,6 +28,7 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
   const { data: user, isLoading, error } = useUser(userId);
   const { mutateAsync: deleteUser, isPending: isDeleting } = useDeleteUser();
   const { mutateAsync: updateUser, isPending: isUpdating } = useUpdateUser();
+  const { mutateAsync: resendInvite, isPending: isResendingInvite } = useResendInvite();
 
   // Fetch trainer details if user is a client with assigned trainer
   const { data: trainer, isLoading: isLoadingTrainer } = useUser(user?.trainerId || "", {
@@ -65,12 +67,34 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
     if (!user) return;
 
     try {
+      const newStatus = user.status === "active" ? "suspended" : "active";
       await updateUser({
         userId: user.id,
-        command: { isActive: !user.isActive },
+        command: { status: newStatus },
       });
-      toast.success(user.isActive ? "Użytkownik został dezaktywowany" : "Użytkownik został aktywowany");
+      toast.success(newStatus === "active" ? "Użytkownik został aktywowany" : "Użytkownik został zawieszony");
       setIsToggleActiveModalOpen(false);
+    } catch {
+      // Error is handled by the hook via toast
+    }
+  };
+
+  const handleResendInvite = async () => {
+    if (!user) return;
+
+    // Map user role to invite API role (admin is not supported by invite API)
+    const inviteRole = user.role === "admin" ? null : user.role === "client" ? "client" : "trainer";
+
+    if (!inviteRole) {
+      toast.error("Nie można wysłać zaproszenia dla administratora przez ten interfejs");
+      return;
+    }
+
+    try {
+      await resendInvite({
+        email: user.email,
+        role: inviteRole,
+      });
     } catch {
       // Error is handled by the hook via toast
     }
@@ -120,16 +144,30 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
     }
   };
 
-  const getStatusBadgeVariant = (isActive: boolean) => {
-    if (!isActive) return "destructive";
-    if (!user.firstName || !user.lastName) return "outline";
-    return "default";
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case "suspended":
+        return "destructive";
+      case "pending":
+        return "outline";
+      case "active":
+        return "default";
+      default:
+        return "outline";
+    }
   };
 
-  const getStatusLabel = (isActive: boolean) => {
-    if (!isActive) return "Zawieszony";
-    if (!user.firstName || !user.lastName) return "Oczekujący";
-    return "Aktywny";
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "suspended":
+        return "Zawieszony";
+      case "pending":
+        return "Oczekujący";
+      case "active":
+        return "Aktywny";
+      default:
+        return status;
+    }
   };
 
   const getInitials = () => {
@@ -163,7 +201,7 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
               </h1>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant={getRoleBadgeVariant(user.role)}>{getRoleLabel(user.role)}</Badge>
-                <Badge variant={getStatusBadgeVariant(user.isActive)}>{getStatusLabel(user.isActive)}</Badge>
+                <Badge variant={getStatusBadgeVariant(user.status)}>{getStatusLabel(user.status)}</Badge>
               </div>
             </div>
           </div>
@@ -174,9 +212,15 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
             <Pencil className="mr-2 h-4 w-4" />
             Edytuj
           </Button>
+          {user.status === "pending" && (user.role === "trainer" || user.role === "client") && (
+            <Button variant="outline" onClick={handleResendInvite} disabled={isResendingInvite}>
+              <Mail className="mr-2 h-4 w-4" />
+              {isResendingInvite ? "Wysyłanie..." : "Wyślij zaproszenie"}
+            </Button>
+          )}
           <Button variant="outline" onClick={() => setIsToggleActiveModalOpen(true)}>
-            {user.isActive ? <UserX className="mr-2 h-4 w-4" /> : <UserCheck className="mr-2 h-4 w-4" />}
-            {user.isActive ? "Dezaktywuj" : "Aktywuj"}
+            {user.status === "active" ? <UserX className="mr-2 h-4 w-4" /> : <UserCheck className="mr-2 h-4 w-4" />}
+            {user.status === "active" ? "Zawieś" : "Aktywuj"}
           </Button>
           <Button variant="destructive" onClick={() => setIsDeleteModalOpen(true)}>
             <Trash className="mr-2 h-4 w-4" />
@@ -340,12 +384,8 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
                         </p>
                         <p className="text-xs text-muted-foreground truncate">{client.email}</p>
                       </div>
-                      <Badge variant={client.isActive ? "default" : "destructive"} className="text-xs">
-                        {client.isActive && client.firstName && client.lastName
-                          ? "Aktywny"
-                          : !client.isActive
-                            ? "Zawieszony"
-                            : "Oczekujący"}
+                      <Badge variant={getStatusBadgeVariant(client.status)} className="text-xs">
+                        {getStatusLabel(client.status)}
                       </Badge>
                     </div>
                   ))}
@@ -392,16 +432,16 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {user.isActive ? "Dezaktywować użytkownika?" : "Aktywować użytkownika?"}
+              {user.status === "active" ? "Zawiesić użytkownika?" : "Aktywować użytkownika?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {user.isActive ? (
+              {user.status === "active" ? (
                 <>
                   Użytkownik{" "}
                   <strong>
                     {user.firstName} {user.lastName}
                   </strong>{" "}
-                  zostanie dezaktywowany i utraci dostęp do systemu.
+                  zostanie zawieszony i utraci dostęp do systemu.
                 </>
               ) : (
                 <>
@@ -417,7 +457,7 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isUpdating}>Anuluj</AlertDialogCancel>
             <AlertDialogAction onClick={handleToggleActiveConfirm} disabled={isUpdating}>
-              {isUpdating ? "Zapisywanie..." : user.isActive ? "Dezaktywuj" : "Aktywuj"}
+              {isUpdating ? "Zapisywanie..." : user.status === "active" ? "Zawieś" : "Aktywuj"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

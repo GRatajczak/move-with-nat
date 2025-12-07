@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditUserFormSchema } from "@/lib/validation";
+import { EditUserFormSchema } from "@/lib/validation/userSchema";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { TrainerSelect } from "@/components/plans/TrainerSelect";
 import { Loader2 } from "lucide-react";
 import type { EditUserFormProps } from "@/interface";
 import type { EditUserFormData } from "@/types/users";
+import { toast } from "sonner";
 
 export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUserFormProps) => {
   // Map DB role to form role
@@ -24,7 +24,7 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
     firstName: user.firstName || "",
     lastName: user.lastName || "",
     role: mapRoleToForm(user.role),
-    isActive: user.isActive,
+    status: user.status,
     trainerId: user.trainerId || undefined,
   };
 
@@ -43,17 +43,17 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
     }
   }, [selectedRole, form]);
 
-  // Warn on unsaved changes
+  // Warn on unsaved changes (but not during submission)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (form.formState.isDirty) {
+      if (form.formState.isDirty && !isSubmitting) {
         e.preventDefault();
         e.returnValue = "";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [form.formState.isDirty]);
+  }, [form.formState.isDirty, isSubmitting]);
 
   const handleCancel = () => {
     if (form.formState.isDirty) {
@@ -66,7 +66,14 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
   };
 
   const handleFormSubmit = async (data: EditUserFormData) => {
-    await onSubmit(data);
+    try {
+      await onSubmit(data);
+      // Reset form with submitted values to mark as not dirty
+      // This prevents the "Leave site" warning after successful submission
+      form.reset(data);
+    } catch {
+      toast.error("Nie udało się zaktualizować użytkownika");
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -155,19 +162,27 @@ export const EditUserForm = ({ user, onSubmit, onCancel, isSubmitting }: EditUse
           )}
         />
 
-        {/* Active Status Field */}
+        {/* Status Field */}
         <FormField
           control={form.control}
-          name="isActive"
+          name="status"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Status aktywny</FormLabel>
-                <FormDescription>Czy użytkownik ma dostęp do systemu?</FormDescription>
-              </div>
-              <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} disabled={isSubmitting} />
-              </FormControl>
+            <FormItem>
+              <FormLabel>Status *</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value} disabled={isSubmitting}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Wybierz status" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="pending">Oczekujący</SelectItem>
+                  <SelectItem value="active">Aktywny</SelectItem>
+                  <SelectItem value="suspended">Zawieszony</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>Status konta użytkownika w systemie.</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />

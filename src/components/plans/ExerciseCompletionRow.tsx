@@ -60,8 +60,7 @@ export const ExerciseCompletionRow = ({
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <button onClick={onPreviewClick} className="text-base font-medium hover:underline text-left">
-              {/* Exercise name will be denormalized from API */}
-              Ćwiczenie {exercise.exerciseId.slice(0, 8)}
+              {exercise.exercise?.name}
             </button>
             <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={onPreviewClick}>
               <Eye className="h-4 w-4" />

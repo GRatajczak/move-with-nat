@@ -75,8 +75,6 @@ export const PlanExerciseRow = ({ exercise, index, onRemove, onUpdate, disabled 
     }
   };
 
-  console.log("exercise", exercise);
-
   return (
     <>
       <Card ref={setNodeRef} style={style} className="p-4">

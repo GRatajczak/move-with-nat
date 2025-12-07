@@ -144,7 +144,7 @@ export async function createUser(
     id: authUser.user.id, // Use the ID from auth.users
     email: command.email.toLowerCase(),
     role: dbRole,
-    is_active: false,
+    status: "pending",
     first_name: command.firstName,
     last_name: command.lastName,
   };
@@ -235,18 +235,7 @@ export async function listUsers(
 
   // Apply status filter
   if (status) {
-    if (status === "suspended") {
-      dbQuery = dbQuery.eq("is_active", false);
-    } else if (status === "active") {
-      dbQuery = dbQuery.eq("is_active", true);
-      // Active means they have completed their profile
-      dbQuery = dbQuery.not("first_name", "is", null);
-      dbQuery = dbQuery.not("last_name", "is", null);
-    } else if (status === "pending") {
-      dbQuery = dbQuery.eq("is_active", true);
-      // Pending means they haven't completed their profile
-      dbQuery = dbQuery.or("first_name.is.null,last_name.is.null");
-    }
+    dbQuery = dbQuery.eq("status", status);
   }
 
   // Apply pagination
@@ -388,9 +377,9 @@ export async function updateUser(
       throw new ForbiddenError("Access denied");
     }
 
-    // Trainers cannot change isActive or trainerId
-    if (command.isActive !== undefined || command.trainerId !== undefined) {
-      throw new ForbiddenError("Only administrators can change active status or trainer assignment");
+    // Trainers cannot change status or trainerId
+    if (command.status !== undefined || command.trainerId !== undefined) {
+      throw new ForbiddenError("Only administrators can change status or trainer assignment");
     }
   }
 
@@ -422,10 +411,18 @@ export async function updateUser(
     updateData.last_name = command.lastName;
   }
 
-  // Only admins can change is_active and trainer assignment
+  if (command.phone !== undefined) {
+    updateData.phone = command.phone;
+  }
+
+  if (command.dateOfBirth !== undefined) {
+    updateData.date_of_birth = command.dateOfBirth;
+  }
+
+  // Only admins can change status and trainer assignment
   if (isAdmin(currentUser)) {
-    if (command.isActive !== undefined) {
-      updateData.is_active = command.isActive;
+    if (command.status !== undefined) {
+      updateData.status = command.status;
     }
 
     if (command.trainerId !== undefined) {

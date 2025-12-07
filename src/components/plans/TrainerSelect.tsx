@@ -41,8 +41,8 @@ export const TrainerSelect = ({
     );
   }
 
-  // Filter only active trainers
-  const activeTrainers = trainers.filter((trainer) => trainer.firstName && trainer.lastName && trainer.isActive);
+  // Filter only active trainers (status === 'active')
+  const activeTrainers = trainers.filter((trainer) => trainer.status === "active");
 
   if (activeTrainers.length === 0) {
     return (

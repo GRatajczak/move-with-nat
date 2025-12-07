@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserActionMenu } from "./UserActionMenu";
-import type { UserDto, UsersTableProps } from "@/interface";
+import type { UsersTableProps } from "@/interface";
 
 export const UsersTable = ({
   users,
@@ -52,16 +52,30 @@ export const UsersTable = ({
     }
   };
 
-  const getStatusBadgeVariant = (isActive: boolean, user: UserDto) => {
-    if (!isActive) return "destructive";
-    if (!user.firstName || !user.lastName) return "outline";
-    return "default";
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case "suspended":
+        return "destructive";
+      case "pending":
+        return "outline";
+      case "active":
+        return "default";
+      default:
+        return "outline";
+    }
   };
 
-  const getStatusLabel = (isActive: boolean, user: UserDto) => {
-    if (!isActive) return "Zawieszony";
-    if (!user.firstName || !user.lastName) return "Oczekujący";
-    return "Aktywny";
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "suspended":
+        return "Zawieszony";
+      case "pending":
+        return "Oczekujący";
+      case "active":
+        return "Aktywny";
+      default:
+        return status;
+    }
   };
 
   const getInitials = (firstName: string | null, lastName: string | null, email: string) => {
@@ -109,9 +123,7 @@ export const UsersTable = ({
                 <Badge variant={getRoleBadgeVariant(user.role)}>{getRoleLabel(user.role)}</Badge>
               </TableCell>
               <TableCell>
-                <Badge variant={getStatusBadgeVariant(user.isActive, user)}>
-                  {getStatusLabel(user.isActive, user)}
-                </Badge>
+                <Badge variant={getStatusBadgeVariant(user.status)}>{getStatusLabel(user.status)}</Badge>
               </TableCell>
               <TableCell className="text-muted-foreground text-sm">
                 {user.trainerId ? (

@@ -32,6 +32,14 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 DROP TYPE IF EXISTS user_role;
 CREATE TYPE user_role AS ENUM ('admin', 'trainer', 'client');
 
+-- Create user status enum
+DROP TYPE IF EXISTS user_status;
+CREATE TYPE user_status AS ENUM ('pending', 'active', 'suspended');
+
+-- Create user status enum
+DROP TYPE IF EXISTS user_status;
+CREATE TYPE user_status AS ENUM ('pending', 'active', 'suspended');
+
 -- ----------------------------------------------------------------------------
 -- TABLES
 -- ----------------------------------------------------------------------------
@@ -45,7 +53,7 @@ CREATE TABLE users (
   first_name VARCHAR(50),
   last_name VARCHAR(50),
   trainer_id UUID REFERENCES users(id) ON DELETE RESTRICT,
-  is_active BOOLEAN NOT NULL DEFAULT FALSE,
+  status user_status NOT NULL DEFAULT 'pending',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

@@ -41,6 +41,7 @@ export const PendingActivationsWidget = ({ users, isLoading, onResendInvite }: P
                 <Button
                   variant="outline"
                   size="sm"
+                  className="ml-2"
                   disabled={resendingId === user.id}
                   onClick={() => handleResend(user)}
                 >

@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { supabaseClient } from "@/db/supabase.client";
 
 interface ChangePasswordParams {
   currentPassword: string;
@@ -8,31 +7,26 @@ interface ChangePasswordParams {
 }
 
 async function changePassword(params: ChangePasswordParams): Promise<void> {
-  const {
-    data: { user },
-    error: getUserError,
-  } = await supabaseClient.auth.getUser();
-
-  if (getUserError || !user?.email) {
-    throw new Error("Nie znaleziono użytkownika");
-  }
-
-  const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-    email: user.email,
-    password: params.currentPassword,
+  const response = await fetch("/api/auth/change-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params),
   });
 
-  if (signInError) {
-    throw new Error("Obecne hasło jest nieprawidłowe");
+  if (!response.ok) {
+    let message = "Nie udało się zmienić hasła";
+    try {
+      const error = await response.json();
+      if (error?.message) {
+        message = error.message;
+      }
+    } catch {
+      // ignore json parse errors
+    }
+    throw new Error(message);
   }
 
-  const { error: updateError } = await supabaseClient.auth.updateUser({
-    password: params.newPassword,
-  });
-
-  if (updateError) {
-    throw new Error(updateError.message || "Nie udało się zmienić hasła");
-  }
+  return response.json();
 }
 
 export function useChangePassword() {

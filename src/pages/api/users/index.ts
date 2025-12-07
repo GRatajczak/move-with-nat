@@ -14,7 +14,8 @@ export const prerender = false;
  *
  * Request Body:
  * - email: string (required) - User email address
- * - role: "trainer" | "client" (required) - User role
+Użytkownik utworzony
+ * - role: "admin" | "trainer" | "client" (required) - User role
  * - firstName: string (required) - User's first name
  * - lastName: string (required) - User's last name
  * - trainerId: string (required if role="client") - ID of assigned trainer

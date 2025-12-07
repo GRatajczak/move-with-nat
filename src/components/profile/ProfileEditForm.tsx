@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
 
 import type { ProfileEditFormData, ProfileEditFormProps } from "@/interface";
-import { ProfileEditFormSchema } from "@/lib/validation";
+import { ProfileEditFormSchema } from "@/lib/validation/userSchema";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

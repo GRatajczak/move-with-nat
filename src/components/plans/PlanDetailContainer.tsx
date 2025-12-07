@@ -19,7 +19,7 @@ import { Breadcrumbs } from "../navigation/Breadcrumbs";
 import type { PlanDetailContainerProps, PlanViewModel, DuplicatePlanData } from "@/interface/plans";
 import { QueryProvider } from "../QueryProvider";
 
-const PlanDetailContent: React.FC<PlanDetailContainerProps> = ({ planId, userRole = "trainer" }) => {
+const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainerProps) => {
   const { data: plan, isLoading: isPlanLoading, error: planError } = usePlan(planId);
   const { data: completionData, isLoading: isCompletionLoading } = usePlanCompletion(planId);
   const { mutateAsync: toggleVisibility } = useTogglePlanVisibility();
@@ -40,12 +40,7 @@ const PlanDetailContent: React.FC<PlanDetailContainerProps> = ({ planId, userRol
   const handleToggleVisibility = async () => {
     if (!plan) return;
 
-    try {
-      await toggleVisibility({ planId, isHidden: !plan.isHidden });
-      toast.success("Widoczność zmieniona");
-    } catch {
-      toast.error("Nie udało się zmienić widoczności");
-    }
+    await toggleVisibility({ planId, isHidden: !plan.isHidden });
   };
 
   const handleDuplicate = (plan: PlanViewModel) => {

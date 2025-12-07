@@ -56,7 +56,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
  * - email: string - New email address
  * - firstName: string - New first name
  * - lastName: string - New last name
- * - isActive: boolean - Active status (admin only)
+ * - status: "pending" | "active" | "suspended" - User status (admin only)
  * - trainerId: string - New trainer ID (admin only, for clients)
  *
  * Authorization:

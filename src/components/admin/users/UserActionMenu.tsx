@@ -10,8 +10,9 @@ import { MoreHorizontal, Pencil, Trash, UserCheck, UserX, Mail } from "lucide-re
 import type { UserActionMenuProps } from "@/interface";
 
 export const UserActionMenu = ({ user, onEdit, onToggleActive, onResendInvite, onDelete }: UserActionMenuProps) => {
-  const isPending = user.isActive && (!user.firstName || !user.lastName);
-  const isActive = user.isActive && user.firstName && user.lastName;
+  const isPending = user.status === "pending";
+  const isActive = user.status === "active";
+  const isSuspended = user.status === "suspended";
 
   return (
     <DropdownMenu>

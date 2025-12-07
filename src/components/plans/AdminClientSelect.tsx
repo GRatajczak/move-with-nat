@@ -34,8 +34,8 @@ export const AdminClientSelect = ({ value, onChange, disabled = false }: AdminCl
     );
   }
 
-  // Filter only active clients (those who completed their profile)
-  const activeClients = clients.filter((client) => client.firstName && client.lastName && client.isActive);
+  // Filter only active clients (status === 'active')
+  const activeClients = clients.filter((client) => client.status === "active");
 
   if (activeClients.length === 0) {
     return (
@@ -54,7 +54,7 @@ export const AdminClientSelect = ({ value, onChange, disabled = false }: AdminCl
   };
 
   return (
-    <Select className="w-full" value={value || "none"} onValueChange={handleValueChange} disabled={disabled}>
+    <Select value={value || "none"} onValueChange={handleValueChange} disabled={disabled}>
       <SelectTrigger>
         <SelectValue placeholder="Wybierz podopiecznego (opcjonalnie)" />
       </SelectTrigger>

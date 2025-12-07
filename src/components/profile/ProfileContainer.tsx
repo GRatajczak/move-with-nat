@@ -12,11 +12,10 @@ import { AlertCircle } from "lucide-react";
 import { QueryProvider } from "@/components/QueryProvider";
 
 function ProfileContent({ userId, userRole }: ProfileContainerProps) {
-  const userQuery = useUser(userId);
-
-  const trainerQuery = useTrainer(userRole === "client" && userQuery.data?.trainerId ? userQuery.data.trainerId : null);
-
-  if (userQuery.isLoading) {
+  const { data: user, isLoading, isError } = useUser(userId);
+  const trainerId = user?.role === "client" ? (user.trainerId ?? null) : null;
+  const trainerQuery = useTrainer(trainerId);
+  if (isLoading) {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
         <div className="h-16 w-1/2 rounded-lg bg-muted animate-pulse" />
@@ -54,24 +53,21 @@ function ProfileContent({ userId, userRole }: ProfileContainerProps) {
     );
   }
 
-  if (userQuery.isError) {
-    const message = (userQuery.error as Error | undefined)?.message || "Wystąpił nieoczekiwany błąd";
+  if (isError) {
+    const message = "Wystąpił nieoczekiwany błąd";
 
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4">
         <AlertCircle className="h-12 w-12 text-destructive" />
         <p className="text-lg font-semibold">Nie udało się załadować profilu</p>
         <p className="text-muted-foreground">{message}</p>
-        <Button onClick={() => userQuery.refetch()}>Spróbuj ponownie</Button>
       </div>
     );
   }
 
-  if (!userQuery.data) {
+  if (!user) {
     return null;
   }
-
-  const user = userQuery.data;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -162,7 +158,7 @@ function ProfileContent({ userId, userRole }: ProfileContainerProps) {
 export function ProfileContainer(props: ProfileContainerProps) {
   return (
     <QueryProvider>
-      <ProfileContent {...props} />
+      <ProfileContent userId={props.userId} userRole={props.userRole} />
     </QueryProvider>
   );
 }

@@ -72,13 +72,13 @@ const CreateExerciseContent = () => {
                 <CheckCircle2 className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <DialogTitle>Ćwiczenie utworzone</DialogTitle>
+                <DialogTitle className="mb-2">Ćwiczenie utworzone</DialogTitle>
                 <DialogDescription>Nowe ćwiczenie zostało pomyślnie dodane do biblioteki.</DialogDescription>
               </div>
             </div>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
-            <Button onClick={handleGoBack} className="w-full sm:w-auto">
+            <Button onClick={handleGoBack} className="ml-auto w-full sm:w-auto">
               Wróć do listy ćwiczeń
             </Button>
           </DialogFooter>

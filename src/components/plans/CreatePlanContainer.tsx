@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCreatePlan } from "@/hooks/plans/useCreatePlan";
 import { PlanForm } from "./PlanForm";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import type { PlanFormSchema } from "@/lib/validation/planFormSchema";
 import type { CreatePlanContainerProps } from "@/interface/plans";
 import { Breadcrumbs } from "../navigation/Breadcrumbs";
 import { QueryProvider } from "../QueryProvider";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, userRole = "trainer" }) => {
   const { mutateAsync: createPlan, isPending } = useCreatePlan();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const baseUrl = `/${userRole}`;
 
   const handleSubmit = async (data: PlanFormSchema) => {
     try {
-      const newPlan = await createPlan({
+      await createPlan({
         name: data.name,
         description: data.description || null,
         clientId: data.clientId,
@@ -32,9 +41,7 @@ const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, user
         })),
       });
 
-      toast.success("Plan utworzony pomyślnie");
-      // Navigate to plan detail page
-      window.location.href = `${baseUrl}/plans/${newPlan.id}`;
+      setShowSuccessModal(true);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Nieznany błąd";
       toast.error(`Nie udało się utworzyć planu: ${errorMessage}`);
@@ -42,6 +49,10 @@ const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, user
   };
 
   const handleCancel = () => {
+    window.location.href = `${baseUrl}/plans`;
+  };
+
+  const handleGoBack = () => {
     window.location.href = `${baseUrl}/plans`;
   };
 
@@ -70,6 +81,27 @@ const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, user
 
       {/* Form */}
       <PlanForm plan={null} onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isPending} mode="create" />
+
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle2 className="h-6 w-6 text-green-600" />
+              </div>
+              <div>
+                <DialogTitle>Plan utworzony</DialogTitle>
+                <DialogDescription>Nowy plan treningowy został pomyślnie utworzony.</DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <Button onClick={handleGoBack} className="w-full sm:w-auto">
+              Wróć do listy planów
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

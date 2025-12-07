@@ -10,5 +10,5 @@ if (!user) {
 ---
 
 <TrainerLayout title="Profil">
-  <ProfileContainer userId={user.id} userRole={user.role} />
+  <ProfileContainer client:load userId={user.id} userRole={user.role} />
 </TrainerLayout>

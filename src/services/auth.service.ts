@@ -107,7 +107,7 @@ export async function sendInvite(supabase: SupabaseClient, command: InviteUserCo
   // Fetch user by email
   const { data: user, error } = await supabase
     .from("users")
-    .select("id, email, first_name, is_active")
+    .select("id, email, first_name, status")
     .eq("email", command.email.toLowerCase())
     .single();
 
@@ -118,7 +118,7 @@ export async function sendInvite(supabase: SupabaseClient, command: InviteUserCo
     }
 
     // Check if already active
-    if (user.is_active) {
+    if (user.status === "active") {
       throw new ConflictError("User is already active");
     }
   } else {
@@ -127,7 +127,7 @@ export async function sendInvite(supabase: SupabaseClient, command: InviteUserCo
       throw new NotFoundError("User must be created before sending invite");
     }
 
-    if (user.is_active) {
+    if (user.status === "active") {
       throw new ConflictError("User is already active");
     }
   }
@@ -166,7 +166,7 @@ export async function activateAccount(
   // Fetch user
   const { data: user, error: fetchError } = await supabase
     .from("users")
-    .select("id, is_active")
+    .select("id, status")
     .eq("id", decoded.userId)
     .single();
 
@@ -175,15 +175,15 @@ export async function activateAccount(
   }
 
   // Check if already activated
-  if (user.is_active) {
+  if (user.status === "active") {
     throw new ConflictError("Account already activated");
   }
 
-  // Activate user (set is_active = true)
+  // Activate user (set status = 'active')
   const { error } = await supabase
     .from("users")
     .update({
-      is_active: true,
+      status: "active",
       updated_at: new Date().toISOString(),
     })
     .eq("id", user.id);
@@ -216,12 +216,12 @@ export async function requestPasswordReset(
   // Fetch user (but don't reveal if exists)
   const { data: user } = await supabase
     .from("users")
-    .select("id, email, first_name, is_active")
+    .select("id, email, first_name, status")
     .eq("email", command.email.toLowerCase())
     .single();
 
   // Always return success to prevent email enumeration
-  if (!user || !user.is_active) {
+  if (!user || user.status !== "active") {
     // Log attempt but return success
     console.log(`Password reset requested for non-existent or inactive email: ${command.email}`);
     return { message: "If your email exists in our system, you will receive a password reset link" };

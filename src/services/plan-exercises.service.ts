@@ -10,10 +10,10 @@ import type {
   CompletionRecordDto,
   PlanCompletionDto,
   AuthenticatedUser,
-  PlanExerciseRow,
 } from "../interface";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError, ConflictError } from "../lib/errors";
 import { isValidUUID } from "../lib/api-helpers";
+import type { PlanExerciseRow } from "@/types/db";
 
 /**
  * Add a single exercise to an existing training plan
@@ -399,6 +399,7 @@ export async function getPlanCompletion(
  */
 function mapPlanExerciseToDto(planExercise: PlanExerciseRow): PlanExerciseDto {
   return {
+    id: planExercise.id,
     exerciseId: planExercise.exercise_id,
     sortOrder: planExercise.exercise_order,
     sets: 0, // These fields are not stored in DB yet, default to 0

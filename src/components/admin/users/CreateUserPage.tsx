@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { CreateUserForm } from "./CreateUserForm";
 import { useCreateUser } from "@/hooks/useCreateUser";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { CreateUserCommand } from "@/interface";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const CreateUserContent: React.FC = () => {
   const { mutateAsync: createUser, isPending: isSubmitting } = useCreateUser();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSubmit = async (data: {
     email: string;
@@ -17,12 +26,10 @@ const CreateUserContent: React.FC = () => {
     role: "administrator" | "trainer" | "client";
     trainerId?: string;
   }) => {
-    // Map form role to API role
-    const mapRoleToAPI = (role: "administrator" | "trainer" | "client"): "trainer" | "client" => {
+    // Map form role to API role (form uses "administrator", API uses "admin")
+    const mapRoleToAPI = (role: "administrator" | "trainer" | "client"): "admin" | "trainer" | "client" => {
       if (role === "administrator") {
-        // For now, we can't create admin users via this form
-        // This should be handled differently in production
-        return "trainer";
+        return "admin";
       }
       return role;
     };
@@ -37,11 +44,14 @@ const CreateUserContent: React.FC = () => {
 
     await createUser(command);
 
-    // Navigate back to users list after successful creation
-    window.location.href = "/admin/users";
+    setShowSuccessModal(true);
   };
 
   const handleCancel = () => {
+    window.location.href = "/admin/users";
+  };
+
+  const handleGoBack = () => {
     window.location.href = "/admin/users";
   };
 
@@ -67,6 +77,30 @@ const CreateUserContent: React.FC = () => {
       <div className="md:px-0 px-4">
         <CreateUserForm onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isSubmitting} />
       </div>
+
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 min-w-12 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle2 className="h-6 w-6 text-green-600" />
+              </div>
+              <div>
+                <DialogTitle className="mb-2">Użytkownik utworzony</DialogTitle>
+                <DialogDescription>
+                  Nowe konto użytkownika zostało pomyślnie utworzone. Link aktywacyjny został wysłany na podany adres
+                  email.
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <Button onClick={handleGoBack} className="ml-auto w-full sm:w-auto">
+              Wróć do listy użytkowników
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

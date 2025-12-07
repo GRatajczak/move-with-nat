@@ -32,7 +32,7 @@ export const AdminPlanForm = ({ plan, onSubmit, onCancel, isSubmitting, mode }: 
       reps: ex.reps,
       tempo: ex.tempo || "3-0-3",
       defaultWeight: ex.defaultWeight || null,
-      exercise: undefined, // Will be populated when needed
+      exercise: ex.exercise, // Preserve exercise details from plan
     })) || []
   );
 
