@@ -61,7 +61,7 @@ function TrainerInfoChip({ name, avatar }: { name: string; avatar?: string }) {
 export function PlanCard({ plan }: ClientPlanCardProps) {
   const formattedDate = new Intl.DateTimeFormat("pl-PL", {
     day: "numeric",
-    month: "long",
+    month: "numeric",
     year: "numeric",
   }).format(plan.createdAt);
 
@@ -77,7 +77,9 @@ export function PlanCard({ plan }: ClientPlanCardProps) {
     >
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">{plan.name}</CardTitle>
+          <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors text-lg font-semibold">
+            {plan.name}
+          </CardTitle>
           {isCompleted && (
             <Badge variant="default" className="bg-green-500 hover:bg-green-600 shrink-0">
               Ukończony

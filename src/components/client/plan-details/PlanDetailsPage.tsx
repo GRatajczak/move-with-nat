@@ -1,4 +1,3 @@
-import React from "react";
 import { usePlan } from "@/hooks/plans/usePlan";
 import { usePlanCompletion } from "@/hooks/plans/usePlanCompletion";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -7,11 +6,7 @@ import { ChevronLeft, PlayCircle, CheckCircle, Circle } from "lucide-react";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { PlanExerciseDto } from "@/interface/plans";
 
-interface PlanDetailsPageProps {
-  planId: string;
-}
-
-const PlanDetailsContent = ({ planId }: PlanDetailsPageProps) => {
+const PlanDetailsContent = ({ planId }: { planId: string }) => {
   const { data: plan, isLoading, error } = usePlan(planId);
 
   const { data: completionData } = usePlanCompletion(planId);
@@ -101,7 +96,7 @@ const PlanDetailsContent = ({ planId }: PlanDetailsPageProps) => {
   );
 };
 
-export const PlanDetailsPage = (props: PlanDetailsPageProps) => {
+export const PlanDetailsPage = (props: { planId: string }) => {
   return (
     <QueryProvider>
       <PlanDetailsContent {...props} />

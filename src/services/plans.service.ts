@@ -182,6 +182,7 @@ export async function listPlans(
   // Fetch exercises for all plans
   const planIds = (data || []).map((plan) => plan.id);
   const exercisesByPlan: Record<string, PlanExerciseDto[]> = {};
+  const completionStatsByPlan: Record<string, { completed: number; total: number }> = {};
 
   if (planIds.length > 0) {
     // Build select query based on includeExerciseDetails flag
@@ -196,13 +197,20 @@ export async function listPlans(
     if (exError) {
       console.error("Failed to fetch plan exercises:", exError);
     } else {
-      // Group exercises by plan ID
+      // Group exercises by plan ID and calculate completion stats
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (planExercises || []).forEach((pe: any) => {
         if (!exercisesByPlan[pe.plan_id]) {
           exercisesByPlan[pe.plan_id] = [];
+          completionStatsByPlan[pe.plan_id] = { completed: 0, total: 0 };
         }
         exercisesByPlan[pe.plan_id].push(mapPlanExerciseToDTO(pe));
+
+        // Count completion stats
+        completionStatsByPlan[pe.plan_id].total += 1;
+        if (pe.is_completed) {
+          completionStatsByPlan[pe.plan_id].completed += 1;
+        }
       });
     }
   }
@@ -229,11 +237,43 @@ export async function listPlans(
     }
   }
 
-  // Map to DTOs with exercises and client data
-  const planDTOs = (data || []).map((plan) => ({
-    ...mapPlanToDTO(plan, plan.client_id ? clientsByIds[plan.client_id] : null),
-    exercises: exercisesByPlan[plan.id] || [],
-  }));
+  // Fetch trainer data for all plans with trainerId
+  const trainerIds = [...new Set((data || []).map((plan) => plan.trainer_id).filter(Boolean))] as string[];
+  const trainersByIds: Record<string, { first_name: string | null; last_name: string | null }> = {};
+
+  if (trainerIds.length > 0) {
+    const { data: trainers, error: trainersError } = await supabase
+      .from("users")
+      .select("id, first_name, last_name")
+      .in("id", trainerIds);
+
+    if (trainersError) {
+      console.error("Failed to fetch trainer data:", trainersError);
+    } else {
+      (trainers || []).forEach((trainer) => {
+        trainersByIds[trainer.id] = {
+          first_name: trainer.first_name,
+          last_name: trainer.last_name,
+        };
+      });
+    }
+  }
+
+  // Map to DTOs with exercises, client data, trainer data, and completion stats
+  const planDTOs = (data || []).map((plan) => {
+    const baseDto = mapPlanToDTO(plan, plan.client_id ? clientsByIds[plan.client_id] : null);
+    const trainerData = plan.trainer_id ? trainersByIds[plan.trainer_id] : null;
+    const completionStats = completionStatsByPlan[plan.id] || { completed: 0, total: 0 };
+
+    return {
+      ...baseDto,
+      exercises: exercisesByPlan[plan.id] || [],
+      // Add trainer data to the DTO
+      trainerName: trainerData ? `${trainerData.first_name || ""} ${trainerData.last_name || ""}`.trim() : undefined,
+      // Add completion stats
+      completionStats,
+    };
+  });
 
   return {
     data: planDTOs,

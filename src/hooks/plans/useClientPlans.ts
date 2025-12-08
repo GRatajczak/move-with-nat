@@ -5,13 +5,18 @@ import { plansKeys } from "../queryKeys";
 import { mapClientPlanDtoToVM } from "@/lib/mappers";
 
 /**
- * Temporary adapter: converts PlanViewModel to ClientPlanDto format
- * TODO: Update backend to return proper ClientPlanDto format
+ * Adapter: converts PlanViewModel to ClientPlanDto format
  */
 function adaptPlanViewModelToClientPlanDto(plan: PlanViewModel): ClientPlanDto {
-  // Calculate completion stats from exercises
-  const totalExercises = plan.exercises?.length || 0;
+  // Get completion stats from the plan
+  const totalExercises = plan.completionStats?.total || 0;
   const completedExercises = plan.completionStats?.completed || 0;
+
+  // Parse trainer name (format: "FirstName LastName")
+  const trainerName = plan.trainerName || "";
+  const nameParts = trainerName.trim().split(" ");
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts.slice(1).join(" ") || "";
 
   return {
     id: plan.id,
@@ -20,9 +25,8 @@ function adaptPlanViewModelToClientPlanDto(plan: PlanViewModel): ClientPlanDto {
     createdAt: plan.createdAt,
     trainer: {
       id: plan.trainerId || "",
-      firstName: "Trener", // TODO: Get from backend
-      lastName: "",
-      avatarUrl: undefined,
+      firstName,
+      lastName,
     },
     completedExercises,
     totalExercises,

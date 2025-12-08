@@ -101,6 +101,7 @@ export interface UpdatePlanCommand extends Partial<Omit<CreatePlanCommand, "exer
 export interface PlanViewModel extends PlanDto {
   clientName?: string;
   clientAvatar?: string;
+  trainerName?: string;
   completionStats?: {
     completed: number;
     total: number;
