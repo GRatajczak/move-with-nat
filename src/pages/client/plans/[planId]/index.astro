@@ -1,0 +1,14 @@
+---
+import ClientLayout from "../../../../layouts/ClientLayout.astro";
+import { PlanDetailsPage } from "../../../../components/client/plan-details/PlanDetailsPage";
+
+const { planId } = Astro.params;
+
+if (!planId) {
+  return Astro.redirect("/client");
+}
+---
+
+<ClientLayout title="Szczegóły planu">
+  <PlanDetailsPage client:only="react" planId={planId} />
+</ClientLayout>

@@ -53,16 +53,18 @@ export const GET: APIRoute = async ({ params, locals }) => {
  * - id: string (required) - User ID (UUID)
  *
  * Request Body (all fields optional):
- * - email: string - New email address
+ * - email: string - New email address (admin only)
  * - firstName: string - New first name
  * - lastName: string - New last name
+ * - phone: string - Phone number
+ * - dateOfBirth: string - Date of birth (YYYY-MM-DD)
  * - status: "pending" | "active" | "suspended" - User status (admin only)
  * - trainerId: string - New trainer ID (admin only, for clients)
  *
  * Authorization:
- * - Administrators: Can update any user
+ * - All users: Can update their own profile (firstName, lastName, phone, dateOfBirth)
+ * - Administrators: Can update any user and all fields
  * - Trainers: Can update their clients (limited fields)
- * - Clients: Cannot use this endpoint
  *
  * Response: 200 OK
  * - Returns updated user details

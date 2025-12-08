@@ -5,6 +5,7 @@ import type { ExerciseDto, ExerciseSummaryDto, PlanDto, PlanExerciseDto, UserDto
 import type { PlanRow, PlanExerciseRow, StandardReasonRow } from "@/types/db";
 import type { DbUserRole, UserRole, UserRow } from "@/types/db";
 import type { ReasonDto } from "@/interface";
+import type { ClientPlanDto, ClientPlanCardVM } from "@/interface/client-dashboard";
 
 /**
  * Maps database exercise row to ExerciseDto
@@ -139,5 +140,30 @@ export function mapStandardReasonToDTO(reason: StandardReasonRow): ReasonDto {
     id: reason.id,
     code: reason.code,
     label: reason.label,
+  };
+}
+
+/**
+ * Maps ClientPlanDto to ClientPlanCardVM (for client dashboard)
+ * Truncates description to 120 characters
+ */
+export function mapClientPlanDtoToVM(dto: ClientPlanDto): ClientPlanCardVM {
+  const descriptionExcerpt = dto.description
+    ? dto.description.length > 120
+      ? `${dto.description.slice(0, 120)}...`
+      : dto.description
+    : "";
+
+  const trainerName = `${dto.trainer.firstName} ${dto.trainer.lastName}`.trim();
+
+  return {
+    id: dto.id,
+    name: dto.name,
+    descriptionExcerpt,
+    progressValue: dto.completedExercises,
+    progressMax: dto.totalExercises,
+    createdAt: new Date(dto.createdAt),
+    trainerName,
+    trainerAvatar: dto.trainer.avatarUrl,
   };
 }

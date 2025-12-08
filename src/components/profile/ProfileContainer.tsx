@@ -1,6 +1,5 @@
 import type { ProfileContainerProps } from "@/interface";
 import { useUser } from "@/hooks/useUser";
-import { useTrainer } from "@/hooks/useTrainer";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import { TrainerInfoCard } from "@/components/profile/TrainerInfoCard";
@@ -14,7 +13,14 @@ import { QueryProvider } from "@/components/QueryProvider";
 function ProfileContent({ userId, userRole }: ProfileContainerProps) {
   const { data: user, isLoading, isError } = useUser(userId);
   const trainerId = user?.role === "client" ? (user.trainerId ?? null) : null;
-  const trainerQuery = useTrainer(trainerId);
+
+  const {
+    data: trainerData,
+    isLoading: isTrainerLoading,
+    isError: isTrainerError,
+    refetch: refetchTrainer,
+  } = useUser(trainerId ?? "", { enabled: !!trainerId });
+
   if (isLoading) {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
@@ -69,6 +75,61 @@ function ProfileContent({ userId, userRole }: ProfileContainerProps) {
     return null;
   }
 
+  const trainerSection = (() => {
+    if (userRole !== "client") return null;
+
+    if (!user.trainerId) {
+      return <TrainerInfoCard trainer={null} />;
+    }
+
+    if (isTrainerLoading) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle>Twój trener</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-14 w-full rounded-md bg-muted animate-pulse" />
+          </CardContent>
+        </Card>
+      );
+    }
+
+    if (isTrainerError) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle>Twój trener</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center space-y-3 py-4">
+              <AlertCircle className="h-8 w-8 text-destructive" />
+              <p className="text-sm text-muted-foreground">Nie udało się pobrać danych trenera</p>
+              <Button variant="outline" size="sm" onClick={() => refetchTrainer()}>
+                Spróbuj ponownie
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <TrainerInfoCard
+        trainer={
+          trainerData
+            ? {
+                id: trainerData.id,
+                firstName: trainerData.firstName ?? "",
+                lastName: trainerData.lastName ?? "",
+                email: trainerData.email,
+              }
+            : null
+        }
+      />
+    );
+  })();
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <ProfileHeader
@@ -89,52 +150,15 @@ function ProfileContent({ userId, userRole }: ProfileContainerProps) {
               firstName: user.firstName ?? "",
               lastName: user.lastName ?? "",
               email: user.email,
+              phone: user.phone ?? "",
+              dateOfBirth: user.dateOfBirth ?? "",
+              status: user.status,
             }}
           />
         </CardContent>
       </Card>
 
-      {userRole === "client" &&
-        (!user.trainerId ? (
-          <TrainerInfoCard trainer={null} />
-        ) : trainerQuery.isLoading ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Twój trener</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-14 w-full rounded-md bg-muted animate-pulse" />
-            </CardContent>
-          </Card>
-        ) : trainerQuery.isError ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Twój trener</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-center space-y-3 py-4">
-                <AlertCircle className="h-8 w-8 text-destructive" />
-                <p className="text-sm text-muted-foreground">Nie udało się pobrać danych trenera</p>
-                <Button variant="outline" size="sm" onClick={() => trainerQuery.refetch()}>
-                  Spróbuj ponownie
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <TrainerInfoCard
-            trainer={
-              trainerQuery.data
-                ? {
-                    id: trainerQuery.data.id,
-                    firstName: trainerQuery.data.firstName ?? "",
-                    lastName: trainerQuery.data.lastName ?? "",
-                    email: trainerQuery.data.email,
-                  }
-                : null
-            }
-          />
-        ))}
+      {trainerSection}
 
       <Card>
         <CardHeader>

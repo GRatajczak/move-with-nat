@@ -287,11 +287,6 @@ export async function getUser(
     throw new ValidationError({ id: "Invalid UUID format" });
   }
 
-  // Early authorization check for clients
-  if (isClient(currentUser) && currentUser.id !== userId) {
-    throw new NotFoundError("User not found");
-  }
-
   // Query user from database
   const { data: user, error } = await supabase.from("users").select("*").eq("id", userId).single();
 
@@ -329,6 +324,25 @@ export async function getUser(
     }
 
     return mapUserToDTO(user);
+  }
+
+  // Clients can see their trainer
+  if (isClient(currentUser)) {
+    // Get current user's profile to check trainer_id
+    const { data: clientProfile, error: clientError } = await supabase
+      .from("users")
+      .select("trainer_id")
+      .eq("id", currentUser.id)
+      .single();
+
+    if (clientError || !clientProfile) {
+      throw new NotFoundError("User not found");
+    }
+
+    // Check if the requested user is the client's trainer
+    if (clientProfile.trainer_id === userId && isTrainer(user)) {
+      return mapUserToDTO(user);
+    }
   }
 
   // Default: access denied (return not found for security)
@@ -369,19 +383,30 @@ export async function updateUser(
   }
 
   // Authorization check
-  if (isClient(currentUser)) {
-    throw new ForbiddenError("Access denied");
-  }
+  const isOwnProfile = currentUser.id === userId;
 
-  if (isTrainer(currentUser)) {
-    // Trainers can only update their clients
-    if (!isClient(targetUser) || targetUser.trainer_id !== currentUser.id) {
+  if (isOwnProfile) {
+    // Users can update their own profile fields (email, firstName, lastName, phone, dateOfBirth)
+    // But cannot change: status, trainerId (only admins can)
+    if (command.status !== undefined || command.trainerId !== undefined) {
+      throw new ForbiddenError("Cannot change status or trainer assignment. Contact an administrator.");
+    }
+  } else {
+    // Updating someone else's profile - need elevated permissions
+    if (isClient(currentUser)) {
       throw new ForbiddenError("Access denied");
     }
 
-    // Trainers cannot change status or trainerId
-    if (command.status !== undefined || command.trainerId !== undefined) {
-      throw new ForbiddenError("Only administrators can change status or trainer assignment");
+    if (isTrainer(currentUser)) {
+      // Trainers can only update their clients
+      if (!isClient(targetUser) || targetUser.trainer_id !== currentUser.id) {
+        throw new ForbiddenError("Access denied");
+      }
+
+      // Trainers cannot change status or trainerId
+      if (command.status !== undefined || command.trainerId !== undefined) {
+        throw new ForbiddenError("Only administrators can change status or trainer assignment");
+      }
     }
   }
 

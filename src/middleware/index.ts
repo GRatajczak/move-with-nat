@@ -45,9 +45,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // TEMPORARY: Mock admin user for testing
   // Remove this when authentication is enabled
   context.locals.user = {
-    id: "70acad4d-daae-4d92-8fdf-67a5ae31d83c",
+    id: "b13d7140-3dee-47d2-b395-1c676baaffc1",
     email: "admin@example.com",
-    role: "trainer",
+    role: "client",
   };
 
   return next();

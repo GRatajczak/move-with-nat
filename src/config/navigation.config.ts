@@ -1,6 +1,6 @@
 import type { NavigationItemConfig, NavigationConfig } from "../interface";
 import type { UserRole } from "../types/db";
-import { LayoutDashboard, Users, Dumbbell, AlertCircle, User, Calendar, ClipboardList, Home } from "lucide-react";
+import { LayoutDashboard, Users, Dumbbell, AlertCircle, User, ClipboardList, Home } from "lucide-react";
 
 /**
  * Navigation configuration for Administrator role
@@ -93,13 +93,6 @@ const clientNavigation: NavigationItemConfig[] = [
     label: "Dashboard",
     icon: Home,
     href: "/client",
-    roles: ["client"],
-  },
-  {
-    id: "my-plans",
-    label: "Mój plan",
-    icon: Calendar,
-    href: "/client/plans",
     roles: ["client"],
   },
   {

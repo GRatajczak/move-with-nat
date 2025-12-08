@@ -1,7 +1,8 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Info } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { pl } from "date-fns/locale";
 
 import type { ProfileEditFormData, ProfileEditFormProps } from "@/interface";
 import { ProfileEditFormSchema } from "@/lib/validation";
@@ -9,7 +10,9 @@ import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
   const { mutateAsync: updateUser, isPending } = useUpdateUser();
@@ -17,30 +20,23 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
   const form = useForm<ProfileEditFormData>({
     resolver: zodResolver(ProfileEditFormSchema),
     defaultValues: {
+      email: initialData.email || "",
       firstName: initialData.firstName || "",
       lastName: initialData.lastName || "",
+      phone: initialData.phone || "",
+      dateOfBirth: initialData.dateOfBirth || "",
     },
   });
-
-  // Ostrzeżenie o niezapisanych zmianach
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (form.formState.isDirty) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [form.formState.isDirty]);
 
   const onSubmit = async (data: ProfileEditFormData) => {
     await updateUser({
       userId,
       command: {
+        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
+        phone: data.phone || undefined,
+        dateOfBirth: data.dateOfBirth || undefined,
       },
     });
 
@@ -63,28 +59,19 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
             </FormItem>
           )}
         />
-
-        <FormItem>
-          <FormLabel>
-            Email
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  className="ml-1 inline-flex h-4 w-4 items-center justify-center text-muted-foreground"
-                  aria-label="Dlaczego nie mogę zmienić emaila?"
-                >
-                  <Info className="h-3 w-3" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Email nie może być zmieniony. Skontaktuj się z administratorem.</TooltipContent>
-            </Tooltip>
-          </FormLabel>
-          <FormControl>
-            <Input value={initialData.email} readOnly disabled />
-          </FormControl>
-          <FormDescription>Email nie może być zmieniony</FormDescription>
-        </FormItem>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Wpisz swój email" autoComplete="email" {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -100,6 +87,55 @@ export function ProfileEditForm({ userId, initialData }: ProfileEditFormProps) {
                   value={field.value || ""}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Telefon</FormLabel>
+              <FormControl>
+                <Input placeholder="np. +48 123 456 789" autoComplete="tel" {...field} value={field.value || ""} />
+              </FormControl>
+              <FormDescription>Format: +48 123 456 789 (opcjonalne)</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="dateOfBirth"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Data urodzenia</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                    >
+                      {field.value ? format(new Date(field.value), "PPP", { locale: pl }) : <span>Wybierz datę</span>}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value ? new Date(field.value) : undefined}
+                    onSelect={(date) => {
+                      field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                    }}
+                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>Wybierz swoją datę urodzenia (opcjonalne)</FormDescription>
               <FormMessage />
             </FormItem>
           )}

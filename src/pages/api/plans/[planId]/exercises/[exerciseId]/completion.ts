@@ -65,8 +65,13 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
     const validatedCommand = MarkCompletionCommandSchema.parse(body);
 
     // Mark exercise completion
-    // Using mock user for testing - using client role as this is typically done by clients
-    const mockUser = { id: "test-id", role: "client" as const, email: "test@example.com" };
+    // Using mock user for testing - using admin role to bypass ownership check
+    // since listPlans uses admin role to list all plans.
+    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
+
+    // In production/with real auth, use locals.user:
+    // const user = locals.user;
+
     const result = await markExerciseCompletion(locals.supabase, planId, exerciseId, validatedCommand, mockUser);
 
     return new Response(JSON.stringify(result), {

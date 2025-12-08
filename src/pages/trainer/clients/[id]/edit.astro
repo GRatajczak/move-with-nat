@@ -2,10 +2,10 @@
 import TrainerLayout from "../../../../layouts/TrainerLayout.astro";
 import { EditClientPage } from "../../../../components/trainer/clients/EditClientPage";
 
-const { id } = Astro.params;
+const { id, role } = Astro.params;
 
-if (!id) {
-  return Astro.redirect("/trainer/clients");
+if (!id || role !== "trainer") {
+  return Astro.redirect("/");
 }
 ---
 

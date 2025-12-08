@@ -353,9 +353,10 @@ export const adminPlanFormSchema = z.object({
 
 /**
  * Schema walidacji dla formularza edycji profilu
- * Zawiera podstawowe pola: imię i nazwisko
+ * Zawiera podstawowe pola: email, imię, nazwisko, telefon i data urodzenia
  */
 export const ProfileEditFormSchema = z.object({
+  email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
   firstName: z
     .string()
     .min(1, "Imię jest wymagane")
@@ -368,6 +369,17 @@ export const ProfileEditFormSchema = z.object({
     .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
     .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
     .trim(),
+  phone: z
+    .string()
+    .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+    .optional()
+    .or(z.literal("")),
+  dateOfBirth: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
+    .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
+    .optional()
+    .or(z.literal("")),
 });
 
 /**

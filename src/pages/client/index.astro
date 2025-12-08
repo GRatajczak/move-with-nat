@@ -1,0 +1,8 @@
+---
+import ClientLayout from "../../layouts/ClientLayout.astro";
+import { ClientDashboardPage } from "../../components/client/dashboard/ClientDashboardPage";
+---
+
+<ClientLayout title="Moje Plany">
+  <ClientDashboardPage client:only="react" />
+</ClientLayout>

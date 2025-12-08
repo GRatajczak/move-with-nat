@@ -1,4 +1,3 @@
-import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -27,8 +26,6 @@ export const PlansTable = ({
     );
   }
 
-  console.log(plans);
-
   return (
     <div className="rounded-md border">
       <Table>
@@ -39,14 +36,11 @@ export const PlansTable = ({
             <TableHead>Data utworzenia</TableHead>
             <TableHead>Widoczność</TableHead>
             <TableHead>Liczba ćwiczeń</TableHead>
-            <TableHead>Postęp</TableHead>
             <TableHead className="text-right">Akcje</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {plans.map((plan) => {
-            const completionStats = plan.completionStats || { completed: 0, total: 0 };
-
             return (
               <TableRow
                 key={plan.id}
@@ -73,11 +67,7 @@ export const PlansTable = ({
                 <TableCell>
                   {plan.exercises.length} {plan.exercises.length === 1 ? "ćwiczenie" : "ćwiczeń"}
                 </TableCell>
-                <TableCell>
-                  <span className="text-sm text-muted-foreground whitespace-nowrap">
-                    {completionStats.completed}/{completionStats.total}
-                  </span>
-                </TableCell>
+
                 <TableCell className="text-right">
                   <PlanActionMenu
                     plan={plan}

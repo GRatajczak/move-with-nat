@@ -63,9 +63,11 @@ export interface UpdateUserCommand {
 
 /** Dane formularza edycji profilu */
 export interface ProfileEditFormData {
+  email: string;
   firstName: string;
   lastName: string;
-  // email nie jest edytowalny, więc nie ma go w formData
+  phone?: string;
+  dateOfBirth?: string;
 }
 
 /** Propsy głównego kontenera profilu */
@@ -89,6 +91,9 @@ export interface ProfileEditFormProps {
     firstName: string;
     lastName: string;
     email: string;
+    phone: string;
+    dateOfBirth: string;
+    status: string;
   };
 }
 

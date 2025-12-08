@@ -8,3 +8,4 @@ export * from "./services";
 export * from "./dashboard";
 export * from "./navigation";
 export * from "./clients";
+export * from "./client-dashboard";

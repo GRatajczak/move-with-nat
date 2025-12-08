@@ -1,6 +1,12 @@
 ---
 import TrainerLayout from "../../../layouts/TrainerLayout.astro";
 import { CreateClientPage } from "../../../components/trainer/clients/CreateClientPage";
+
+const { role } = Astro.params;
+
+if (role !== "trainer") {
+  return Astro.redirect("/");
+}
 ---
 
 <TrainerLayout title="Dodaj podopiecznego">
