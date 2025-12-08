@@ -34,8 +34,10 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/trainer/clients", method: "DELETE", role: "admin" },
 ];
 
+const PUBLIC_API_PATHS = ["/api/auth/login", "/api/auth/invite"];
+
 export const onRequest = defineMiddleware(async ({ locals, cookies, url, request, redirect }, next) => {
-  if (url.pathname.startsWith(API_AUTH_PREFIX)) {
+  if (PUBLIC_API_PATHS.some((path) => url.pathname.startsWith(path))) {
     return next();
   }
 

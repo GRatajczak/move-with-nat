@@ -1,9 +1,10 @@
 // src/pages/api/plans/index.ts
 
 import type { APIRoute } from "astro";
-import { listPlans, createPlan, CreatePlanCommandSchema } from "../../../services/plans.service";
-import { ListPlansQuerySchema, parseQueryParams } from "../../../lib/validation";
-import { handleAPIError } from "../../../lib/api-helpers";
+import { listPlans, createPlan } from "@/services/plans.service";
+import { CreatePlanCommandSchema } from "@/lib/validation";
+import { ListPlansQuerySchema, parseQueryParams } from "@/lib/validation";
+import { handleAPIError } from "@/lib/api-helpers";
 
 export const prerender = false;
 

@@ -1,8 +1,7 @@
 // src/services/plans.service.ts
 
-import { z } from "zod";
-import type { SupabaseClient } from "../db/supabase.client";
-import type { Database } from "../db/database.types";
+import type { SupabaseClient } from "@/db/supabase.client";
+import type { Database } from "@/db/database.types";
 import type {
   CreatePlanCommand,
   PlanDto,
@@ -10,81 +9,12 @@ import type {
   ListPlansQuery,
   PaginatedResponse,
   AuthenticatedUser,
-} from "../interface";
-import type { UpdatePlanCommand } from "../types/plans";
-import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
-import { isValidUUID } from "../lib/api-helpers";
+} from "@/interface";
+import type { UpdatePlanCommand } from "@/types/plans";
+import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "@/lib/errors";
+import { isValidUUID } from "@/lib/api-helpers";
 import { mapPlanToDTO, mapPlanWithExercisesToDTO, mapPlanExerciseToDTO } from "../lib/mappers";
 
-/**
- * Validation schema for creating a plan
- * Both trainerId and clientId are optional (can be null in DB)
- */
-export const CreatePlanCommandSchema = z.object({
-  name: z.string().min(3).max(100).trim(),
-  trainerId: z.string().uuid().optional().nullable(),
-  clientId: z.string().uuid().optional().nullable(),
-  isHidden: z.boolean().default(false),
-  description: z.string().max(1000).trim().optional().or(z.literal("")).nullable(),
-  exercises: z
-    .array(
-      z.object({
-        exerciseId: z.string().uuid(),
-        sortOrder: z.number().int().min(1),
-        sets: z.number().int().min(1),
-        reps: z.number().int().min(1),
-        tempo: z
-          .string()
-          .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
-          .default("3-0-3"),
-        defaultWeight: z.number().min(0).optional().nullable(),
-      })
-    )
-    .min(1, "At least one exercise is required"),
-});
-
-/**
- * Validation schema for updating a plan
- * trainerId and clientId can be set to null to unassign
- */
-export const UpdatePlanCommandSchema = z
-  .object({
-    name: z.string().min(3).max(100).trim().optional(),
-    description: z.string().max(1000).trim().optional().nullable(),
-    isHidden: z.boolean().optional(),
-    trainerId: z.string().uuid().optional().nullable(),
-    clientId: z.string().uuid().optional().nullable(),
-    exercises: z
-      .array(
-        z.object({
-          exerciseId: z.string().uuid(),
-          sortOrder: z.number().int().min(1),
-          sets: z.number().int().min(1),
-          reps: z.number().int().min(1),
-          tempo: z
-            .string()
-            .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
-            .default("3-0-3"),
-          defaultWeight: z.number().min(0).optional().nullable(),
-        })
-      )
-      .min(1, "At least one exercise is required")
-      .optional(),
-  })
-  .refine((data) => Object.keys(data).length > 0, {
-    message: "At least one field must be provided",
-  });
-
-/**
- * Validation schema for toggling plan visibility
- */
-export const TogglePlanVisibilityCommandSchema = z.object({
-  isHidden: z.boolean(),
-});
-
-/**
- * Helper: Validates that a user exists and has trainer role
- */
 async function validateTrainer(supabase: SupabaseClient, trainerId: string): Promise<void> {
   const { data: trainer, error } = await supabase.from("users").select("id, role").eq("id", trainerId).single();
 
