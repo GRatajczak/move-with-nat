@@ -27,13 +27,13 @@ export const useAdminDashboard = () => {
       // Parallel requests for dashboard data
       const [trainersRes, clientsRes, recentUsersRes, pendingUsersRes, plansRes, exercisesRes, reasonsRes] =
         await Promise.all([
-          fetch("/api/users?role=trainer&limit=1", { headers }),
-          fetch("/api/users?role=client&limit=1", { headers }),
-          fetch("/api/users?limit=5", { headers }),
-          fetch("/api/users?status=pending&limit=5", { headers }),
-          fetch("/api/plans?limit=1", { headers }),
-          fetch("/api/exercises?limit=1", { headers }),
-          fetch("/api/reasons?limit=1", { headers }),
+          fetch("/api/users?role=trainer&limit=1", { headers, credentials: "include" }),
+          fetch("/api/users?role=client&limit=1", { headers, credentials: "include" }),
+          fetch("/api/users?limit=5", { headers, credentials: "include" }),
+          fetch("/api/users?status=pending&limit=5", { headers, credentials: "include" }),
+          fetch("/api/plans?limit=1", { headers, credentials: "include" }),
+          fetch("/api/exercises?limit=1", { headers, credentials: "include" }),
+          fetch("/api/reasons?limit=1", { headers, credentials: "include" }),
         ]);
 
       // Helper to safe parse JSON
@@ -81,6 +81,7 @@ export const useAdminDashboard = () => {
       const response = await fetch("/api/auth/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, role, resend: true }),
       });
 

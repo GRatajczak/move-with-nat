@@ -44,21 +44,16 @@ export const prerender = false;
  */
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
-    // AUTHENTICATION DISABLED FOR TESTING
-    // Check authentication
-    // if (!locals.user || !locals.supabase) {
-    //   throw new UnauthorizedError("Authentication required");
-    // }
+    if (!locals.user || !locals.supabase) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     // Parse and validate query parameters
     const url = new URL(request.url);
     const rawQuery = parseQueryParams(url);
     const validatedQuery = ListPlansQuerySchema.parse(rawQuery);
 
-    // Call service layer
-    // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
-    const result = await listPlans(locals.supabase, validatedQuery, mockUser);
+    const result = await listPlans(locals.supabase, validatedQuery, locals.user);
 
     return new Response(JSON.stringify(result), {
       status: 200,
@@ -108,20 +103,15 @@ export const GET: APIRoute = async ({ request, locals }) => {
  */
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    // AUTHENTICATION DISABLED FOR TESTING
-    // Check authentication
-    // if (!locals.user || !locals.supabase) {
-    //   throw new UnauthorizedError("Authentication required");
-    // }
+    if (!locals.user || !locals.supabase) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     // Parse and validate request body
     const body = await request.json();
     const validatedCommand = CreatePlanCommandSchema.parse(body);
 
-    // Create plan
-    // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
-    const result = await createPlan(locals.supabase, validatedCommand, mockUser);
+    const result = await createPlan(locals.supabase, validatedCommand, locals.user);
 
     return new Response(JSON.stringify(result), {
       status: 201,

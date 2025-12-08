@@ -1,10 +1,11 @@
 // src/pages/api/users/[id].ts
 
-import type { APIRoute } from "astro";
+import { getSupabaseAdminClient } from "../../../db/supabase.client";
 import { getUser, updateUser, deleteUser } from "../../../services/users.service";
 import { UserIdParamSchema, UpdateUserCommandSchema } from "../../../lib/validation";
 import { handleAPIError } from "../../../lib/api-helpers";
 import { UnauthorizedError } from "../../../lib/errors";
+import type { APIRoute } from "astro";
 
 export const prerender = false;
 
@@ -118,8 +119,9 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
     // Validate user ID parameter
     const { id: userId } = UserIdParamSchema.parse(params);
 
-    // Delete user
-    await deleteUser(locals.supabase, userId, locals.user);
+    // Use the admin client for user deletion
+    const supabaseAdmin = getSupabaseAdminClient();
+    await deleteUser(supabaseAdmin, userId, locals.user);
 
     return new Response(null, {
       status: 204,

@@ -14,7 +14,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
 import { Breadcrumbs } from "../../navigation/Breadcrumbs";
 import type { PlanDetailContainerProps, PlanViewModel, DuplicatePlanData } from "@/interface/plans";
 import { QueryProvider } from "../../QueryProvider";
@@ -53,10 +52,9 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
     try {
       const newPlan = await duplicatePlan({ planId: duplicateModalPlan.id, data });
       setDuplicateModalPlan(null);
-      toast.success("Plan zduplikowany");
-      window.location.href = `/trainer/plans/${newPlan.id}/edit`;
+      window.location.href = `/${userRole}/plans/${newPlan.id}/edit`;
     } catch {
-      toast.error("Nie udało się zduplikować planu");
+      console.error("Nie udało się zduplikować planu");
     }
   };
 
@@ -68,10 +66,9 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
     try {
       await deletePlan({ planId, hard });
       setDeleteModalPlan(null);
-      toast.success("Plan usunięty");
       window.location.href = "/trainer/plans";
     } catch {
-      toast.error("Nie udało się usunąć planu");
+      console.error("Nie udało się usunąć planu");
     }
   };
 

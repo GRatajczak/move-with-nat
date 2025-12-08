@@ -1,6 +1,7 @@
 // src/pages/api/users/index.ts
 
 import type { APIRoute } from "astro";
+import { getSupabaseAdminClient } from "../../../db/supabase.client";
 import { createUser, listUsers } from "../../../services/users.service";
 import { CreateUserCommandSchema, ListUsersQuerySchema, parseQueryParams } from "../../../lib/validation";
 import { handleAPIError } from "../../../lib/api-helpers";
@@ -14,7 +15,6 @@ export const prerender = false;
  *
  * Request Body:
  * - email: string (required) - User email address
-Użytkownik utworzony
  * - role: "admin" | "trainer" | "client" (required) - User role
  * - firstName: string (required) - User's first name
  * - lastName: string (required) - User's last name
@@ -37,8 +37,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const body = await request.json();
     const validatedCommand = CreateUserCommandSchema.parse(body);
 
-    // Create user
-    const result = await createUser(locals.supabase, validatedCommand, locals.user);
+    // Use the admin client for user creation
+    const supabaseAdmin = getSupabaseAdminClient();
+    const result = await createUser(supabaseAdmin, validatedCommand, locals.user);
 
     return new Response(JSON.stringify(result), {
       status: 201,

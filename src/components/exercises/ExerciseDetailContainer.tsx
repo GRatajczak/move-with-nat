@@ -167,14 +167,9 @@ const ExerciseDetailContent = ({ id }: { id: string }) => {
             </div>
           </div>
 
-          {/* Usage Stats / Plans List (Placeholder) */}
           {usageCount > 0 && (
             <div className="bg-card rounded-lg border shadow-sm p-6">
-              <h3 className="font-semibold mb-4">Wykorzystanie w planach</h3>
-              <div className="text-sm text-muted-foreground">
-                <p>Lista planów wykorzystujących to ćwiczenie pojawi się tutaj.</p>
-                {/* Future: List plans here */}
-              </div>
+              <h3 className="font-semibold mb-4">Wykorzystano w {usageCount} planach</h3>
             </div>
           )}
         </div>

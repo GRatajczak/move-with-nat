@@ -331,6 +331,52 @@ Kryteria akceptacji:
 - Gdy pole jest zdefiniowane zarówno w „exercises”, jak i „plans_exercise”, używana jest wartość z „plans_exercise”.
 - Widoczny jest status wykonania ćwiczenia oraz przyciski do oznaczenia wykonania lub niewykonania (zgodnie z US-019).
 
+US-033
+Tytuł: Wymagane logowanie dla każdego użytkownika
+Opis: System wymaga poprawnego uwierzytelnienia przed uzyskaniem dostępu do chronionych zasobów.
+Kryteria akceptacji:
+
+- Niezalogowany użytkownik odwiedzający stronę chronioną jest przekierowywany na stronę logowania.
+- Po pomyślnym zalogowaniu użytkownik jest przekierowany do odpowiedniego dashboardu zgodnie z US-034.
+
+US-034
+Tytuł: Przekierowanie po zalogowaniu w zależności od roli
+Opis: Po pomyślnym zalogowaniu użytkownik jest kierowany na dashboard odpowiedni do swojej roli.
+Kryteria akceptacji:
+
+- Administrator trafia na `/admin/dashboard`.
+- Trener trafia na `/trainer/dashboard`.
+- Podopieczny trafia na `/client/dashboard`.
+- Użytkownik z nieznaną rolą otrzymuje komunikat o błędzie i następuje wylogowanie.
+
+US-035
+Tytuł: Rejestracja użytkownika
+Opis: Nowy użytkownik może założyć konto podając e-mail. Hasło ustawia po aktywacji konta.
+Kryteria akceptacji:
+
+- Po wypełnieniu formularza rejestracji tworzony jest rekord użytkownika ze statusem „oczekuje na aktywację”.
+- Wysyłany jest e-mail z linkiem aktywacyjnym ważnym 1 godzinę.
+- Użytkownik bez aktywacji nie może się zalogować.
+
+US-036
+Tytuł: Aktywacja konta poprzez link z tokenem
+Opis: Użytkownik otwiera link aktywacyjny zawierający token; system weryfikuje token i wyświetla formularz ustawienia hasła.
+Kryteria akceptacji:
+
+- Nieprawidłowy lub wygasły token zwraca komunikat o błędzie i możliwość ponownego wysłania linku.
+- Poprawny token prezentuje formularz ustawienia hasła.
+- Po zapisaniu hasła konto zostaje aktywowane, a użytkownik może się zalogować.
+
+US-037
+Tytuł: Resetowanie hasła z tokenem
+Opis: Użytkownik trafia na stronę z formularzem nowego hasła po kliknięciu linku resetującego.
+Kryteria akceptacji:
+
+- Token z URL jest weryfikowany; błędny lub wygasły token zwraca komunikat o błędzie.
+- Poprawny token prezentuje formularz ustawienia nowego hasła.
+- Po pomyślnym ustawieniu nowego hasła użytkownik otrzymuje potwierdzenie i możliwość przejścia do logowania.
+- Zużyty token jest unieważniany.
+
 ## 6. Mierniki sukcesu
 
 - 50 planów treningowych utworzonych w ciągu 1 miesiąca od uruchomienia.

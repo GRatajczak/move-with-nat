@@ -1,54 +1,131 @@
 import { defineMiddleware } from "astro:middleware";
+import { createServerClient } from "@supabase/ssr";
+import type { UserRole } from "@/types";
+import { hasRequiredRole } from "@/lib/auth.utils";
 
-import { supabaseClient } from "../db/supabase.client.ts";
+const AUTH_PAGES = ["/auth/login", "/auth/forgot-password", "/auth/reset-password"];
+const PUBLIC_PATHS = ["/", ...AUTH_PAGES];
+const API_AUTH_PREFIX = "/api/auth";
 
-export const onRequest = defineMiddleware(async (context, next) => {
-  context.locals.supabase = supabaseClient;
+const ADMIN_PATH = "/admin";
+const TRAINER_PATH = "/trainer";
+const CLIENT_PATH = "/client";
 
-  // Authentication middleware - COMMENTED OUT FOR NOW
-  // Uncomment when authentication is ready
-  /*
-  try {
-    // Get the access token from Authorization header
-    const authHeader = context.request.headers.get("Authorization");
-    
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      const token = authHeader.substring(7); // Remove "Bearer " prefix
-      
-      // Verify the token with Supabase
-      const { data: { user }, error } = await supabaseClient.auth.getUser(token);
-      
-      if (user && !error) {
-        // Fetch full user details from the users table
-        const { data: userData, error: userError } = await supabaseClient
-          .from("users")
-          .select("id, email, role")
-          .eq("id", user.id)
-          .single();
-        
-        if (userData && !userError) {
-          // Store user in locals for use in API routes
-          context.locals.user = {
-            id: userData.id,
-            email: userData.email,
-            role: userData.role,
-          };
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Authentication error:", error);
-    // Don't block the request, just continue without user
+const API_ROLES: { path: string; method: string; role: UserRole }[] = [
+  { path: "/api/exercises", method: "GET", role: "trainer" },
+  { path: "/api/exercises", method: "POST", role: "trainer" },
+  { path: "/api/exercises", method: "PUT", role: "trainer" },
+  { path: "/api/exercises", method: "DELETE", role: "admin" },
+  { path: "/api/plans", method: "GET", role: "trainer" },
+  { path: "/api/plans", method: "POST", role: "trainer" },
+  { path: "/api/plans", method: "PUT", role: "trainer" },
+  { path: "/api/plans", method: "DELETE", role: "admin" },
+  { path: "/api/reasons", method: "GET", role: "trainer" },
+  { path: "/api/reasons", method: "POST", role: "admin" },
+  { path: "/api/reasons", method: "PUT", role: "admin" },
+  { path: "/api/reasons", method: "DELETE", role: "admin" },
+  { path: "/api/users", method: "GET", role: "admin" },
+  { path: "/api/users", method: "POST", role: "admin" },
+  { path: "/api/users", method: "PUT", role: "admin" },
+  { path: "/api/users", method: "DELETE", role: "admin" },
+  { path: "/api/trainer/clients", method: "GET", role: "trainer" },
+  { path: "/api/trainer/clients", method: "POST", role: "trainer" },
+  { path: "/api/trainer/clients", method: "PUT", role: "trainer" },
+  { path: "/api/trainer/clients", method: "DELETE", role: "admin" },
+];
+
+export const onRequest = defineMiddleware(async ({ locals, cookies, url, request, redirect }, next) => {
+  if (url.pathname.startsWith(API_AUTH_PREFIX)) {
+    return next();
   }
-  */
 
-  // TEMPORARY: Mock admin user for testing
-  // Remove this when authentication is enabled
-  context.locals.user = {
-    id: "b13d7140-3dee-47d2-b395-1c676baaffc1",
-    email: "admin@example.com",
-    role: "admin",
+  const supabase = createServerClient(import.meta.env.SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_KEY, {
+    cookies: {
+      get(key) {
+        return cookies.get(key)?.value;
+      },
+      set(key, value, options) {
+        cookies.set(key, value, options);
+      },
+      remove(key, options) {
+        cookies.delete(key, options);
+      },
+    },
+    cookieOptions: {
+      httpOnly: true,
+      secure: !import.meta.env.DEV,
+      sameSite: "lax",
+      path: "/",
+    },
+  });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const isUserLoggedIn = !!user;
+
+  if (!isUserLoggedIn) {
+    if (!PUBLIC_PATHS.includes(url.pathname)) {
+      if (url.pathname.startsWith("/api")) {
+        return new Response("Unauthorized", { status: 401 });
+      }
+      return redirect("/auth/login");
+    }
+    return next();
+  }
+
+  if (!user) {
+    return redirect("/auth/login");
+  }
+
+  const { data: userDetails } = await supabase.from("users").select("role").eq("id", user.id).single();
+
+  if (!userDetails?.role) {
+    await supabase.auth.signOut();
+    return redirect("/auth/login");
+  }
+
+  const userRole = userDetails.role as UserRole;
+  locals.user = {
+    id: user.id,
+    email: user.email ?? "",
+    role: userRole,
   };
+  locals.supabase = supabase;
+
+  if (url.pathname.startsWith("/api")) {
+    const matchedRule = API_ROLES.find((r) => url.pathname.startsWith(r.path) && request.method === r.method);
+
+    if (matchedRule && !hasRequiredRole(matchedRule.role, userRole)) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    return next();
+  }
+
+  if (PUBLIC_PATHS.includes(url.pathname)) {
+    switch (userRole) {
+      case "admin":
+        return redirect(ADMIN_PATH);
+      case "trainer":
+        return redirect(TRAINER_PATH);
+      case "client":
+        return redirect(CLIENT_PATH);
+      default:
+        return redirect(CLIENT_PATH);
+    }
+  }
+
+  if (url.pathname.startsWith(ADMIN_PATH) && userRole !== "admin") {
+    return redirect("/");
+  }
+  if (url.pathname.startsWith(TRAINER_PATH) && userRole !== "trainer") {
+    return redirect("/");
+  }
+  if (url.pathname.startsWith(CLIENT_PATH) && userRole !== "client") {
+    return redirect("/");
+  }
 
   return next();
 });
