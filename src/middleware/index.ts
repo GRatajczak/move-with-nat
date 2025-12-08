@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import { createServerClient } from "@supabase/ssr";
+import { createSupabaseServerInstance } from "@/db/supabase.client";
 import type { UserRole } from "@/types";
 import { hasRequiredRole } from "@/lib/auth.utils";
 
@@ -39,24 +39,9 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     return next();
   }
 
-  const supabase = createServerClient(import.meta.env.SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_KEY, {
-    cookies: {
-      get(key) {
-        return cookies.get(key)?.value;
-      },
-      set(key, value, options) {
-        cookies.set(key, value, options);
-      },
-      remove(key, options) {
-        cookies.delete(key, options);
-      },
-    },
-    cookieOptions: {
-      httpOnly: true,
-      secure: !import.meta.env.DEV,
-      sameSite: "lax",
-      path: "/",
-    },
+  const supabase = createSupabaseServerInstance({
+    cookies,
+    headers: request.headers,
   });
 
   const {

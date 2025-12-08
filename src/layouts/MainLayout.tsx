@@ -45,17 +45,19 @@ function MainLayoutContent({ children, user, requiredRole }: Omit<MainLayoutProp
   // Handle logout
   const handleLogout = async () => {
     try {
-      // TODO: Implement actual logout logic with Supabase
-      // await supabase.auth.signOut();
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
 
-      // Clear localStorage
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("sidebar-state");
+      if (response.ok) {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("sidebar-state");
+        }
+        window.location.href = "/auth/login";
+        toast.success("Wylogowano pomyślnie");
+      } else {
+        toast.error("Błąd podczas wylogowania");
       }
-
-      // Redirect to login
-      window.location.href = "/login";
-      toast.success("Wylogowano pomyślnie");
     } catch (error) {
       console.error("Logout failed:", error);
       toast.error("Błąd podczas wylogowania");
