@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useCreatePlan } from "@/hooks/plans/useCreatePlan";
-import { PlanForm } from "./PlanForm";
+import { PlanForm } from "../edit/PlanForm";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import type { PlanFormSchema } from "@/types/plans";
 import type { CreatePlanContainerProps } from "@/interface/plans";
-import { Breadcrumbs } from "../navigation/Breadcrumbs";
-import { QueryProvider } from "../QueryProvider";
+import { Breadcrumbs } from "../../navigation/Breadcrumbs";
+import { QueryProvider } from "../../QueryProvider";
 import {
   Dialog,
   DialogContent,

@@ -10,8 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ClientSelect } from "./ClientSelect";
-import { AdminClientSelect } from "./AdminClientSelect";
+import { ClientSelect } from "../shared/ClientSelect";
+import { AdminClientSelect } from "../shared/AdminClientSelect";
 import type { DuplicatePlanModalProps } from "@/interface/plans";
 
 export const DuplicatePlanModal = ({

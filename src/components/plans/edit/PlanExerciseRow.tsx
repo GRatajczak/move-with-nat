@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import type { PlanExerciseFormData, PlanExerciseRowProps } from "@/interface/plans";
-import { ExerciseQuickPreviewModal } from "../exercises/ExerciseQuickPreviewModal";
+import { ExerciseQuickPreviewModal } from "../../exercises/ExerciseQuickPreviewModal";
 import { tempoRegex } from "@/lib/regex";
 
 export const PlanExerciseRow = ({ exercise, index, onRemove, onUpdate, disabled = false }: PlanExerciseRowProps) => {

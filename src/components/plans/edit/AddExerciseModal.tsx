@@ -14,7 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, Eye } from "lucide-react";
 import { useExercisesList } from "@/hooks/exercises/useExercisesList";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ExerciseQuickPreviewModal } from "../exercises/ExerciseQuickPreviewModal";
+import { ExerciseQuickPreviewModal } from "../../exercises/ExerciseQuickPreviewModal";
 import type { ExerciseDto } from "@/interface/exercises";
 import type { AddExerciseModalProps } from "@/interface/plans";
 

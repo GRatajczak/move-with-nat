@@ -1,28 +1,28 @@
+import React from "react";
 import { usePlan } from "@/hooks/plans/usePlan";
 import { useUpdatePlan } from "@/hooks/plans/useUpdatePlan";
-import { AdminPlanForm } from "./AdminPlanForm";
+import { PlanForm } from "./PlanForm";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
-import { Breadcrumbs } from "../navigation/Breadcrumbs";
-import type { AdminPlanFormSchema } from "@/lib/validation";
-import { QueryProvider } from "../QueryProvider";
+import { Breadcrumbs } from "../../navigation/Breadcrumbs";
+import type { EditPlanContainerProps } from "@/interface/plans";
+import type { PlanFormSchema } from "@/types/plans";
+import { QueryProvider } from "../../QueryProvider";
 
-const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {
+const EditPlanContent = ({ planId, userRole = "trainer" }: EditPlanContainerProps) => {
   const { data: plan, isLoading, error } = usePlan(planId);
   const { mutateAsync: updatePlan, isPending } = useUpdatePlan();
   const baseUrl = `/${userRole}`;
 
-  const handleSubmit = async (data: AdminPlanFormSchema) => {
+  const handleSubmit = async (data: PlanFormSchema) => {
     await updatePlan({
       planId,
       data: {
         id: planId,
         name: data.name,
         description: data.description || null,
-        trainerId: data.trainerId || null, // Admin can change trainer (or set to null)
-        clientId: data.clientId || null, // Admin can change client (or set to null)
         isHidden: data.isHidden,
         exercises: data.exercises.map((ex) => ({
           id: ex.exerciseId,
@@ -95,7 +95,7 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
         <div className="flex flex-col space-y-2">
           <Breadcrumbs items={breadcrumbs} />
           <h1 className="text-3xl font-bold tracking-tight">Edycja planu: {plan.name}</h1>
-          <p className="text-muted-foreground">Edytuj plan treningowy (możesz zmienić trenera i podopiecznego)</p>
+          <p className="text-muted-foreground">Edytuj plan treningowy dla swojego podopiecznego</p>
         </div>
         <Button
           variant="outline"
@@ -108,15 +108,15 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
       </div>
 
       {/* Form */}
-      <AdminPlanForm plan={plan} onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isPending} mode="edit" />
+      <PlanForm plan={plan} onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isPending} mode="edit" />
     </div>
   );
 };
 
-export const AdminEditPlanContainer = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {
+export const EditPlanContainer = ({ planId, userRole = "trainer" }: EditPlanContainerProps) => {
   return (
     <QueryProvider>
-      <AdminEditPlanContent planId={planId} userRole={userRole} />
+      <EditPlanContent planId={planId} userRole={userRole} />
     </QueryProvider>
   );
 };

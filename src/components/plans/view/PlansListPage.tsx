@@ -6,9 +6,9 @@ import { useDuplicatePlan } from "@/hooks/plans/useDuplicatePlan";
 import { PlansFilterToolbar } from "./PlansFilterToolbar";
 import { PlansTable } from "./PlansTable";
 import { PlanCards } from "./PlanCards";
-import { Pagination } from "../exercises/Pagination";
-import { DeletePlanConfirmationModal } from "./DeletePlanConfirmationModal";
-import { DuplicatePlanModal } from "./DuplicatePlanModal";
+import { Pagination } from "../../exercises/Pagination";
+import { DeletePlanConfirmationModal } from "../edit/DeletePlanConfirmationModal";
+import { DuplicatePlanModal } from "../edit/DuplicatePlanModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Toaster } from "@/components/ui/sonner";
@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { PlanViewModel, ListPlansQuery, DuplicatePlanData } from "@/interface/plans";
 import type { PaginatedResponse } from "@/interface/common";
-import { QueryProvider } from "../QueryProvider";
+import { QueryProvider } from "../../QueryProvider";
 
 const PlansListContent = ({ userRole = "trainer", userId }: { userRole: "admin" | "trainer"; userId: string }) => {
   const baseUrl = `/${userRole}`;

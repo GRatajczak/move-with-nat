@@ -8,16 +8,16 @@ import { PlanDetailHeader } from "./PlanDetailHeader";
 import { PlanDescriptionSection } from "./PlanDescriptionSection";
 import { ProgressSection } from "./ProgressSection";
 import { PlanExercisesDetailList } from "./PlanExercisesDetailList";
-import { DeletePlanConfirmationModal } from "./DeletePlanConfirmationModal";
-import { DuplicatePlanModal } from "./DuplicatePlanModal";
+import { DeletePlanConfirmationModal } from "../edit/DeletePlanConfirmationModal";
+import { DuplicatePlanModal } from "../edit/DuplicatePlanModal";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import { Breadcrumbs } from "../navigation/Breadcrumbs";
+import { Breadcrumbs } from "../../navigation/Breadcrumbs";
 import type { PlanDetailContainerProps, PlanViewModel, DuplicatePlanData } from "@/interface/plans";
-import { QueryProvider } from "../QueryProvider";
+import { QueryProvider } from "../../QueryProvider";
 
 const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainerProps) => {
   const { data: plan, isLoading: isPlanLoading, error: planError } = usePlan(planId);

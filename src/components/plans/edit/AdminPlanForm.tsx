@@ -14,8 +14,8 @@ import type { AdminPlanFormSchema } from "@/types/plans";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { PlanExercisesList } from "./PlanExercisesList";
 import { AddExerciseModal } from "./AddExerciseModal";
-import { AdminClientSelect } from "./AdminClientSelect";
-import { TrainerSelect } from "./TrainerSelect";
+import { AdminClientSelect } from "../shared/AdminClientSelect";
+import { TrainerSelect } from "../shared/TrainerSelect";
 import type { PlanExerciseFormData, AdminPlanFormProps } from "@/interface/plans";
 import type { ExerciseDto } from "@/interface/exercises";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExerciseCompletionRow } from "./ExerciseCompletionRow";
-import { ExerciseQuickPreviewModal } from "../exercises/ExerciseQuickPreviewModal";
+import { ExerciseQuickPreviewModal } from "../../exercises/ExerciseQuickPreviewModal";
 import { useExercise } from "@/hooks/exercises/useExercise";
 import type { PlanExercisesDetailListProps } from "@/interface/plans";
 import type { ExerciseDto } from "@/interface/exercises";

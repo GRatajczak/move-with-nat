@@ -14,7 +14,7 @@ import type { PlanFormSchema } from "@/types/plans";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { PlanExercisesList } from "./PlanExercisesList";
 import { AddExerciseModal } from "./AddExerciseModal";
-import { ClientSelect } from "./ClientSelect";
+import { ClientSelect } from "../shared/ClientSelect";
 import type { PlanExerciseFormData, PlanFormProps } from "@/interface/plans";
 import type { ExerciseDto } from "@/interface/exercises";
 

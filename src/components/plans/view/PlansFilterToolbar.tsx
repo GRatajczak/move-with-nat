@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 import type { PlansFilterToolbarProps } from "@/interface/plans";
-import { ClientSelect } from "./ClientSelect";
+import { ClientSelect } from "../shared/ClientSelect";
 
 export const PlansFilterToolbar = ({
   search,
