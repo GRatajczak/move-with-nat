@@ -114,7 +114,7 @@ export interface CreateClientFormProps {
 }
 
 export interface EditClientFormProps {
-  client: import("./users").UserDto;
+  client: ClientDto;
   onSubmit: (data: EditClientFormData) => Promise<void>;
   onCancel: () => void;
   isSubmitting: boolean;

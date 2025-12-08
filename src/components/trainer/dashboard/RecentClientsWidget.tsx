@@ -29,8 +29,6 @@ export const RecentClientsWidget = ({ clients, isLoading }: RecentClientsWidgetP
     return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
   };
 
-  console.log(clients);
-
   return (
     <Card>
       <CardHeader>
