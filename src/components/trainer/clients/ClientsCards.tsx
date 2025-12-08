@@ -46,7 +46,7 @@ const formatLastActivity = (date: string | null) => {
   return `Aktywny ${activityDate.toLocaleDateString("pl-PL")}`;
 };
 
-export const ClientsCards = ({ clients, isLoading, onCardClick, onCreatePlan }: ClientsCardsProps) => {
+export const ClientsCards = ({ clients, isLoading, onCardClick, onCreatePlan, onResendInvite }: ClientsCardsProps) => {
   if (isLoading) {
     return <CardsSkeleton />;
   }
@@ -98,6 +98,7 @@ export const ClientsCards = ({ clients, isLoading, onCardClick, onCreatePlan }: 
                 client={client}
                 onViewProfile={() => onCardClick(client)}
                 onCreatePlan={() => onCreatePlan(client)}
+                onResendInvite={onResendInvite ? () => onResendInvite(client) : undefined}
               />
             </div>
           </CardHeader>

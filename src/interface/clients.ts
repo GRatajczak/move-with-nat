@@ -55,6 +55,7 @@ export interface ClientsTableProps {
   isLoading: boolean;
   onRowClick: (client: ClientDto) => void;
   onCreatePlan: (client: ClientDto) => void;
+  onResendInvite?: (client: ClientDto) => void;
 }
 
 export interface ClientsCardsProps {
@@ -62,12 +63,14 @@ export interface ClientsCardsProps {
   isLoading: boolean;
   onCardClick: (client: ClientDto) => void;
   onCreatePlan: (client: ClientDto) => void;
+  onResendInvite?: (client: ClientDto) => void;
 }
 
 export interface ClientActionMenuProps {
   client: ClientDto;
   onViewProfile: () => void;
   onCreatePlan: () => void;
+  onResendInvite?: () => void;
 }
 
 /** Commands for client operations **/
@@ -81,6 +84,7 @@ export interface CreateClientCommand {
 }
 
 export interface UpdateClientCommand {
+  email: string;
   firstName: string;
   lastName: string;
   phone?: string | null;

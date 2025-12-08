@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useClientsQuery } from "@/hooks/clients/useClientsQuery";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useResendInvite } from "@/hooks/useResendInvite";
 import { ClientsFilterToolbar } from "./ClientsFilterToolbar";
 import { ClientsTable } from "./ClientsTable";
 import { ClientsCards } from "./ClientsCards";
@@ -32,6 +33,7 @@ const ClientsListContent = () => {
 
   const debouncedSearch = useDebounce(search, 300);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const resendInviteMutation = useResendInvite();
 
   // Build query
   const query: ClientsPageQuery = {
@@ -86,6 +88,14 @@ const ClientsListContent = () => {
 
   const handleCreateClient = () => {
     window.location.href = "/trainer/clients/new";
+  };
+
+  const handleResendInvite = (client: ClientDto) => {
+    resendInviteMutation.mutate({
+      email: client.email,
+      role: "client",
+      resend: true,
+    });
   };
 
   const hasActiveFilters = search !== "" || status !== undefined;
@@ -176,6 +186,7 @@ const ClientsListContent = () => {
           isLoading={isLoading}
           onRowClick={handleRowClick}
           onCreatePlan={handleCreatePlan}
+          onResendInvite={handleResendInvite}
         />
       ) : (
         <ClientsCards
@@ -183,6 +194,7 @@ const ClientsListContent = () => {
           isLoading={isLoading}
           onCardClick={handleRowClick}
           onCreatePlan={handleCreatePlan}
+          onResendInvite={handleResendInvite}
         />
       )}
 

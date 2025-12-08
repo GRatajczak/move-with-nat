@@ -12,7 +12,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EditClientFormData, EditClientFormProps } from "@/interface";
-import { toast } from "sonner";
 
 export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: EditClientFormProps) => {
   const defaultValues: EditClientFormData = {
@@ -56,8 +55,8 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
       // Reset form with submitted values to mark as not dirty
       // This prevents the "Leave site" warning after successful submission
       form.reset(data);
-    } catch {
-      toast.error("Nie udało się zaktualizować podopiecznego");
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -78,9 +77,8 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" {...field} disabled className="bg-muted" />
+                <Input type="email" {...field} className="bg-muted" />
               </FormControl>
-              <FormDescription>Adres email nie może być zmieniony po utworzeniu konta.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

@@ -44,7 +44,7 @@ const formatLastActivity = (date: string | null) => {
   return activityDate.toLocaleDateString("pl-PL");
 };
 
-export const ClientsTable = ({ clients, isLoading, onRowClick, onCreatePlan }: ClientsTableProps) => {
+export const ClientsTable = ({ clients, isLoading, onRowClick, onCreatePlan, onResendInvite }: ClientsTableProps) => {
   if (isLoading) {
     return <TableSkeleton />;
   }
@@ -114,6 +114,7 @@ export const ClientsTable = ({ clients, isLoading, onRowClick, onCreatePlan }: C
                   client={client}
                   onViewProfile={() => onRowClick(client)}
                   onCreatePlan={() => onCreatePlan(client)}
+                  onResendInvite={onResendInvite ? () => onResendInvite(client) : undefined}
                 />
               </TableCell>
             </TableRow>

@@ -13,6 +13,7 @@ const EditClientContent = ({ clientId }: { clientId: string }) => {
 
   const handleSubmit = async (data: EditClientFormData) => {
     const command = {
+      email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone || null,
