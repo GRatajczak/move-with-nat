@@ -1,0 +1,22 @@
+---
+import TrainerLayout from "@/layouts/TrainerLayout.astro";
+import { TrainerDashboardContainer } from "@/components/trainer/dashboard/TrainerDashboardContainer";
+
+// Check authorization in middleware
+const { locals } = Astro;
+const user = locals.user;
+
+if (!user || user.role !== "trainer") {
+  return Astro.redirect("/");
+}
+---
+
+<TrainerLayout title="Dashboard">
+  <div class="container mx-auto py-8 px-4">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
+      <p class="text-muted-foreground mt-2">Zarządzaj swoimi podopiecznymi i ich planami treningowymi</p>
+    </div>
+    <TrainerDashboardContainer client:load />
+  </div>
+</TrainerLayout>

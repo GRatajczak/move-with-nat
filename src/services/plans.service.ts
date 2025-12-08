@@ -207,9 +207,31 @@ export async function listPlans(
     }
   }
 
-  // Map to DTOs with exercises
+  // Fetch client data for all plans with clientId
+  const clientIds = [...new Set((data || []).map((plan) => plan.client_id).filter(Boolean))] as string[];
+  const clientsByIds: Record<string, { first_name: string | null; last_name: string | null }> = {};
+
+  if (clientIds.length > 0) {
+    const { data: clients, error: clientsError } = await supabase
+      .from("users")
+      .select("id, first_name, last_name")
+      .in("id", clientIds);
+
+    if (clientsError) {
+      console.error("Failed to fetch client data:", clientsError);
+    } else {
+      (clients || []).forEach((client) => {
+        clientsByIds[client.id] = {
+          first_name: client.first_name,
+          last_name: client.last_name,
+        };
+      });
+    }
+  }
+
+  // Map to DTOs with exercises and client data
   const planDTOs = (data || []).map((plan) => ({
-    ...mapPlanToDTO(plan),
+    ...mapPlanToDTO(plan, plan.client_id ? clientsByIds[plan.client_id] : null),
     exercises: exercisesByPlan[plan.id] || [],
   }));
 
@@ -321,10 +343,21 @@ export async function createPlan(
     throw new DatabaseError("Failed to add exercises to plan");
   }
 
+  // Fetch client data if clientId is provided
+  let clientData: { first_name: string | null; last_name: string | null } | null = null;
+  if (plan.client_id) {
+    const { data: client } = await supabase
+      .from("users")
+      .select("first_name, last_name")
+      .eq("id", plan.client_id)
+      .single();
+    clientData = client || null;
+  }
+
   // TODO: Send email notification to client if clientId is provided
 
   return {
-    ...mapPlanToDTO(plan),
+    ...mapPlanToDTO(plan, clientData),
     exercises: insertedExercises.map(mapPlanExerciseToDTO),
   };
 }
@@ -379,7 +412,18 @@ export async function getPlan(
     throw new DatabaseError("Failed to fetch plan exercises");
   }
 
-  return mapPlanWithExercisesToDTO(plan, planExercises || []);
+  // Fetch client data if clientId is provided
+  let clientData: { first_name: string | null; last_name: string | null } | null = null;
+  if (plan.client_id) {
+    const { data: client } = await supabase
+      .from("users")
+      .select("first_name, last_name")
+      .eq("id", plan.client_id)
+      .single();
+    clientData = client || null;
+  }
+
+  return mapPlanWithExercisesToDTO(plan, planExercises || [], clientData);
 }
 
 /**
@@ -467,10 +511,21 @@ export async function updatePlan(
       throw new DatabaseError("Failed to update plan exercises");
     }
 
+    // Fetch client data if clientId is provided
+    let clientData: { first_name: string | null; last_name: string | null } | null = null;
+    if (updated.client_id) {
+      const { data: client } = await supabase
+        .from("users")
+        .select("first_name, last_name")
+        .eq("id", updated.client_id)
+        .single();
+      clientData = client || null;
+    }
+
     // TODO: Send email notification if exercises changed
 
     return {
-      ...mapPlanToDTO(updated),
+      ...mapPlanToDTO(updated, clientData),
       exercises: insertedExercises.map(mapPlanExerciseToDTO),
     };
   }
@@ -482,8 +537,19 @@ export async function updatePlan(
     .eq("plan_id", planId)
     .order("exercise_order");
 
+  // Fetch client data if clientId is provided
+  let clientData: { first_name: string | null; last_name: string | null } | null = null;
+  if (updated.client_id) {
+    const { data: client } = await supabase
+      .from("users")
+      .select("first_name, last_name")
+      .eq("id", updated.client_id)
+      .single();
+    clientData = client || null;
+  }
+
   return {
-    ...mapPlanToDTO(updated),
+    ...mapPlanToDTO(updated, clientData),
     exercises: (planExercises || []).map(mapPlanExerciseToDTO),
   };
 }
@@ -599,8 +665,19 @@ export async function togglePlanVisibility(
     .eq("plan_id", planId)
     .order("exercise_order");
 
+  // Fetch client data if clientId is provided
+  let clientData: { first_name: string | null; last_name: string | null } | null = null;
+  if (updated.client_id) {
+    const { data: client } = await supabase
+      .from("users")
+      .select("first_name, last_name")
+      .eq("id", updated.client_id)
+      .single();
+    clientData = client || null;
+  }
+
   return {
-    ...mapPlanToDTO(updated),
+    ...mapPlanToDTO(updated, clientData),
     exercises: (planExercises || []).map(mapPlanExerciseToDTO),
   };
 }

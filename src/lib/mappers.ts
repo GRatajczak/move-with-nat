@@ -36,12 +36,21 @@ export function mapExerciseToSummaryDTO(exercise: ExerciseRow): ExerciseSummaryD
 /**
  * Maps database plan row to PlanDto (without exercises)
  */
-export function mapPlanToDTO(plan: PlanRow): PlanDto {
+export function mapPlanToDTO(
+  plan: PlanRow,
+  clientData?: { first_name: string | null; last_name: string | null } | null
+): PlanDto {
+  const clientName =
+    clientData && (clientData.first_name || clientData.last_name)
+      ? `${clientData.first_name || ""} ${clientData.last_name || ""}`.trim()
+      : null;
+
   return {
     id: plan.id,
     name: plan.name,
     description: plan.description,
     clientId: plan.client_id,
+    clientName,
     trainerId: plan.trainer_id,
     isHidden: plan.is_hidden,
     createdAt: plan.created_at,
@@ -75,9 +84,13 @@ export function mapPlanExerciseToDTO(planExercise: PlanExerciseRow & { exercise?
 /**
  * Maps database plan row with exercises to full PlanDto
  */
-export function mapPlanWithExercisesToDTO(plan: PlanRow, planExercises: PlanExerciseRow[]): PlanDto {
+export function mapPlanWithExercisesToDTO(
+  plan: PlanRow,
+  planExercises: PlanExerciseRow[],
+  clientData?: { first_name: string | null; last_name: string | null } | null
+): PlanDto {
   return {
-    ...mapPlanToDTO(plan),
+    ...mapPlanToDTO(plan, clientData),
     exercises: planExercises.map(mapPlanExerciseToDTO),
   };
 }

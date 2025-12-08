@@ -321,6 +321,16 @@ Kryteria akceptacji:
 - Nie można przypisać podopiecznego do trenera o statusie nieaktywnym/zawieszonym.
 - Jeśli podopieczny jest już przypisany, system informuje o istniejącym przypisaniu i sugeruje zmianę przypisania (US-030).
 
+US-032
+Tytuł: Wyświetlanie ćwiczenia z planu
+Opis: Podopieczny otwiera przypisany plan, a aplikacja prezentuje ćwiczenia pojedynczo – każda strona odpowiada jednemu ćwiczeniu i łączy dane z tabel „exercises” oraz „plans_exercise”. W przypadku konfliktu danych priorytet mają wartości z „plans_exercise” (np. tempo, ciężar).
+Kryteria akceptacji:
+
+- Po wejściu w plan podopieczny widzi ekran pierwszego ćwiczenia; nawigacja „poprzednie/następne” umożliwia przechodzenie między ćwiczeniami.
+- Strona ćwiczenia wyświetla: nazwę, opis, tempo, ciężar, liczbę serii i powtórzeń, link do wideo.
+- Gdy pole jest zdefiniowane zarówno w „exercises”, jak i „plans_exercise”, używana jest wartość z „plans_exercise”.
+- Widoczny jest status wykonania ćwiczenia oraz przyciski do oznaczenia wykonania lub niewykonania (zgodnie z US-019).
+
 ## 6. Mierniki sukcesu
 
 - 50 planów treningowych utworzonych w ciągu 1 miesiąca od uruchomienia.

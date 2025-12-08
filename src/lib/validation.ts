@@ -478,3 +478,78 @@ export const EditUserFormSchema = z
     message: "Trener jest wymagany dla podopiecznego",
     path: ["trainerId"],
   });
+
+/**
+ * Validation schema for GET /api/trainer/clients query parameters
+ */
+export const ListClientsQuerySchema = z.object({
+  search: z
+    .string()
+    .max(100, "Search query too long")
+    .transform((val) => val.trim())
+    .optional(),
+  status: z.enum(["active", "pending", "suspended"]).optional(),
+  page: z.coerce.number().int().min(1, "Page must be at least 1").default(1),
+  limit: z.coerce.number().int().min(1, "Limit must be at least 1").max(100, "Limit cannot exceed 100").default(20),
+});
+
+/**
+ * Validation schema for POST /api/trainer/clients (Create client by trainer)
+ * Trainers can only create clients, and the trainer is automatically assigned
+ */
+export const CreateClientFormSchema = z.object({
+  email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
+  firstName: z
+    .string()
+    .min(1, "Imię jest wymagane")
+    .min(2, "Imię musi mieć co najmniej 2 znaki")
+    .max(50, "Imię może mieć maksymalnie 50 znaków")
+    .trim(),
+  lastName: z
+    .string()
+    .min(1, "Nazwisko jest wymagane")
+    .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
+    .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+    .trim(),
+  phone: z
+    .string()
+    .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+    .optional()
+    .or(z.literal("")),
+  dateOfBirth: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
+    .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
+    .optional()
+    .or(z.literal("")),
+});
+
+/**
+ * Validation schema for PUT /api/trainer/clients/:id (Update client by trainer)
+ */
+export const UpdateClientFormSchema = z.object({
+  email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
+  firstName: z
+    .string()
+    .min(1, "Imię jest wymagane")
+    .min(2, "Imię musi mieć co najmniej 2 znaki")
+    .max(50, "Imię może mieć maksymalnie 50 znaków")
+    .trim(),
+  lastName: z
+    .string()
+    .min(1, "Nazwisko jest wymagane")
+    .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
+    .max(50, "Nazwisko może mieć maksymalnie 50 znaków")
+    .trim(),
+  phone: z
+    .string()
+    .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+    .optional()
+    .or(z.literal("")),
+  dateOfBirth: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
+    .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
+    .optional()
+    .or(z.literal("")),
+});

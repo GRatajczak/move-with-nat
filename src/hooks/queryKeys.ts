@@ -1,4 +1,5 @@
 import type { ListExercisesQuery, ListPlansQuery, ListUsersQuery } from "../interface";
+import type { ClientsFilters, ClientsPageQuery } from "../interface/clients";
 
 export const exerciseKeys = {
   all: ["exercises"] as const,
@@ -25,10 +26,17 @@ export const usersKeys = {
   detail: (id: string) => [...usersKeys.details(), id] as const,
 };
 
+export const clientsKeys = {
+  all: ["clients"] as const,
+  lists: () => [...clientsKeys.all, "list"] as const,
+  list: (query: ClientsPageQuery) => [...clientsKeys.lists(), query] as const,
+};
+
 export const QUERY_KEYS = {
   exercises: exerciseKeys,
   plans: plansKeys,
   users: usersKeys,
+  clients: clientsKeys,
   reasons: {
     all: ["reasons"] as const,
     detail: (id: string) => ["reasons", id] as const,

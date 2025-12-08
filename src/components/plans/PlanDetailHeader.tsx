@@ -42,11 +42,8 @@ export const PlanDetailHeader = ({
           <CardContent className="pt-6">
             <h3 className="text-sm font-medium text-muted-foreground mb-3">Podopieczny</h3>
             <div className="flex items-center gap-3">
-              {plan.clientAvatar && (
-                <img src={plan.clientAvatar} alt={plan.clientName || ""} className="w-12 h-12 rounded-full" />
-              )}
               <div>
-                <p className="font-medium">{plan.clientName || "Nieznany podopieczny"}</p>
+                <p className="font-medium">{plan.clientName}</p>
                 {plan.clientId && (
                   <a
                     href={`/trainer/clients/${plan.clientId}`}

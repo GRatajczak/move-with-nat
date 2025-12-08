@@ -46,3 +46,20 @@ export interface RecentUsersWidgetProps {
   users: UserDto[];
   isLoading: boolean;
 }
+
+/** TRAINER DASHBOARD **/
+export interface TrainerDashboardStats {
+  totalClients: number;
+  activePlans: number;
+}
+
+export interface TrainerDashboardData {
+  stats: TrainerDashboardStats;
+  recentClients: UserDto[];
+}
+
+export interface TrainerDashboardState {
+  data: TrainerDashboardData | null;
+  isLoading: boolean;
+  error: string | null;
+}

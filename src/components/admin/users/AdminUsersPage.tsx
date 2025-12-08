@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useUsersList } from "@/hooks/useUsersList";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { useResendInvite } from "@/hooks/useResendInvite";
 import { UsersFilterToolbar } from "./UsersFilterToolbar";
 import { UsersTable } from "./UsersTable";
 import { UsersCards } from "./UsersCards";
@@ -58,6 +59,7 @@ const AdminUsersContent = () => {
   const { data, isLoading, error } = useUsersList(query);
   const { mutateAsync: deleteUser, isPending: isDeleting } = useDeleteUser();
   const { mutateAsync: updateUser, isPending: isUpdating } = useUpdateUser();
+  const { mutateAsync: resendInvite } = useResendInvite();
 
   // Modal state
   const [deleteModalUser, setDeleteModalUser] = useState<UserDto | null>(null);
@@ -94,7 +96,6 @@ const AdminUsersContent = () => {
         userId: toggleActiveUser.id,
         command: { status: newStatus },
       });
-      toast.success(newStatus === "active" ? "Użytkownik został aktywowany" : "Użytkownik został zawieszony");
       setToggleActiveUser(null);
     } catch {
       // Error is handled by the hook via toast
@@ -102,8 +103,21 @@ const AdminUsersContent = () => {
   };
 
   const handleResendInvite = async (user: UserDto) => {
-    // TODO: Implement resend invite endpoint
-    toast.info(`Funkcja wysyłania linku aktywacyjnego będzie wkrótce dostępna (${user.email})`);
+    // Only allow resending invites for trainers and clients
+    if (user.role === "admin") {
+      toast.error("Nie można wysłać zaproszenia dla administratora");
+      return;
+    }
+
+    try {
+      await resendInvite({
+        email: user.email,
+        role: user.role as "trainer" | "client",
+        resend: true,
+      });
+    } catch {
+      // Error is handled by the hook via toast
+    }
   };
 
   const handleDeleteClick = (user: UserDto) => {

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,9 +9,29 @@ import type { ClientSelectProps } from "@/interface/plans";
 /**
  * Searchable select component for choosing a client
  * Automatically fetches and displays clients assigned to the current trainer
+ * Supports clientId URL search param to pre-select a client
  */
 export const ClientSelect = ({ value, onChange, disabled = false, className, allowAll = false }: ClientSelectProps) => {
   const { data: clients, isLoading, error } = useTrainerClients();
+
+  // Handle clientId from URL search params
+  useEffect(() => {
+    if (!clients || clients.length === 0 || isLoading) return;
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const clientIdFromUrl = searchParams.get("clientId");
+
+    // If clientId is in URL and different from current value
+    if (clientIdFromUrl && clientIdFromUrl !== value) {
+      // Check if client exists in the list
+      const clientExists = clients.some((client) => client.id === clientIdFromUrl);
+
+      if (clientExists) {
+        // Set the client from URL as selected
+        onChange(clientIdFromUrl);
+      }
+    }
+  }, [clients, isLoading, value, onChange]);
 
   if (isLoading) {
     return <Skeleton className="h-10 w-full" />;

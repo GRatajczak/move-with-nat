@@ -7,3 +7,4 @@ export * from "./completion";
 export * from "./services";
 export * from "./dashboard";
 export * from "./navigation";
+export * from "./clients";

@@ -11,6 +11,8 @@ declare global {
         id: string;
         role: Database["public"]["Enums"]["user_role"];
         email: string;
+        firstName?: string;
+        lastName?: string;
       };
     }
   }

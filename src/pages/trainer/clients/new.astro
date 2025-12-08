@@ -1,0 +1,8 @@
+---
+import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import { CreateClientPage } from "../../../components/trainer/clients/CreateClientPage";
+---
+
+<TrainerLayout title="Dodaj podopiecznego">
+  <CreateClientPage client:load />
+</TrainerLayout>

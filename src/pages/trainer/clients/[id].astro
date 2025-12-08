@@ -1,0 +1,14 @@
+---
+import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import { ClientDetailPage } from "../../../components/trainer/clients/ClientDetailPage";
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/trainer/clients");
+}
+---
+
+<TrainerLayout title="Szczegóły podopiecznego">
+  <ClientDetailPage clientId={id} client:load />
+</TrainerLayout>

@@ -18,7 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, userRole = "trainer" }) => {
+const CreatePlanContent = ({ trainerId, userRole = "trainer" }: CreatePlanContainerProps) => {
   const { mutateAsync: createPlan, isPending } = useCreatePlan();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const baseUrl = `/${userRole}`;
@@ -90,13 +90,13 @@ const CreatePlanContent: React.FC<CreatePlanContainerProps> = ({ trainerId, user
                 <CheckCircle2 className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <DialogTitle>Plan utworzony</DialogTitle>
+                <DialogTitle className="mb-2">Plan utworzony</DialogTitle>
                 <DialogDescription>Nowy plan treningowy został pomyślnie utworzony.</DialogDescription>
               </div>
             </div>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
-            <Button onClick={handleGoBack} className="w-full sm:w-auto">
+            <Button className="ml-auto w-full sm:w-auto" onClick={handleGoBack}>
               Wróć do listy planów
             </Button>
           </DialogFooter>

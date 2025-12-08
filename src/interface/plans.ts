@@ -60,6 +60,7 @@ export interface PlanDto {
   name: Database["public"]["Tables"]["plans"]["Row"]["name"];
   description: Database["public"]["Tables"]["plans"]["Row"]["description"];
   clientId: Database["public"]["Tables"]["plans"]["Row"]["client_id"];
+  clientName?: string | null; // Full name of the client (first_name + last_name)
   trainerId: Database["public"]["Tables"]["plans"]["Row"]["trainer_id"];
   isHidden: IsHidden;
   createdAt: Database["public"]["Tables"]["plans"]["Row"]["created_at"];
@@ -198,6 +199,7 @@ export interface PlansTableProps {
 export interface CreatePlanContainerProps {
   trainerId: string;
   userRole?: "admin" | "trainer";
+  defaultClientId?: string;
 }
 
 export interface EditPlanContainerProps {
@@ -234,7 +236,7 @@ export interface DeletePlanConfirmationModalProps {
   isDeleting: boolean;
 }
 
-export interface ExerciseQuickPreviewModalProps {
+export interface PlanExercisePreviewModalProps {
   isOpen: boolean;
   exercise: ExerciseDto | null;
   onClose: () => void;
