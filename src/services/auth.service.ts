@@ -8,7 +8,7 @@ import type {
   ConfirmPasswordResetCommand,
   MessageResponse,
   TokenPayload,
-} from "../interface";
+} from "../types";
 import { ConflictError, DatabaseError, NotFoundError, UnauthorizedError, ValidationError } from "../lib/errors";
 import { sendActivationEmail, sendPasswordResetEmail } from "./email.service";
 
@@ -22,7 +22,7 @@ import { sendActivationEmail, sendPasswordResetEmail } from "./email.service";
  * @param expiryHours - Token expiry in hours (24h for activation, 1h for reset)
  * @returns JWT-like token string
  */
-function generateToken(
+export function generateToken(
   userId: string,
   email: string,
   purpose: "activation" | "password-reset",
@@ -179,6 +179,24 @@ export async function activateAccount(
     throw new ConflictError("Account already activated");
   }
 
+  // If new password is provided, update it first
+  if (command.newPassword) {
+    await confirmPasswordReset(supabase, {
+      token: command.token,
+      newPassword: command.newPassword,
+    });
+  }
+
+  // Confirm the user's email in Supabase Auth
+  const { error: authUserError } = await supabase.auth.admin.updateUserById(user.id, {
+    email_confirm: true,
+  });
+
+  if (authUserError) {
+    console.error("Failed to confirm user email in Auth:", authUserError);
+    throw new DatabaseError("Failed to confirm user email");
+  }
+
   // Activate user (set status = 'active')
   const { error } = await supabase
     .from("users")
@@ -193,9 +211,7 @@ export async function activateAccount(
     throw new DatabaseError("Failed to activate account");
   }
 
-  // TODO: Send welcome email
-
-  return { message: "Account activated" };
+  return { message: "Account activated successfully" };
 }
 
 /**
@@ -256,7 +272,10 @@ export async function confirmPasswordReset(
   command: ConfirmPasswordResetCommand
 ): Promise<MessageResponse> {
   // Verify and decode token
-  const decoded = verifyToken(command.token, "password-reset");
+  const decoded =
+    command.token.includes(".") && command.token.split(".").length === 3
+      ? verifyToken(command.token, "password-reset")
+      : verifyToken(command.token, "activation");
 
   // Validate password strength (additional check beyond schema)
   if (!isStrongPassword(command.newPassword)) {

@@ -3,29 +3,20 @@ import { useUsersList } from "@/hooks/useUsersList";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { useResendInvite } from "@/hooks/useResendInvite";
-import { UsersFilterToolbar } from "./UsersFilterToolbar";
-import { UsersTable } from "./UsersTable";
-import { UsersCards } from "./UsersCards";
+import { UsersFilterToolbar } from "../UsersFilterToolbar";
+import { UsersTable } from "@/components/admin/users/UsersTable";
+import { UsersCards } from "@/components/admin/users/UsersCards";
 import { Pagination } from "@/components/exercises/Pagination";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import type { UserDto, UsersFilters } from "@/interface";
-import { QueryProvider } from "@/components/QueryProvider";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/useDebounce";
+import { DeleteUserModal } from "./DeleteUserModal";
+import { ToggleActiveUserModal } from "./ToggleActiveUserModal";
+import { AdminUsersPageHeader } from "./AdminUsersPageHeader";
+import { ErrorDisplay } from "./ErrorDisplay";
 
-const AdminUsersContent = () => {
+export const AdminUsersContent = () => {
   // Filters state
   const [filters, setFilters] = useState<UsersFilters>({
     search: undefined,
@@ -139,28 +130,12 @@ const AdminUsersContent = () => {
   };
 
   if (error) {
-    return (
-      <div className="p-4 text-red-500 bg-red-50 rounded-md border border-red-200">
-        <p>Wystąpił błąd podczas ładowania użytkowników: {error instanceof Error ? error.message : "Nieznany błąd"}</p>
-      </div>
-    );
+    return <ErrorDisplay error={error} />;
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Użytkownicy</h1>
-          <p className="text-muted-foreground">
-            Zarządzaj użytkownikami systemu (administratorzy, trenerzy, podopieczni).
-          </p>
-        </div>
-        <Button variant="outline" onClick={() => (window.location.href = "/admin")} className="gap-2">
-          <ArrowLeft className="h-4 w-4" />
-          Powrót do Dashboard
-        </Button>
-      </div>
+      <AdminUsersPageHeader />
 
       <UsersFilterToolbar
         filters={filters}
@@ -191,74 +166,23 @@ const AdminUsersContent = () => {
         />
       )}
 
-      {/* Pagination */}
       {data?.meta && <Pagination meta={data.meta} onPageChange={(page) => handleFiltersChange({ page })} />}
 
-      {/* Delete Confirmation Modal */}
-      <AlertDialog open={!!deleteModalUser} onOpenChange={(open) => !open && setDeleteModalUser(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Czy na pewno chcesz usunąć tego użytkownika?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Ta akcja jest nieodwracalna. Użytkownik{" "}
-              <strong>
-                {deleteModalUser?.firstName} {deleteModalUser?.lastName}
-              </strong>{" "}
-              ({deleteModalUser?.email}) zostanie trwale usunięty z systemu.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Anuluj</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} disabled={isDeleting} className="bg-red-600 hover:bg-red-700">
-              {isDeleting ? "Usuwanie..." : "Usuń"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteUserModal
+        isOpen={!!deleteModalUser}
+        user={deleteModalUser}
+        onClose={() => setDeleteModalUser(null)}
+        onConfirm={confirmDelete}
+        isDeleting={isDeleting}
+      />
 
-      {/* Toggle Active Confirmation Modal */}
-      <AlertDialog open={!!toggleActiveUser} onOpenChange={(open) => !open && setToggleActiveUser(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {toggleActiveUser?.status === "active" ? "Zawiesić użytkownika?" : "Aktywować użytkownika?"}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {toggleActiveUser?.status === "active" ? (
-                <>
-                  Użytkownik{" "}
-                  <strong>
-                    {toggleActiveUser?.firstName} {toggleActiveUser?.lastName}
-                  </strong>{" "}
-                  zostanie zawieszony i utraci dostęp do systemu.
-                </>
-              ) : (
-                <>
-                  Użytkownik{" "}
-                  <strong>
-                    {toggleActiveUser?.firstName} {toggleActiveUser?.lastName}
-                  </strong>{" "}
-                  zostanie aktywowany i odzyska dostęp do systemu.
-                </>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isUpdating}>Anuluj</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmToggleActive} disabled={isUpdating}>
-              {isUpdating ? "Zapisywanie..." : toggleActiveUser?.status === "active" ? "Zawieś" : "Aktywuj"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ToggleActiveUserModal
+        isOpen={!!toggleActiveUser}
+        user={toggleActiveUser}
+        onClose={() => setToggleActiveUser(null)}
+        onConfirm={confirmToggleActive}
+        isUpdating={isUpdating}
+      />
     </div>
-  );
-};
-
-export const AdminUsersPage: React.FC = () => {
-  return (
-    <QueryProvider>
-      <AdminUsersContent />
-    </QueryProvider>
   );
 };

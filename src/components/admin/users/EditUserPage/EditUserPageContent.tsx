@@ -1,12 +1,11 @@
-import { EditUserForm } from "./EditUserForm";
+import { EditUserForm } from "../EditUserForm";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { QueryProvider } from "@/components/QueryProvider";
 import type { UpdateUserCommand } from "@/interface";
 
-const EditUserContent = ({ userId }: { userId: string }) => {
+export const EditUserContent = ({ userId }: { userId: string }) => {
   const { data: user, isLoading, error } = useUser(userId);
   const { mutateAsync: updateUser, isPending: isSubmitting } = useUpdateUser();
 
@@ -76,13 +75,5 @@ const EditUserContent = ({ userId }: { userId: string }) => {
         <EditUserForm user={user} onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isSubmitting} />
       </div>
     </div>
-  );
-};
-
-export const EditUserPage = ({ userId }: { userId: string }) => {
-  return (
-    <QueryProvider>
-      <EditUserContent userId={userId} />
-    </QueryProvider>
   );
 };

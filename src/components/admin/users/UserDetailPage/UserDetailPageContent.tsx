@@ -22,7 +22,54 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
-const UserDetailContent = ({ userId }: { userId: string }) => {
+const DetailSkeleton = () => (
+  <div className="space-y-6 max-w-5xl mx-auto md:px-0 px-4">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center gap-4">
+        <Skeleton className="h-10 w-10 rounded" />
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-12 w-12 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-6 w-48" />
+            <div className="flex gap-2">
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-20 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <Skeleton className="h-10 w-24" />
+        <Skeleton className="h-10 w-28" />
+        <Skeleton className="h-10 w-24" />
+      </div>
+    </div>
+
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-6 w-48" />
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-3">
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        <div className="space-y-3 pt-3 border-t">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+        <div className="space-y-3 pt-3 border-t">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-3 w-full" />
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+export const UserDetailContent = ({ userId }: { userId: string }) => {
   const { data: user, isLoading, error } = useUser(userId);
   const { mutateAsync: deleteUser, isPending: isDeleting } = useDeleteUser();
   const { mutateAsync: updateUser, isPending: isUpdating } = useUpdateUser();
@@ -480,59 +527,4 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
       </AlertDialog>
     </div>
   );
-};
-
-const DetailSkeleton = () => (
-  <div className="space-y-6 max-w-5xl mx-auto md:px-0 px-4">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div className="flex items-center gap-4">
-        <Skeleton className="h-10 w-10 rounded" />
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-6 w-48" />
-            <div className="flex gap-2">
-              <Skeleton className="h-5 w-20 rounded-full" />
-              <Skeleton className="h-5 w-20 rounded-full" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-28" />
-        <Skeleton className="h-10 w-24" />
-      </div>
-    </div>
-
-    <Card>
-      <CardHeader>
-        <Skeleton className="h-6 w-48" />
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-        </div>
-        <div className="space-y-3 pt-3 border-t">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-2/3" />
-        </div>
-        <div className="space-y-3 pt-3 border-t">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-3 w-full" />
-        </div>
-      </CardContent>
-    </Card>
-  </div>
-);
-
-interface UserDetailPageProps {
-  userId: string;
-}
-
-export const UserDetailPage = ({ userId }: UserDetailPageProps) => {
-  return <UserDetailContent userId={userId} />;
 };

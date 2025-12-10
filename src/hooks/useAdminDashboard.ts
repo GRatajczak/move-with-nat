@@ -29,7 +29,7 @@ export const useAdminDashboard = () => {
         await Promise.all([
           fetch("/api/users?role=trainer&limit=1", { headers, credentials: "include" }),
           fetch("/api/users?role=client&limit=1", { headers, credentials: "include" }),
-          fetch("/api/users?limit=5", { headers, credentials: "include" }),
+          fetch("/api/users?limit=5&status=active", { headers, credentials: "include" }),
           fetch("/api/users?status=pending&limit=5", { headers, credentials: "include" }),
           fetch("/api/plans?limit=1", { headers, credentials: "include" }),
           fetch("/api/exercises?limit=1", { headers, credentials: "include" }),

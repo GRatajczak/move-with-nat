@@ -169,3 +169,33 @@ export interface CreateUserFormProps {
   onCancel: () => void;
   isSubmitting: boolean;
 }
+
+export interface DeleteUserModalProps {
+  user: UserDto | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isDeleting: boolean;
+}
+
+export interface ToggleActiveUserModalProps {
+  user: UserDto | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isUpdating: boolean;
+}
+
+export interface ErrorDisplayProps {
+  error: Error | null;
+}
+
+export interface CreateUserPageHeaderProps {
+  onCancel: () => void;
+}
+
+export interface CreateUserSuccessModalProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  onConfirm: () => void;
+}

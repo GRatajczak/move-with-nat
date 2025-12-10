@@ -2,6 +2,7 @@
 import Layout from "./Layout.astro";
 import { MainLayout } from "./MainLayout";
 import { Toaster } from "../components/ui/sonner";
+import type { AuthenticatedUser } from "@/types";
 
 interface Props {
   title?: string;
@@ -9,28 +10,26 @@ interface Props {
 
 const { title = "Client Dashboard" } = Astro.props;
 
-// Get user from context (set by middleware)
-const user = Astro.locals.user;
+const user = Astro.locals.user as AuthenticatedUser;
+const supabase = Astro.locals.supabase;
 
-// If no user, redirect to login
-if (!user) {
-  return Astro.redirect("/login");
+if (!user || !supabase) {
+  return Astro.redirect("/auth/login");
 }
 
-// Check if user is client
 if (user.role !== "client") {
   return Astro.redirect(`/${user.role}`);
 }
 
-// Get current path
+const { data: userDetails } = await supabase.from("users").select("first_name, last_name").eq("id", user.id).single();
+
 const currentPath = Astro.url.pathname;
 
-// Mock user data for now (will be replaced with actual user data from auth)
 const fullUser = {
   id: user.id,
   email: user.email,
-  firstName: "Podopieczny", // TODO: Get from database
-  lastName: "User", // TODO: Get from database
+  firstName: userDetails?.first_name || "Podopieczny",
+  lastName: userDetails?.last_name || "User",
   role: user.role,
 };
 ---

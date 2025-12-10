@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js";
 import type { AstroCookies } from "astro";
 import { type SupabaseClient as SupabaseClientType } from "@supabase/supabase-js";
 import { createServerClient, type CookieOptionsWithName } from "@supabase/ssr";
@@ -36,4 +37,25 @@ export const createSupabaseServerInstance = (context: { headers: Headers; cookie
   });
 
   return supabase;
+};
+
+let supabaseAdmin: SupabaseClient | null = null;
+
+export const getSupabaseAdminClient = () => {
+  if (!supabaseAdmin) {
+    const supabaseUrl = import.meta.env.SUPABASE_URL;
+    const supabaseServiceRoleKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      throw new Error("Missing Supabase URL or Service Role Key");
+    }
+
+    supabaseAdmin = createClient<Database>(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+  }
+  return supabaseAdmin;
 };

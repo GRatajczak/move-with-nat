@@ -1,6 +1,7 @@
 // src/pages/api/auth/invite.ts
 
 import type { APIRoute } from "astro";
+import { getSupabaseAdminClient } from "../../../db/supabase.client";
 import { InviteUserCommandSchema } from "../../../lib/validation";
 import { sendInvite } from "../../../services/auth.service";
 import { handleAPIError } from "../../../lib/api-helpers";
@@ -29,14 +30,15 @@ import { handleAPIError } from "../../../lib/api-helpers";
  */
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse and validate request body
     const body = await request.json();
     const validated = InviteUserCommandSchema.parse(body);
 
+    const supabaseAdmin = getSupabaseAdminClient();
     // Call service to send invitation
-    const result = await sendInvite(locals.supabase, validated);
+    const result = await sendInvite(supabaseAdmin, validated);
 
     return new Response(JSON.stringify(result), {
       status: 202,

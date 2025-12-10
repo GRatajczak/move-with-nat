@@ -3,7 +3,7 @@ import { createSupabaseServerInstance } from "@/db/supabase.client";
 import type { UserRole } from "@/types";
 import { hasRequiredRole } from "@/lib/auth.utils";
 
-const AUTH_PAGES = ["/auth/login", "/auth/forgot-password", "/auth/reset-password"];
+const AUTH_PAGES = ["/auth/login", "/auth/forgot-password", "/auth/reset-password", "/auth/activate"];
 const PUBLIC_PATHS = ["/", ...AUTH_PAGES];
 
 const ADMIN_PATH = "/admin";
@@ -23,9 +23,9 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/reasons", method: "POST", role: "admin" },
   { path: "/api/reasons", method: "PUT", role: "admin" },
   { path: "/api/reasons", method: "DELETE", role: "admin" },
-  { path: "/api/users", method: "GET", role: "admin" },
+  { path: "/api/users", method: "GET", role: "client" },
   { path: "/api/users", method: "POST", role: "admin" },
-  { path: "/api/users", method: "PUT", role: "admin" },
+  { path: "/api/users", method: "PUT", role: "client" },
   { path: "/api/users", method: "DELETE", role: "admin" },
   { path: "/api/trainer/clients", method: "GET", role: "trainer" },
   { path: "/api/trainer/clients", method: "POST", role: "trainer" },
@@ -33,7 +33,7 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/trainer/clients", method: "DELETE", role: "admin" },
 ];
 
-const PUBLIC_API_PATHS = ["/api/auth/login", "/api/auth/invite"];
+const PUBLIC_API_PATHS = ["/api/auth/login", "/api/auth/invite", "/api/auth/activate"];
 
 export const onRequest = defineMiddleware(async ({ locals, cookies, url, request, redirect }, next) => {
   if (PUBLIC_API_PATHS.some((path) => url.pathname.startsWith(path))) {

@@ -9,11 +9,12 @@ import type {
   ListUsersQuery,
   UpdateUserCommand,
   AuthenticatedUser,
-} from "../interface";
+} from "../types";
 import { mapUserToDTO, mapUserRoleFromDTO } from "../lib/mappers";
 import { ConflictError, DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "../lib/errors";
 import { sendActivationEmail } from "./email.service";
 import { isValidUUID } from "../lib/validation";
+import { generateToken } from "./auth.service";
 
 /**
  * Helper: Check if user is admin
@@ -168,10 +169,10 @@ export async function createUser(
     throw new DatabaseError("Failed to create user profile");
   }
 
-  // Send activation email (non-blocking for MVP)
-  // In production, this should be handled by a background job
+  // Send activation email
   try {
-    await sendActivationEmail(command.email, command.firstName || "", newUser.id);
+    const activationToken = generateToken(newUser.id, newUser.email, "activation", 24);
+    await sendActivationEmail(command.email, command.firstName || "", activationToken);
   } catch (emailError) {
     console.error("Failed to send activation email:", emailError);
     // Don't fail the request if email sending fails
