@@ -34,7 +34,7 @@ export const ExercisesTableContent = ({
             <TableHead>Utworzono</TableHead>
             <TableHead>Tempo</TableHead>
             <TableHead>Użycie</TableHead>
-            <TableHead>Ukryte</TableHead>
+            <TableHead>Widoczność</TableHead>
             <TableHead className="text-right">Akcje</TableHead>
           </TableRow>
         </TableHeader>
@@ -59,7 +59,7 @@ export const ExercisesTableContent = ({
               </TableCell>
               <TableCell>{exercise.tempo || "Nie określono"}</TableCell>
               <TableCell>{exercise.usageCount ? `${exercise.usageCount} planów` : "0 planów"}</TableCell>
-              <TableCell>{exercise.isHidden ? "Tak" : "Nie"}</TableCell>
+              <TableCell>{exercise.isHidden ? "Ukryte" : "Widoczne"}</TableCell>
               <TableCell className="text-right">
                 <ExerciseActionMenu
                   exerciseId={exercise.id}
