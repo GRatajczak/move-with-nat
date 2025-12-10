@@ -5,7 +5,7 @@ import { EditUserFormSchema, CreateUserFormSchema } from "@/lib/validation";
 export type EditUserFormData = z.infer<typeof EditUserFormSchema>;
 export type CreateUserFormData = z.infer<typeof CreateUserFormSchema>;
 
-export type UserStatus = "pending" | "active" | "inactive";
+export type UserStatus = "pending" | "active" | "suspended";
 
 export interface UserDto {
   id: string;
@@ -14,6 +14,8 @@ export interface UserDto {
   lastName: string;
   role: "admin" | "trainer" | "client";
   status: UserStatus;
+  phone?: string;
+  dateOfBirth?: string;
   trainerId?: string;
   createdAt: string;
   updatedAt: string;

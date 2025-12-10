@@ -23,7 +23,15 @@ export const ListExercisesQuerySchema = z.object({
 export const ListPlansQuerySchema = z.object({
   trainerId: z.string().uuid().optional(),
   clientId: z.string().uuid().optional(),
-  visible: z.coerce.boolean().optional(),
+  visible: z
+    .union([z.boolean(), z.string()])
+    .transform((val) => {
+      if (typeof val === "boolean") return val;
+      if (val === "true" || val === "1") return true;
+      if (val === "false" || val === "0") return false;
+      return undefined;
+    })
+    .optional(),
   page: z.coerce.number().int().min(1, "Page must be at least 1").default(1),
   limit: z.coerce.number().int().min(1, "Limit must be at least 1").max(100, "Limit cannot exceed 100").default(20),
   sortBy: z.enum(["created_at"]).default("created_at"),
@@ -37,9 +45,8 @@ export const CreateUserCommandSchema = z
   .object({
     email: z
       .string()
-      .email("Invalid email format")
-      .toLowerCase()
-      .transform((val) => val.trim()),
+      .transform((val) => val.trim())
+      .pipe(z.string().email("Invalid email format").toLowerCase()),
     role: z.enum(["admin", "trainer", "client"], {
       errorMap: () => ({ message: "Role must be either 'admin', 'trainer' or 'client'" }),
     }),
@@ -54,8 +61,12 @@ export const CreateUserCommandSchema = z
       .max(50, "Last name must be at most 50 characters")
       .transform((val) => val.trim()),
     phone: z
-      .string()
-      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Invalid phone number format")
+      .union([
+        z.string().regex(/^\+?[0-9\s\-()]{7,20}$/, "Invalid phone number format"),
+        z.literal(""),
+        z.null(),
+        z.undefined(),
+      ])
       .optional()
       .nullable(),
     dateOfBirth: z
@@ -119,7 +130,7 @@ export const UpdateUserCommandSchema = z
       .optional(),
     phone: z
       .string()
-      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Invalid phone number format")
+      .regex(/^\+?[0-9\s\-()]{7,20}$/, "Invalid phone number format")
       .optional()
       .nullable(),
     dateOfBirth: z
@@ -159,7 +170,7 @@ export const AddPlanExerciseCommandSchema = z.object({
   reps: z.number().int().min(1, "Reps must be at least 1").optional(),
   tempo: z
     .string()
-    .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
+    .regex(/^(\d{4}|\d+-\d+-\d+(-\d+)?)$/, "Tempo must be in Format XXXX or X-X-X-X")
     .default("3-0-3"),
   defaultWeight: z.number().min(0, "Weight must be non-negative").optional().nullable(),
 });
@@ -174,7 +185,7 @@ export const UpdatePlanExerciseCommandSchema = z
     reps: z.number().int().min(1, "Reps must be at least 1").optional(),
     tempo: z
       .string()
-      .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
+      .regex(/^(\d{4}|\d+-\d+-\d+(-\d+)?)$/, "Tempo must be in Format XXXX or X-X-X-X")
       .optional(),
     defaultWeight: z.number().min(0, "Weight must be non-negative").optional().nullable(),
   })
@@ -325,7 +336,7 @@ export const planExerciseSchema = z.object({
   reps: z.number().int().min(1, "Min. 1 powtórzenie").max(1000, "Max. 1000 powtórzeń"),
   tempo: z
     .string()
-    .regex(/^\d{4}$|^\d+-\d+-\d+(-\d+)?$/, "Format: XXXX lub X-X-X (np. 3-0-3)")
+    .regex(/^(\d{4}|\d+-\d+-\d+(-\d+)?)$/, "Tempo must be in Format XXXX or X-X-X-X")
     .optional()
     .or(z.literal("")),
   defaultWeight: z.number().min(0, "Ciężar nie może być ujemny").nullable().optional(),
@@ -431,7 +442,7 @@ export const CreateUserFormSchema = z
       .trim(),
     phone: z
       .string()
-      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+      .regex(/^\+?[0-9\s\-()]{7,20}$/, "Nieprawidłowy format numeru telefonu")
       .optional()
       .or(z.literal("")),
     dateOfBirth: z
@@ -467,7 +478,7 @@ export const EditUserFormSchema = z
       .trim(),
     phone: z
       .string()
-      .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
+      .regex(/^\+?[0-9\s\-()]{7,20}$/, "Nieprawidłowy format numeru telefonu")
       .optional()
       .or(z.literal("")),
     dateOfBirth: z
@@ -585,7 +596,7 @@ export const CreatePlanCommandSchema = z.object({
         reps: z.number().int().min(1),
         tempo: z
           .string()
-          .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
+          .regex(/^(\d{4}|\d+-\d+-\d+(-\d+)?)$/, "Tempo must be in Format XXXX or X-X-X-X")
           .default("3-0-3"),
         defaultWeight: z.number().min(0).optional().nullable(),
       })
@@ -613,7 +624,7 @@ export const UpdatePlanCommandSchema = z
           reps: z.number().int().min(1),
           tempo: z
             .string()
-            .regex(/^\d{4}$|^\d+-\d+-\d+$/, "Tempo must be in format XXXX or X-X-X")
+            .regex(/^(\d{4}|\d+-\d+-\d+(-\d+)?)$/, "Tempo must be in Format XXXX or X-X-X-X")
             .default("3-0-3"),
           defaultWeight: z.number().min(0).optional().nullable(),
         })

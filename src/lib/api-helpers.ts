@@ -65,6 +65,20 @@ export function handleAPIError(error: unknown): Response {
  * Validates UUID format
  */
 export function isValidUUID(uuid: string): boolean {
+  if (uuid === null || uuid === undefined) {
+    throw new Error("UUID cannot be null or undefined");
+  }
+  if (typeof uuid !== "string" || uuid === "") {
+    return false;
+  }
+
+  // Special case: nil UUID (all zeros)
+  if (uuid === "00000000-0000-0000-0000-000000000000") {
+    return true;
+  }
+
+  // UUID format: xxxxxxxx-xxxx-Vxxx-Nxxx-xxxxxxxxxxxx
+  // V = version (1-5), N = variant (8, 9, a, b for RFC 4122)
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }
