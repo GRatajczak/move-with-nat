@@ -43,7 +43,7 @@ export const PlanDetailHeader = ({
             <h3 className="text-sm font-medium text-muted-foreground mb-3">Podopieczny</h3>
             <div className="flex items-center gap-3">
               <div>
-                <p className="font-medium">{plan.clientName}</p>
+                <p className="font-medium">{plan.clientName || "—"}</p>
                 {plan.clientId && (
                   <a
                     href={`/trainer/clients/${plan.clientId}`}

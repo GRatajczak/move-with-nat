@@ -1,14 +1,13 @@
 import { usePlan } from "@/hooks/plans/usePlan";
 import { useUpdatePlan } from "@/hooks/plans/useUpdatePlan";
-import { AdminPlanForm } from "./AdminPlanForm";
+import { AdminPlanForm } from "../AdminPlanForm";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
-import { Breadcrumbs } from "../../navigation/Breadcrumbs";
+import { Breadcrumbs } from "../../../navigation/Breadcrumbs";
 import type { AdminPlanFormSchema } from "@/types/plans";
-import { QueryProvider } from "../../QueryProvider";
 
-const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {
+export const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {
   const { data: plan, isLoading, error } = usePlan(planId);
   const { mutateAsync: updatePlan, isPending } = useUpdatePlan();
   const baseUrl = `/${userRole}`;
@@ -105,13 +104,5 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
       {/* Form */}
       <AdminPlanForm plan={plan} onSubmit={handleSubmit} onCancel={handleCancel} isSubmitting={isPending} mode="edit" />
     </div>
-  );
-};
-
-export const AdminEditPlanContainer = ({ planId, userRole = "admin" }: { planId: string; userRole?: "admin" }) => {
-  return (
-    <QueryProvider>
-      <AdminEditPlanContent planId={planId} userRole={userRole} />
-    </QueryProvider>
   );
 };

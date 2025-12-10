@@ -4,20 +4,19 @@ import { usePlanCompletion } from "@/hooks/plans/usePlanCompletion";
 import { useTogglePlanVisibility } from "@/hooks/plans/useTogglePlanVisibility";
 import { useDeletePlan } from "@/hooks/plans/useDeletePlan";
 import { useDuplicatePlan } from "@/hooks/plans/useDuplicatePlan";
-import { PlanDetailHeader } from "./PlanDetailHeader";
-import { PlanDescriptionSection } from "./PlanDescriptionSection";
-import { ProgressSection } from "./ProgressSection";
-import { PlanExercisesDetailList } from "./PlanExercisesDetailList";
-import { DeletePlanConfirmationModal } from "../edit/DeletePlanConfirmationModal";
-import { DuplicatePlanModal } from "../edit/DuplicatePlanModal";
+import { PlanDetailHeader } from "../PlanDetailHeader";
+import { PlanDescriptionSection } from "../PlanDescriptionSection";
+import { ProgressSection } from "../ProgressSection";
+import { PlanExercisesDetailList } from "../PlanExercisesDetailList";
+import { DeletePlanConfirmationModal } from "../../edit/DeletePlanConfirmationModal";
+import { DuplicatePlanModal } from "../../edit/DuplicatePlanModal";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
-import { Breadcrumbs } from "../../navigation/Breadcrumbs";
+import { Breadcrumbs } from "../../../navigation/Breadcrumbs";
 import type { PlanDetailContainerProps, PlanViewModel, DuplicatePlanData } from "@/interface/plans";
-import { QueryProvider } from "../../QueryProvider";
 
-const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainerProps) => {
+export const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainerProps) => {
   const { data: plan, isLoading: isPlanLoading, error: planError } = usePlan(planId);
   const { data: completionData, isLoading: isCompletionLoading } = usePlanCompletion(planId);
   const { mutateAsync: toggleVisibility } = useTogglePlanVisibility();
@@ -153,6 +152,7 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
       />
 
       <DuplicatePlanModal
+        userRole={userRole}
         isOpen={!!duplicateModalPlan}
         plan={duplicateModalPlan}
         onClose={() => setDuplicateModalPlan(null)}
@@ -160,13 +160,5 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
         isSubmitting={isDuplicating}
       />
     </div>
-  );
-};
-
-export const PlanDetailContainer: React.FC<PlanDetailContainerProps> = ({ planId, userRole = "trainer" }) => {
-  return (
-    <QueryProvider>
-      <PlanDetailContent planId={planId} userRole={userRole} />
-    </QueryProvider>
   );
 };

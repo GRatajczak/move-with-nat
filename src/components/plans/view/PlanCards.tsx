@@ -88,14 +88,6 @@ export const PlanCards = ({
                     {completionStats.completed}/{completionStats.total} wykonanych
                   </span>
                 </div>
-
-                {/* Progress bar */}
-                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary transition-all"
-                    style={{ width: `${completionStats.percentage}%` }}
-                  />
-                </div>
               </div>
             </CardContent>
             <CardFooter className="pt-0 text-xs text-muted-foreground">

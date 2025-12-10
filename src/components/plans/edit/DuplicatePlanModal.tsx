@@ -66,7 +66,7 @@ export const DuplicatePlanModal = ({
       setError("Nie udało się zduplikować planu");
     }
   };
-
+  console.log(userRole);
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
@@ -95,7 +95,7 @@ export const DuplicatePlanModal = ({
               {userRole === "admin" ? (
                 <AdminClientSelect
                   value={clientId || ""}
-                  onChange={(value) => setClientId(value || null)}
+                  onChange={(value) => setClientId(value === "" ? null : value)}
                   disabled={isSubmitting}
                 />
               ) : (

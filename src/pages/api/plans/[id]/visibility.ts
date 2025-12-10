@@ -1,8 +1,13 @@
 // src/pages/api/plans/[id]/visibility.ts
 
 import type { APIRoute } from "astro";
-import { togglePlanVisibility, TogglePlanVisibilityCommandSchema } from "../../../../services/plans.service";
+import { z } from "zod";
+import { togglePlanVisibility } from "../../../../services/plans.service";
 import { handleAPIError } from "../../../../lib/api-helpers";
+
+const TogglePlanVisibilityCommandSchema = z.object({
+  isHidden: z.boolean(),
+});
 
 export const prerender = false;
 

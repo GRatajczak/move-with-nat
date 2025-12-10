@@ -33,7 +33,6 @@ const CreateClientContent = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Dodaj podopiecznego</h1>

@@ -59,6 +59,7 @@ export const AdminClientSelect = ({ value, onChange, disabled = false }: AdminCl
         <SelectValue placeholder="Wybierz podopiecznego (opcjonalnie)" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="none">Brak (wybierz później)</SelectItem>
         {activeClients.map((client) => (
           <SelectItem key={client.id} value={client.id}>
             <div className="flex flex-col">
@@ -69,7 +70,6 @@ export const AdminClientSelect = ({ value, onChange, disabled = false }: AdminCl
             </div>
           </SelectItem>
         ))}
-        <SelectItem value="none">Brak (wybierz później)</SelectItem>
       </SelectContent>
     </Select>
   );
