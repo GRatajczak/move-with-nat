@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { ExerciseForm } from "./ExerciseForm";
+import { ExerciseForm } from "../ExerciseForm";
 import { useCreateExercise } from "@/hooks/exercises/useCreateExercise";
 import type { ExerciseFormData } from "@/interface";
-import { QueryProvider } from "../QueryProvider";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 
-const CreateExerciseContent = () => {
+export const CreateExerciseContent = () => {
   const { mutateAsync: createExercise, isPending } = useCreateExercise();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -83,13 +82,5 @@ const CreateExerciseContent = () => {
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
-
-export const CreateExerciseContainer = () => {
-  return (
-    <QueryProvider>
-      <CreateExerciseContent />
-    </QueryProvider>
   );
 };

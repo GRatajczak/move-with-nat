@@ -1,14 +1,12 @@
-import React from "react";
-import { ExerciseForm } from "./ExerciseForm";
+import { ExerciseForm } from "../ExerciseForm";
 import { useUpdateExercise } from "@/hooks/exercises/useUpdateExercise";
 import { useExercise } from "@/hooks/exercises/useExercise";
 import type { ExerciseFormData } from "@/interface";
-import { Skeleton } from "@/components/ui/skeleton";
+import EditSkeleton from "./EditSkeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { QueryProvider } from "../QueryProvider";
 
-const EditExerciseContent = ({ id }: { id: string }) => {
+export const EditExerciseContent = ({ id }: { id: string }) => {
   const { data: exercise, isLoading, error } = useExercise(id);
   const { mutateAsync: updateExercise, isPending } = useUpdateExercise();
 
@@ -64,28 +62,3 @@ const EditExerciseContent = ({ id }: { id: string }) => {
     </div>
   );
 };
-
-export const EditExerciseContainer = (props: { id: string }) => {
-  return (
-    <QueryProvider>
-      <EditExerciseContent {...props} />
-    </QueryProvider>
-  );
-};
-
-const EditSkeleton = () => (
-  <div className="space-y-6">
-    <Skeleton className="h-10 w-1/3" />
-    <div className="bg-card rounded-lg border p-6 space-y-8">
-      <div className="grid gap-6 md:grid-cols-2">
-        <Skeleton className="h-20" />
-        <Skeleton className="h-40" />
-      </div>
-      <Skeleton className="h-32" />
-      <div className="flex justify-end gap-4">
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-32" />
-      </div>
-    </div>
-  </div>
-);

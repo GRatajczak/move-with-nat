@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { useExercisesList } from "@/hooks/exercises/useExercisesList";
 import { useDeleteExercise } from "@/hooks/exercises/useDeleteExercise";
-import { ExercisesFilterToolbar } from "./ExercisesFilterToolbar";
-import { ExercisesTable } from "./ExercisesTable";
-import { ExerciseCards } from "./ExerciseCards";
-import { Pagination } from "./Pagination";
-import { ExerciseQuickPreviewModal } from "./ExerciseQuickPreviewModal";
-import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
+import { ExercisesFilterToolbar } from "../ExercisesFilterToolbar";
+import { ExercisesTable } from "../ExercisesTable";
+import { ExerciseCards } from "../ExerciseCards";
+import { Pagination } from "../Pagination";
+import { ExerciseQuickPreviewModal } from "../ExerciseQuickPreviewModal";
+import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { ExerciseViewModel } from "@/interface";
-import { QueryProvider } from "../QueryProvider";
 
-const ExercisesListContent: React.FC = () => {
+export const ExercisesListContent = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const { exercises, pagination, isLoading, error } = useExercisesList({ search, page });
@@ -124,13 +123,5 @@ const ExercisesListContent: React.FC = () => {
         isDeleting={isDeleting}
       />
     </div>
-  );
-};
-
-export const ExercisesListPage: React.FC = () => {
-  return (
-    <QueryProvider>
-      <ExercisesListContent />
-    </QueryProvider>
   );
 };

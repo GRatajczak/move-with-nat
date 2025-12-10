@@ -5,12 +5,11 @@ import { useParsedDescription } from "@/hooks/exercises/useParsedDescription";
 import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Skeleton } from "@/components/ui/skeleton";
+import DetailSkeleton from "./DetailSkeleton";
 import { Pencil, Trash, ArrowLeft, Calendar, Dumbbell, Clock, Activity } from "lucide-react";
-import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
-import { QueryProvider } from "../QueryProvider";
+import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 
-const ExerciseDetailContent = ({ id }: { id: string }) => {
+export const ExerciseDetailContent = ({ id }: { id: string }) => {
   const { data: exercise, isLoading, error } = useExercise(id);
   const { mutateAsync: deleteExercise, isPending: isDeleting } = useDeleteExercise();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -55,7 +54,7 @@ const ExerciseDetailContent = ({ id }: { id: string }) => {
   const usageCount = exercise.usageCount || 0;
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6  mx-auto">
       <DeleteConfirmationModal
         exercise={exercise}
         isOpen={isDeleteModalOpen}
@@ -175,32 +174,3 @@ const ExerciseDetailContent = ({ id }: { id: string }) => {
     </div>
   );
 };
-
-export const ExerciseDetailContainer = (props: { id: string }) => {
-  return (
-    <QueryProvider>
-      <ExerciseDetailContent {...props} />
-    </QueryProvider>
-  );
-};
-
-const DetailSkeleton = () => (
-  <div className="space-y-6 max-w-5xl mx-auto">
-    <div className="flex justify-between">
-      <Skeleton className="h-10 w-40" />
-      <div className="flex gap-2">
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-24" />
-      </div>
-    </div>
-    <div className="grid gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-2 space-y-6">
-        <Skeleton className="aspect-video w-full rounded-lg" />
-        <Skeleton className="h-64 w-full rounded-lg" />
-      </div>
-      <div className="space-y-6">
-        <Skeleton className="h-64 w-full rounded-lg" />
-      </div>
-    </div>
-  </div>
-);

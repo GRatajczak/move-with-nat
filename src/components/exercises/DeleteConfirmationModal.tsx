@@ -47,6 +47,7 @@ export const DeleteConfirmationModal = ({
           <DialogDescription className="pt-2">
             Czy na pewno chcesz usunąć ćwiczenie{" "}
             <span className="font-semibold text-foreground">&quot;{exercise.name}&quot;</span>?
+            <p className="font-semibold  text-destructive mt-1 ">Tej operacji nie można cofnąć.</p>
           </DialogDescription>
         </DialogHeader>
 
@@ -89,8 +90,6 @@ export const DeleteConfirmationModal = ({
               </Tooltip>
             </TooltipProvider>
           </div>
-
-          {isHardDelete && <p className="text-xs text-destructive mt-1 ml-6">Tej operacji nie można cofnąć.</p>}
         </div>
 
         <DialogFooter>
