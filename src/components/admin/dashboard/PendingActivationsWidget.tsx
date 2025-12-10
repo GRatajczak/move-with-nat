@@ -17,7 +17,7 @@ export const PendingActivationsWidget = ({ users, isLoading, onResendInvite }: P
   };
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Oczekujące aktywacje</CardTitle>
       </CardHeader>

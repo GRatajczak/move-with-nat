@@ -1,12 +1,11 @@
 import { useAdminDashboard } from "@/hooks/useAdminDashboard";
-import { StatsCard } from "./StatsCard";
-import { QuickActions } from "./QuickActions";
-import { RecentUsersWidget } from "./RecentUsersWidget";
-import { PendingActivationsWidget } from "./PendingActivationsWidget";
+import { StatsCard } from "../StatsCard";
+import { QuickActions } from "../QuickActions";
+import { RecentUsersWidget } from "@/components/admin/dashboard/RecentUsersWidget";
+import { PendingActivationsWidget } from "../PendingActivationsWidget";
 import { Users, UserCheck, Dumbbell, Calendar, ClipboardList } from "lucide-react";
-import { QueryProvider } from "../../QueryProvider";
 
-const AdminDashboardContent = () => {
+export const AdminDashboardContent = () => {
   const { data, isLoading, error, onResendInvite } = useAdminDashboard();
 
   if (error) {
@@ -59,7 +58,7 @@ const AdminDashboardContent = () => {
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 items-stretch">
         <div className="col-span-4">
           <RecentUsersWidget users={data?.recentUsers || []} isLoading={isLoading} />
         </div>
@@ -72,13 +71,5 @@ const AdminDashboardContent = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-export const AdminDashboardContainer = () => {
-  return (
-    <QueryProvider>
-      <AdminDashboardContent />
-    </QueryProvider>
   );
 };
