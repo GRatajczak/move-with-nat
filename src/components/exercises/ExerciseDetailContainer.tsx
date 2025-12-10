@@ -8,7 +8,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pencil, Trash, ArrowLeft, Calendar, Dumbbell, Clock, Activity } from "lucide-react";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "../QueryProvider";
 
 const ExerciseDetailContent = ({ id }: { id: string }) => {
@@ -57,7 +56,6 @@ const ExerciseDetailContent = ({ id }: { id: string }) => {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <Toaster />
       <DeleteConfirmationModal
         exercise={exercise}
         isOpen={isDeleteModalOpen}

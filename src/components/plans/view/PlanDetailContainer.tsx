@@ -10,7 +10,6 @@ import { ProgressSection } from "./ProgressSection";
 import { PlanExercisesDetailList } from "./PlanExercisesDetailList";
 import { DeletePlanConfirmationModal } from "../edit/DeletePlanConfirmationModal";
 import { DuplicatePlanModal } from "../edit/DuplicatePlanModal";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
@@ -82,7 +81,6 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
   if (planError) {
     return (
       <div className="p-4">
-        <Toaster />
         <div className="rounded-md border border-destructive bg-destructive/10 p-4">
           <p className="text-destructive font-medium">Wystąpił błąd podczas ładowania planu</p>
           <p className="text-sm text-muted-foreground mt-1">
@@ -100,7 +98,6 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
   if (isLoading || !plan) {
     return (
       <div className="space-y-6">
-        <Toaster />
         <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
           <div className="flex flex-col space-y-2 flex-1">
             <Skeleton className="h-8 w-64" />
@@ -119,8 +116,6 @@ const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailContainer
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Back button and breadcrumbs */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <Breadcrumbs items={breadcrumbs} />

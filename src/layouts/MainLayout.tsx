@@ -4,6 +4,7 @@ import { Sidebar } from "../components/navigation/Sidebar";
 import { TopBar } from "../components/navigation/TopBar";
 import { useBreadcrumbs } from "../hooks/useBreadcrumbs";
 import { useIsMobile } from "../hooks/useMediaQuery";
+import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import type { MainLayoutProps } from "../interface";
 import { QueryProvider } from "../components/QueryProvider";
@@ -92,6 +93,7 @@ export function MainLayout({ children, user, currentPath, requiredRole }: MainLa
         <MainLayoutContent user={user} requiredRole={requiredRole}>
           {children}
         </MainLayoutContent>
+        <Toaster />
       </LayoutProvider>
     </QueryProvider>
   );

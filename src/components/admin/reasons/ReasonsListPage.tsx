@@ -8,7 +8,6 @@ import { CreateReasonModal } from "./CreateReasonModal";
 import { EditReasonModal } from "./EditReasonModal";
 import { DeleteReasonModal } from "./DeleteReasonModal";
 import { QueryProvider } from "@/components/QueryProvider";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { ReasonViewModel, CreateReasonFormData, UpdateReasonFormData } from "@/interface";
@@ -76,7 +75,6 @@ const ReasonsListContent: React.FC = () => {
   if (error) {
     return (
       <div className="space-y-6">
-        <Toaster />
         <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
           <div className="flex flex-col space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">Zarządzanie powodami</h1>
@@ -103,8 +101,6 @@ const ReasonsListContent: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header Section */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">

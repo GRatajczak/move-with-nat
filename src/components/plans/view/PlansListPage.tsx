@@ -11,7 +11,6 @@ import { DeletePlanConfirmationModal } from "../edit/DeletePlanConfirmationModal
 import { DuplicatePlanModal } from "../edit/DuplicatePlanModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { PlanViewModel, ListPlansQuery, DuplicatePlanData } from "@/interface/plans";
@@ -169,8 +168,6 @@ const PlansListContent = ({ userRole = "trainer", userId }: { userRole: "admin" 
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">

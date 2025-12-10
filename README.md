@@ -12,11 +12,12 @@ A responsive web application enabling personal trainers and administrators to cr
 2. [Project Architecture](#project-architecture)
 3. [Getting Started Locally](#getting-started-locally)
 4. [Available Scripts](#available-scripts)
-5. [API Testing](#api-testing)
-6. [Project Scope (MVP)](#project-scope-mvp)
-7. [Project Status](#project-status)
-8. [License](#license)
-9. [Additional Resources](#additional-resources)
+5. [Testing](#testing)
+6. [API Testing](#api-testing)
+7. [Project Scope (MVP)](#project-scope-mvp)
+8. [Project Status](#project-status)
+9. [License](#license)
+10. [Additional Resources](#additional-resources)
 
 ## Tech Stack
 
@@ -26,6 +27,7 @@ A responsive web application enabling personal trainers and administrators to cr
 - **Media**: Vimeo private playback (token-based)
 - **Email**: SendGrid transactional emails
 - **Build & Tooling**: Vite · GitHub Actions · DigitalOcean App Platform
+- **Testing**: Vitest · Playwright · Testing Library
 - **Utilities**: tailwind-merge · lucide-react · tw-animate-css
 
 ## Project Architecture
@@ -109,12 +111,217 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Available Scripts
 
+### Development
+
 - `npm run dev` — Start Astro development server
 - `npm run build` — Build for production
 - `npm run preview` — Preview production build
+
+### Code Quality
+
 - `npm run lint` — Run ESLint
 - `npm run lint:fix` — Run ESLint with auto-fix
 - `npm run format` — Format code with Prettier
+
+### Testing
+
+- `npm run test` — Run unit tests in watch mode
+- `npm run test:run` — Run unit tests once
+- `npm run test:ui` — Open Vitest UI for interactive testing
+- `npm run test:coverage` — Generate test coverage report
+- `npm run test:watch` — Run unit tests in watch mode
+- `npm run test:e2e` — Run E2E tests with Playwright
+- `npm run test:e2e:ui` — Open Playwright UI mode
+- `npm run test:e2e:debug` — Run E2E tests in debug mode
+- `npm run test:e2e:report` — Show Playwright test report
+
+## Testing
+
+The project uses a comprehensive testing strategy with both unit and E2E tests.
+
+### Test Stack
+
+- **Vitest** — Fast unit test framework for TypeScript and React components
+- **Playwright** — End-to-end testing for user flows in Chromium
+- **Testing Library** — React component testing utilities
+- **jsdom** — DOM environment for unit tests
+
+### Unit Tests (Vitest)
+
+Unit tests are located in `src/__tests__/unit/` and test individual components and functions in isolation.
+
+```bash
+# Run tests in watch mode (recommended during development)
+npm run test
+
+# Run tests once
+npm run test:run
+
+# Run with UI for debugging
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+#### Writing Unit Tests
+
+```typescript
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+describe("MyComponent", () => {
+  it("should render correctly", () => {
+    render(<MyComponent />);
+    expect(screen.getByRole("button")).toBeInTheDocument();
+  });
+
+  it("should handle click events", async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+
+    render(<MyComponent onClick={handleClick} />);
+    await user.click(screen.getByRole("button"));
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### Integration Tests
+
+Integration tests are located in `src/__tests__/integration/` and test the interaction between multiple modules.
+
+```typescript
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+describe("API Integration", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should fetch and process data correctly", async () => {
+    // Test API calls and data processing
+  });
+});
+```
+
+### E2E Tests (Playwright)
+
+E2E tests are located in `e2e/tests/` and test complete user workflows in a real browser.
+
+```bash
+# Run E2E tests
+npm run test:e2e
+
+# Run with UI mode for debugging
+npm run test:e2e:ui
+
+# Run in debug mode (step-by-step)
+npm run test:e2e:debug
+
+# View last test report
+npm run test:e2e:report
+```
+
+#### Page Object Model
+
+E2E tests use the Page Object Model pattern to encapsulate page interactions:
+
+```typescript
+// e2e/pages/LoginPage.ts
+export class LoginPage {
+  constructor(page: Page) {
+    this.page = page;
+    this.emailInput = page.getByLabel(/email/i);
+    this.passwordInput = page.getByLabel(/password/i);
+  }
+
+  async login(email: string, password: string) {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.submitButton.click();
+  }
+}
+```
+
+```typescript
+// e2e/tests/login.spec.ts
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
+
+test("should login successfully", async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
+  await loginPage.login("user@example.com", "password");
+
+  await expect(page).toHaveURL(/\/dashboard/);
+});
+```
+
+### Test Structure
+
+```
+src/
+├── __tests__/
+│   ├── unit/              # Unit tests for components and functions
+│   │   ├── components/    # React component tests
+│   │   └── example.test.ts
+│   └── integration/       # Integration tests
+│       └── api-example.test.ts
+e2e/
+├── pages/                 # Page Object Models
+│   ├── LoginPage.ts
+│   └── DashboardPage.ts
+├── fixtures/              # Test data and utilities
+│   └── test-users.ts
+└── tests/                 # E2E test specs
+    ├── example.spec.ts
+    └── login.spec.ts
+```
+
+### Test Configuration
+
+- **vitest.config.ts** — Vitest configuration with jsdom environment
+- **playwright.config.ts** — Playwright configuration (Chromium only)
+- **test-setup.ts** — Global test setup (mocks, utilities)
+
+### Coverage
+
+Coverage reports are generated in the `coverage/` directory:
+
+```bash
+npm run test:coverage
+open coverage/index.html
+```
+
+Minimum coverage thresholds:
+
+- Lines: 70%
+- Functions: 70%
+- Branches: 70%
+- Statements: 70%
+
+### CI/CD
+
+Tests run automatically on GitHub Actions for every push and pull request. See `.github/workflows/test.yml` for the complete CI configuration.
+
+### Best Practices
+
+1. **Arrange-Act-Assert** — Structure tests with clear setup, action, and verification
+2. **Descriptive names** — Use clear test descriptions: `"should display error when email is invalid"`
+3. **Test behavior, not implementation** — Focus on what the component does, not how
+4. **Isolate tests** — Each test should be independent and not rely on others
+5. **Use realistic selectors** — Prefer `getByRole`, `getByLabel` over brittle selectors
+6. **Mock external dependencies** — Mock API calls, timers, and external services
+7. **Test edge cases** — Include tests for error states, empty data, and boundary conditions
+
+For detailed testing guidelines, see:
+
+- [Vitest Guidelines](.cursor/rules/vitest-unit-test.mdc)
+- [Playwright Guidelines](.cursor/rules/playwright-test.mdc)
+- [Test Plan](test-plan.md)
 
 ## API Testing
 
@@ -126,20 +333,17 @@ The `.postman/` directory contains comprehensive Postman collections for testing
   - List exercises with pagination & search
   - Create, update, delete exercises
   - Visibility control (admin only)
-  
 - **`Plans-API.postman_collection.json`** — Training plans management
   - List, create, update, delete plans
   - Assign exercises to plans
   - Mark exercises as complete/incomplete with reasons
   - Plan visibility control
   - Exercise reordering and weight updates
-  
 - **`Users-API.postman_collection.json`** — User management operations
   - List users with role-based filtering
   - Create, update, delete users
   - Role assignments (admin, trainer, client)
   - Profile management
-  
 - **`Reasons-API.postman_collection.json`** — Standard reasons for incomplete exercises
   - List, create, update, delete reasons
   - Admin-only operations

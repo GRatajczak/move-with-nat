@@ -5,7 +5,6 @@ import { hasRequiredRole } from "@/lib/auth.utils";
 
 const AUTH_PAGES = ["/auth/login", "/auth/forgot-password", "/auth/reset-password"];
 const PUBLIC_PATHS = ["/", ...AUTH_PAGES];
-const API_AUTH_PREFIX = "/api/auth";
 
 const ADMIN_PATH = "/admin";
 const TRAINER_PATH = "/trainer";

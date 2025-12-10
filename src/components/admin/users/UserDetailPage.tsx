@@ -20,8 +20,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Toaster } from "@/components/ui/sonner";
-import { QueryProvider } from "@/components/QueryProvider";
 import { toast } from "sonner";
 
 const UserDetailContent = ({ userId }: { userId: string }) => {
@@ -179,8 +177,6 @@ const UserDetailContent = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-6 mx-auto">
-      <Toaster />
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 md:px-0 px-4">
         <div className="flex items-center gap-4">
@@ -537,10 +533,6 @@ interface UserDetailPageProps {
   userId: string;
 }
 
-export const UserDetailPage: React.FC<UserDetailPageProps> = ({ userId }) => {
-  return (
-    <QueryProvider>
-      <UserDetailContent userId={userId} />
-    </QueryProvider>
-  );
+export const UserDetailPage = ({ userId }: UserDetailPageProps) => {
+  return <UserDetailContent userId={userId} />;
 };

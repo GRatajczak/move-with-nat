@@ -3,7 +3,6 @@ import { ExerciseForm } from "./ExerciseForm";
 import { useUpdateExercise } from "@/hooks/exercises/useUpdateExercise";
 import { useExercise } from "@/hooks/exercises/useExercise";
 import type { ExerciseFormData } from "@/interface";
-import { Toaster } from "@/components/ui/sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -49,7 +48,6 @@ const EditExerciseContent = ({ id }: { id: string }) => {
 
   return (
     <div className="space-y-6">
-      <Toaster />
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4 ">
         <div className="flex flex-col space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Edytuj ćwiczenie: {exercise.name}</h1>

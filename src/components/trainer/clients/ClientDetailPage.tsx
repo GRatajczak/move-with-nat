@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pencil, ArrowLeft, Mail, Calendar, Phone, FileText, ExternalLink } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 
 const ClientDetailContent = ({ clientId }: { clientId: string }) => {
@@ -73,8 +72,6 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
 
   return (
     <div className="space-y-6 mx-auto">
-      <Toaster />
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 md:px-0 px-4">
         <div className="flex items-center gap-4">

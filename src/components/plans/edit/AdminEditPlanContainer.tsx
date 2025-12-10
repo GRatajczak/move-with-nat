@@ -1,7 +1,6 @@
 import { usePlan } from "@/hooks/plans/usePlan";
 import { useUpdatePlan } from "@/hooks/plans/useUpdatePlan";
 import { AdminPlanForm } from "./AdminPlanForm";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
@@ -52,7 +51,6 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
   if (error) {
     return (
       <div className="p-4">
-        <Toaster />
         <div className="rounded-md border border-destructive bg-destructive/10 p-4">
           <p className="text-destructive font-medium">Wystąpił błąd podczas ładowania planu</p>
           <p className="text-sm text-muted-foreground mt-1">
@@ -70,7 +68,6 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
   if (isLoading || !plan) {
     return (
       <div className="space-y-6">
-        <Toaster />
         <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
           <div className="flex flex-col space-y-2 flex-1">
             <Skeleton className="h-8 w-64" />
@@ -88,8 +85,6 @@ const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: string; 
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">

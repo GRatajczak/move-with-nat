@@ -3,7 +3,6 @@ import { useClient } from "@/hooks/clients/useClient";
 import { useUpdateClient } from "@/hooks/clients/useUpdateClient";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { EditClientFormData } from "@/interface";
 
@@ -48,8 +47,6 @@ const EditClientContent = ({ clientId }: { clientId: string }) => {
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">

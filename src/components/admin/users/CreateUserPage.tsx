@@ -3,7 +3,6 @@ import { CreateUserForm } from "./CreateUserForm";
 import { useCreateUser } from "@/hooks/useCreateUser";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { CreateUserCommand } from "@/interface";
 import {
@@ -61,8 +60,6 @@ const CreateUserContent: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">

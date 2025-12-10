@@ -3,7 +3,6 @@ import { StatsCard } from "@/components/admin/dashboard/StatsCard";
 import { TrainerQuickActions } from "./TrainerQuickActions";
 import { RecentClientsWidget } from "./RecentClientsWidget";
 import { Users, Calendar } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "../../QueryProvider";
 
 const TrainerDashboardContent = () => {
@@ -19,7 +18,6 @@ const TrainerDashboardContent = () => {
 
   return (
     <div className="space-y-8">
-      <Toaster />
       <TrainerQuickActions />
 
       <div className="grid gap-4 md:grid-cols-2">

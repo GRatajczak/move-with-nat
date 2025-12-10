@@ -3,7 +3,6 @@ import { CreateClientForm } from "./CreateClientForm";
 import { useCreateClient } from "@/hooks/clients/useCreateClient";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { CreateClientFormData } from "@/interface";
 import {

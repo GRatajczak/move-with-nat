@@ -4,7 +4,6 @@ import { QuickActions } from "./QuickActions";
 import { RecentUsersWidget } from "./RecentUsersWidget";
 import { PendingActivationsWidget } from "./PendingActivationsWidget";
 import { Users, UserCheck, Dumbbell, Calendar, ClipboardList } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "../../QueryProvider";
 
 const AdminDashboardContent = () => {
@@ -20,7 +19,6 @@ const AdminDashboardContent = () => {
 
   return (
     <div className="space-y-8">
-      <Toaster />
       <QuickActions />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">

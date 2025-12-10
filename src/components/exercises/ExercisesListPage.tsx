@@ -8,7 +8,6 @@ import { Pagination } from "./Pagination";
 import { ExerciseQuickPreviewModal } from "./ExerciseQuickPreviewModal";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { ExerciseViewModel } from "@/interface";
@@ -66,8 +65,6 @@ const ExercisesListContent: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       <div className="flex  items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Biblioteka Ćwiczeń</h1>

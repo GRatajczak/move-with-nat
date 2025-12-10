@@ -1,7 +1,6 @@
 import React from "react";
 import { useCreatePlan } from "@/hooks/plans/useCreatePlan";
 import { AdminPlanForm } from "../edit/AdminPlanForm";
-import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
@@ -52,8 +51,6 @@ const AdminCreatePlanContent = ({ userRole = "admin" }: { userRole: "admin" }) =
 
   return (
     <div className="space-y-6">
-      <Toaster />
-
       {/* Header */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <div className="flex flex-col space-y-2">
