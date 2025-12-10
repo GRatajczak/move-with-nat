@@ -1,5 +1,5 @@
 import type { ListExercisesQuery, ListPlansQuery, ListUsersQuery } from "../interface";
-import type { ClientsFilters, ClientsPageQuery } from "../interface/clients";
+import type { ClientsPageQuery } from "../interface/clients";
 
 export const exerciseKeys = {
   all: ["exercises"] as const,
