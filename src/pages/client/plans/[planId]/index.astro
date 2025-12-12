@@ -2,11 +2,7 @@
 import ClientLayout from "../../../../layouts/ClientLayout.astro";
 import { PlanDetailsPage } from "../../../../components/client/plan-details/PlanDetailsPage";
 
-const { planId } = Astro.params;
-
-if (!planId) {
-  return Astro.redirect("/client");
-}
+const planId = Astro.params.planId ?? "";
 ---
 
 <ClientLayout title="Szczegóły planu">

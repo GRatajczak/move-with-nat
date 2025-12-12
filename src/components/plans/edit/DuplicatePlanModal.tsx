@@ -66,7 +66,6 @@ export const DuplicatePlanModal = ({
       setError("Nie udało się zduplikować planu");
     }
   };
-  console.log(userRole);
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">

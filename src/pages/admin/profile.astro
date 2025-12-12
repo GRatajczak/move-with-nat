@@ -3,12 +3,8 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 import { ProfileContainer } from "../../components/profile/ProfileContainer";
 
 const user = Astro.locals.user;
-
-if (!user) {
-  return Astro.redirect("/login");
-}
 ---
 
 <AdminLayout title="Profil">
-  <ProfileContainer client:load userId={user.id} userRole={user.role} />
+  <ProfileContainer client:load userId={user?.id ?? ""} userRole={user?.role ?? "admin"} />
 </AdminLayout>

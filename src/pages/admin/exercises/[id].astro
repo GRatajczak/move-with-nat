@@ -2,11 +2,7 @@
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { ExerciseDetailContainer } from "../../../components/exercises/ExerciseDetailContainer";
 
-const { id } = Astro.params;
-
-if (!id) {
-  return Astro.redirect("/admin/exercises");
-}
+const id = Astro.params.id ?? "";
 ---
 
 <AdminLayout title="Szczegóły ćwiczenia">

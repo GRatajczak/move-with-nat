@@ -3,12 +3,8 @@ import TrainerLayout from "../../layouts/TrainerLayout.astro";
 import { ProfileContainer } from "../../components/profile/ProfileContainer";
 
 const user = Astro.locals.user;
-
-if (!user) {
-  return Astro.redirect("/login");
-}
 ---
 
 <TrainerLayout title="Profil">
-  <ProfileContainer client:load userId={user.id} userRole={user.role} />
+  <ProfileContainer client:load userId={user?.id ?? ""} userRole={user?.role ?? "trainer"} />
 </TrainerLayout>

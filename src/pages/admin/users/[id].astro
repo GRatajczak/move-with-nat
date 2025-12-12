@@ -2,11 +2,7 @@
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { UserDetailPage } from "../../../components/admin/users/UserDetailPage";
 
-const { id } = Astro.params;
-
-if (!id) {
-  return Astro.redirect("/admin/users");
-}
+const id = Astro.params.id ?? "";
 ---
 
 <AdminLayout title="Szczegóły użytkownika">

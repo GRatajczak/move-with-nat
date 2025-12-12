@@ -1,14 +1,6 @@
 ---
 import TrainerLayout from "@/layouts/TrainerLayout.astro";
 import { TrainerDashboardContainer } from "@/components/trainer/dashboard/TrainerDashboardContainer";
-
-// Check authorization in middleware
-const { locals } = Astro;
-const user = locals.user;
-
-if (!user || user.role !== "trainer") {
-  return Astro.redirect("/");
-}
 ---
 
 <TrainerLayout title="Dashboard">

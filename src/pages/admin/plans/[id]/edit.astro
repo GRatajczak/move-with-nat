@@ -2,14 +2,7 @@
 import AdminLayout from "../../../../layouts/AdminLayout.astro";
 import { AdminEditPlanContainer } from "../../../../components/plans/edit/AdminEditPlanContainer";
 
-// Check authorization in middleware
-const { locals, params } = Astro;
-const user = locals.user;
-
-if (!user || user.role !== "admin") {
-  return Astro.redirect("/");
-}
-
+const { params } = Astro;
 const planId = params.id || "";
 ---
 

@@ -2,11 +2,7 @@
 import TrainerLayout from "../../../layouts/TrainerLayout.astro";
 import { ClientDetailPage } from "../../../components/trainer/clients/ClientDetailPage";
 
-const { id, role } = Astro.params;
-
-if (!id || role !== "trainer") {
-  return Astro.redirect("/");
-}
+const id = Astro.params.id ?? "";
 ---
 
 <TrainerLayout title="Szczegóły podopiecznego">

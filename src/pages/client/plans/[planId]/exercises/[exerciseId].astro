@@ -2,11 +2,8 @@
 import ClientLayout from "../../../../../layouts/ClientLayout.astro";
 import { ExerciseCompletionPage } from "../../../../../components/client/exercise-completion/ExerciseCompletionPage";
 
-const { planId, exerciseId } = Astro.params;
-
-if (!planId || !exerciseId) {
-  return Astro.redirect("/client/dashboard");
-}
+const planId = Astro.params.planId ?? "";
+const exerciseId = Astro.params.exerciseId ?? "";
 ---
 
 <ClientLayout title="Szczegóły ćwiczenia">

@@ -2,15 +2,10 @@
 import TrainerLayout from "../../../layouts/TrainerLayout.astro";
 import { PlansListPage } from "../../../components/plans/view/PlansListPage";
 
-// Check authorization in middleware
 const { locals } = Astro;
-const user = locals.user;
-
-if (!user || user.role !== "trainer") {
-  return Astro.redirect("/");
-}
+const userId = locals.user?.id ?? "";
 ---
 
 <TrainerLayout>
-  <PlansListPage client:load userRole="trainer" userId={user.id} />
+  <PlansListPage client:load userRole="trainer" userId={userId} />
 </TrainerLayout>
