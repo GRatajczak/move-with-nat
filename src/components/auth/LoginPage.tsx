@@ -5,18 +5,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    email: false,
+    password: false,
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setValidationErrors({ email: false, password: false });
 
     if (!email || !password) {
       setError("Email and password are required.");
+      setValidationErrors({
+        email: !email,
+        password: !password,
+      });
       return;
     }
 
@@ -58,7 +69,7 @@ const LoginPage = () => {
           <CardDescription>Enter your email below to login to your account.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} data-testid="login-form" noValidate>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -68,26 +79,72 @@ const LoginPage = () => {
                   placeholder="m@example.com"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (validationErrors.email) {
+                      setValidationErrors((prev) => ({ ...prev, email: false }));
+                    }
+                  }}
+                  data-testid="login-email"
+                  aria-invalid={validationErrors.email}
+                  aria-describedby={error ? "login-error" : undefined}
                 />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a href="/auth/forgot-password" className="ml-auto inline-block text-sm underline">
+                  <a
+                    href="/auth/forgot-password"
+                    className="ml-auto inline-block text-sm underline"
+                    data-testid="login-forgot-password"
+                  >
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (validationErrors.password) {
+                        setValidationErrors((prev) => ({ ...prev, password: false }));
+                      }
+                    }}
+                    data-testid="login-password"
+                    aria-invalid={validationErrors.password}
+                    aria-describedby={error ? "login-error" : undefined}
+                    className="pr-12"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-white h-[95%]"
+                    aria-pressed={showPassword}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    data-testid="toggle-password-visibility"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                  </Button>
+                </div>
               </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
-              <Button type="submit" className="w-full">
+              {error && (
+                <p
+                  id="login-error"
+                  role="alert"
+                  aria-live="polite"
+                  className="text-red-500 text-sm"
+                  data-testid="login-error"
+                >
+                  {error}
+                </p>
+              )}
+              <Button type="submit" className="w-full" data-testid="login-submit">
                 Login
               </Button>
             </div>
