@@ -35,7 +35,10 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors">
+      <DropdownMenuTrigger
+        data-testid="user-menu-trigger"
+        className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+      >
         <UserAvatar userId={user.id} firstName={user.firstName} lastName={user.lastName} size="sm" />
         <span className="hidden md:inline-block text-sm font-medium">
           {user.firstName} {user.lastName}
@@ -73,6 +76,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         <DropdownMenuItem
           onClick={onLogout}
           className="flex items-center gap-2 text-destructive focus:text-destructive cursor-pointer"
+          data-testid="user-menu-logout"
         >
           <LogOut className="h-4 w-4" />
           <span>Wyloguj</span>

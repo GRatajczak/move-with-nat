@@ -1,6 +1,6 @@
 // src/__tests__/unit/services/users.service.test.ts
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { createUser, listUsers, getUser, updateUser, deleteUser } from "../../../services/users.service";
 import { ForbiddenError, NotFoundError, ConflictError, DatabaseError, ValidationError } from "../../../lib/errors";
 import type { SupabaseClient } from "../../../db/supabase.client";
@@ -46,6 +46,17 @@ function createMockSupabase(): SupabaseClient {
 }
 
 describe("users.service", () => {
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    // Silence expected error logs to keep test output clean
+    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
+  });
+
   describe("createUser", () => {
     let mockSupabase: SupabaseClient;
     let adminUser: AuthenticatedUser;

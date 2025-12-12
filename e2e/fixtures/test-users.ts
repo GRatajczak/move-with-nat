@@ -1,23 +1,44 @@
+const requiredEnv = (key: string) => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing ${key} in .env.test. Please check .env.test.example.`);
+  }
+  return value;
+};
+
+const credentials = {
+  password: requiredEnv("E2E_PASSWORD"),
+  adminEmail: requiredEnv("E2E_USERNAME_ADMIN"),
+  trainerEmail: requiredEnv("E2E_USERNAME_TRAINER"),
+  clientEmail: requiredEnv("E2E_USERNAME_CLIENT"),
+  adminId: requiredEnv("E2E_USERNAME_ID_ADMIN"),
+  trainerId: requiredEnv("E2E_USERNAME_ID_TRAINER"),
+  clientId: requiredEnv("E2E_USERNAME_ID_CLIENT"),
+};
+
 /**
  * Test user credentials and data
- * These should match your test database setup
+ * Populated from .env.test to keep secrets out of source
  */
 export const testUsers = {
   admin: {
-    email: "admin@test.com",
-    password: "TestPassword123!",
+    id: credentials.adminId,
+    email: credentials.adminEmail,
+    password: credentials.password,
     role: "admin",
     name: "Admin User",
   },
   trainer: {
-    email: "trainer@test.com",
-    password: "TestPassword123!",
+    id: credentials.trainerId,
+    email: credentials.trainerEmail,
+    password: credentials.password,
     role: "trainer",
     name: "Trainer User",
   },
   client: {
-    email: "client@test.com",
-    password: "TestPassword123!",
+    id: credentials.clientId,
+    email: credentials.clientEmail,
+    password: credentials.password,
     role: "client",
     name: "Client User",
   },

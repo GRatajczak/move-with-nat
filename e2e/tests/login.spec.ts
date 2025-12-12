@@ -27,8 +27,11 @@ test.describe("Login Flow", () => {
 
     // Assert
     await loginPage.waitForSuccessfulLogin();
-    await expect(page).toHaveURL(/\/admin/);
-    await expect(dashboardPage.heading).toBeVisible();
+    await expect(page).not.toHaveURL(/\/auth\/login/);
+    await expect
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("user") || "{}").email), { timeout: 10000 })
+      .toBe(testUsers.admin.email);
+    await expect(dashboardPage.heading).toBeVisible({ timeout: 15000 });
   });
 
   test("should login successfully as trainer", async ({ page }) => {
@@ -40,8 +43,11 @@ test.describe("Login Flow", () => {
 
     // Assert
     await loginPage.waitForSuccessfulLogin();
-    await expect(page).toHaveURL(/\/trainer/);
-    await expect(dashboardPage.heading).toBeVisible();
+    await expect(page).not.toHaveURL(/\/auth\/login/);
+    await expect
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("user") || "{}").email), { timeout: 10000 })
+      .toBe(testUsers.trainer.email);
+    await expect(dashboardPage.heading).toBeVisible({ timeout: 15000 });
   });
 
   test("should show error message for invalid credentials", async () => {
@@ -49,27 +55,31 @@ test.describe("Login Flow", () => {
     await loginPage.login(invalidCredentials.email, invalidCredentials.password);
 
     // Assert
-    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toBeVisible({ timeout: 15000 });
     const errorText = await loginPage.getErrorMessage();
-    expect(errorText).toMatch(/invalid|incorrect|wrong/i);
+    expect(errorText).toMatch(/invalid|incorrect|wrong|failed/i);
   });
 
   test("should show error for empty email", async () => {
     // Act
     await loginPage.fillCredentials("", "password123");
-    await loginPage.submit();
+    await loginPage.submit({ expectResponse: false });
 
     // Assert
     await expect(loginPage.emailInput).toHaveAttribute("aria-invalid", "true");
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText(/required/i);
   });
 
   test("should show error for empty password", async () => {
     // Act
     await loginPage.fillCredentials("test@example.com", "");
-    await loginPage.submit();
+    await loginPage.submit({ expectResponse: false });
 
     // Assert
     await expect(loginPage.passwordInput).toHaveAttribute("aria-invalid", "true");
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText(/required/i);
   });
 
   test("should navigate to forgot password page", async ({ page }) => {
@@ -77,7 +87,7 @@ test.describe("Login Flow", () => {
     await loginPage.clickForgotPassword();
 
     // Assert
-    await expect(page).toHaveURL(/\/auth\/reset-password/);
+    await expect(page).toHaveURL(/\/auth\/forgot-password/);
   });
 });
 

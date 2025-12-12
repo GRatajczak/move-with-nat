@@ -5,7 +5,7 @@ test.describe("Example E2E Tests", () => {
     await page.goto("/");
 
     // Expect page to have a title
-    await expect(page).toHaveTitle(/MoveWithNat|Move with Nat/);
+    await expect(page).toHaveTitle(/MoveWithNat/i);
   });
 
   test("can navigate to login page", async ({ page }) => {

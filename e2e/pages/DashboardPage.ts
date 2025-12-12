@@ -14,9 +14,9 @@ export class DashboardPage {
   constructor(page: Page) {
     this.page = page;
 
-    this.heading = page.getByRole("heading", { level: 1 });
-    this.userMenu = page.getByRole("button", { name: /user menu|account/i });
-    this.logoutButton = page.getByRole("menuitem", { name: /log out|sign out/i });
+    this.heading = page.getByTestId("admin-dashboard-heading").or(page.getByRole("heading", { name: /dashboard/i }));
+    this.userMenu = page.getByTestId("user-menu-trigger");
+    this.logoutButton = page.getByTestId("user-menu-logout");
     this.navigationMenu = page.getByRole("navigation");
   }
 

@@ -18,6 +18,9 @@ export const AdminDashboardContent = () => {
 
   return (
     <div className="space-y-8">
+      <h1 className="sr-only" data-testid="admin-dashboard-heading">
+        Dashboard
+      </h1>
       <QuickActions />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">

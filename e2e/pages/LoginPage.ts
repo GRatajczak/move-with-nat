@@ -11,16 +11,18 @@ export class LoginPage {
   readonly submitButton: Locator;
   readonly errorMessage: Locator;
   readonly forgotPasswordLink: Locator;
+  readonly form: Locator;
 
   constructor(page: Page) {
     this.page = page;
 
-    // Define locators using data-testid or other resilient selectors
-    this.emailInput = page.getByLabel(/email/i);
-    this.passwordInput = page.getByLabel(/password/i);
-    this.submitButton = page.getByRole("button", { name: /sign in|log in/i });
-    this.errorMessage = page.getByRole("alert");
-    this.forgotPasswordLink = page.getByRole("link", { name: /forgot password/i });
+    // Define locators using stable data-testid selectors
+    this.form = page.getByTestId("login-form");
+    this.emailInput = page.getByTestId("login-email");
+    this.passwordInput = page.getByTestId("login-password");
+    this.submitButton = page.getByTestId("login-submit");
+    this.errorMessage = page.getByTestId("login-error");
+    this.forgotPasswordLink = page.getByTestId("login-forgot-password");
   }
 
   /**
@@ -28,6 +30,7 @@ export class LoginPage {
    */
   async goto() {
     await this.page.goto("/auth/login");
+    await this.page.waitForSelector('[data-testid="login-form"][data-hydrated="true"]');
   }
 
   /**
@@ -41,8 +44,19 @@ export class LoginPage {
   /**
    * Submit login form
    */
-  async submit() {
-    await this.submitButton.click();
+  async submit(options: { expectResponse?: boolean } = {}) {
+    const { expectResponse = true } = options;
+    if (!expectResponse) {
+      await this.submitButton.click();
+      return;
+    }
+
+    await Promise.all([
+      this.page.waitForResponse(
+        (response) => response.url().includes("/api/auth/login") && response.request().method() === "POST"
+      ),
+      this.submitButton.click(),
+    ]);
   }
 
   /**
@@ -64,7 +78,8 @@ export class LoginPage {
    * Get error message text
    */
   async getErrorMessage() {
-    return await this.errorMessage.textContent();
+    const message = await this.errorMessage.textContent();
+    return message?.trim() ?? "";
   }
 
   /**
@@ -78,6 +93,9 @@ export class LoginPage {
    * Wait for successful login navigation
    */
   async waitForSuccessfulLogin() {
-    await this.page.waitForURL(/\/(admin|trainer|client)/);
+    await this.page.waitForFunction(() => !!localStorage.getItem("user"), null, {
+      timeout: 30000,
+    });
+    await this.page.waitForURL((url) => !url.pathname.startsWith("/auth/login"), { timeout: 30000 });
   }
 }

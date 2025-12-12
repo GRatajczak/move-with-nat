@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,11 @@ const LoginPage = () => {
     email: false,
     password: false,
   });
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +74,7 @@ const LoginPage = () => {
           <CardDescription>Enter your email below to login to your account.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} data-testid="login-form" noValidate>
+          <form onSubmit={handleSubmit} data-testid="login-form" data-hydrated={hydrated} noValidate>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>

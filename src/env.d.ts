@@ -22,6 +22,11 @@ interface ImportMetaEnv {
   readonly SUPABASE_URL: string;
   readonly SUPABASE_KEY: string;
   readonly SUPABASE_SERVICE_ROLE_KEY?: string; // Optional: for bypassing RLS during development
+  readonly SUPABASE_URL_OVERRIDE?: string;
+  readonly SUPABASE_KEY_OVERRIDE?: string;
+  readonly SUPABASE_URL_TEST?: string;
+  readonly SUPABASE_KEY_TEST?: string;
+  readonly SUPABASE_SERVICE_ROLE_KEY_TEST?: string;
 }
 
 interface ImportMeta {
