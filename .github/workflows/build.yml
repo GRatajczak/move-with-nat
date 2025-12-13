@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
         type: choice
         options:
           - production
           - preview
-        default: 'preview'
+        default: "preview"
 
 jobs:
   lint:
@@ -121,14 +121,30 @@ jobs:
           name: build-output-${{ github.sha }}
           path: dist/
 
-      - name: Deploy to Cloudflare Pages
-        id: deploy
+      - name: Deploy to Cloudflare Pages (Production)
+        id: deploy-prod
+        if: github.event.inputs.environment == 'production'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }} ${{ github.event.inputs.environment == 'production' && '--branch=main' || '' }}
+          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }} --branch=main
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to Cloudflare Pages (Preview)
+        id: deploy-preview
+        if: github.event.inputs.environment != 'production'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print deployment URL
-        run: echo "Deployment URL: ${{ steps.deploy.outputs.deployment-url }}"
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "Deployment URL: ${{ steps.deploy-prod.outputs.deployment-url }}"
+          else
+            echo "Deployment URL: ${{ steps.deploy-preview.outputs.deployment-url }}"
+          fi
