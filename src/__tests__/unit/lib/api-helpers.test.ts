@@ -2,7 +2,7 @@
 
 import { describe, it, expect } from "vitest";
 import { ZodError, z } from "zod";
-import { handleAPIError, isValidUUID } from "../../../lib/api-helpers";
+import { handleAPIError, isValidUUID, requireAuth, requireAdmin, parseErrorResponse } from "../../../lib/api-helpers";
 import {
   ValidationError,
   UnauthorizedError,
@@ -12,6 +12,7 @@ import {
   DatabaseError,
   EmailError,
 } from "../../../lib/errors";
+import type { SupabaseClient } from "../../../db/supabase.client";
 
 describe("api-helpers", () => {
   describe("handleAPIError", () => {
@@ -456,6 +457,156 @@ describe("api-helpers", () => {
 
       // Act & Assert
       expect(() => isValidUUID(invalidUUID)).toThrow();
+    });
+  });
+
+  describe("requireAuth", () => {
+    it("should pass when user and supabase are present", () => {
+      // Arrange
+      const locals = {
+        user: { id: "user-123", role: "admin" },
+        supabase: {} as SupabaseClient,
+      } as App.Locals;
+
+      // Act & Assert
+      expect(() => requireAuth(locals)).not.toThrow();
+    });
+
+    it("should throw ValidationError when user is missing", () => {
+      // Arrange
+      const locals = {
+        user: undefined,
+        supabase: {} as SupabaseClient,
+      } as App.Locals;
+
+      // Act & Assert
+      expect(() => requireAuth(locals)).toThrow(ValidationError);
+    });
+
+    it("should throw ValidationError when supabase is missing", () => {
+      // Arrange
+      const locals = {
+        user: { id: "user-123", role: "admin" },
+        supabase: undefined,
+      } as unknown as App.Locals;
+
+      // Act & Assert
+      expect(() => requireAuth(locals)).toThrow(ValidationError);
+    });
+
+    it("should throw ValidationError when both user and supabase are missing", () => {
+      // Arrange
+      const locals = {
+        user: undefined,
+        supabase: undefined,
+      } as unknown as App.Locals;
+
+      // Act & Assert
+      expect(() => requireAuth(locals)).toThrow(ValidationError);
+    });
+  });
+
+  describe("requireAdmin", () => {
+    it("should pass when user has admin role", () => {
+      // Arrange
+      const adminUser = { id: "user-123", role: "admin" } as NonNullable<App.Locals["user"]>;
+
+      // Act & Assert
+      expect(() => requireAdmin(adminUser)).not.toThrow();
+    });
+
+    it("should throw ValidationError when user is not admin", () => {
+      // Arrange
+      const trainerUser = { id: "user-123", role: "trainer" } as NonNullable<App.Locals["user"]>;
+
+      // Act & Assert
+      expect(() => requireAdmin(trainerUser)).toThrow(ValidationError);
+    });
+
+    it("should throw ValidationError when user is client", () => {
+      // Arrange
+      const clientUser = { id: "user-123", role: "client" } as NonNullable<App.Locals["user"]>;
+
+      // Act & Assert
+      expect(() => requireAdmin(clientUser)).toThrow(ValidationError);
+    });
+  });
+
+  describe("parseErrorResponse", () => {
+    it("should parse JSON error response with message field", async () => {
+      // Arrange
+      const response = new Response(JSON.stringify({ message: "Error message" }), {
+        headers: { "content-type": "application/json" },
+      });
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Error message");
+    });
+
+    it("should parse JSON error response with error field", async () => {
+      // Arrange
+      const response = new Response(JSON.stringify({ error: "Error description" }), {
+        headers: { "content-type": "application/json" },
+      });
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Error description");
+    });
+
+    it("should return default message for JSON without message or error", async () => {
+      // Arrange
+      const response = new Response(JSON.stringify({ data: "some data" }), {
+        headers: { "content-type": "application/json" },
+      });
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Request failed");
+    });
+
+    it("should parse plain text response", async () => {
+      // Arrange
+      const response = new Response("Plain text error", {
+        headers: { "content-type": "text/plain" },
+      });
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Plain text error");
+    });
+
+    it("should return default message for empty text response", async () => {
+      // Arrange
+      const response = new Response("", {
+        headers: { "content-type": "text/plain" },
+      });
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Request failed");
+    });
+
+    it("should handle response without content-type header", async () => {
+      // Arrange
+      const response = new Response("Some error text");
+
+      // Act
+      const result = await parseErrorResponse(response);
+
+      // Assert
+      expect(result).toBe("Some error text");
     });
   });
 });

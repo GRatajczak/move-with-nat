@@ -1200,4 +1200,576 @@ describe("plans.service", () => {
       expect(result.isHidden).toBe(true);
     });
   });
+
+  describe("createPlan - validateTrainer edge cases", () => {
+    it("should handle trainer validation for admin creating plan with trainerId", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const command: CreatePlanCommand = {
+        name: "Test Plan",
+        trainerId: "trainer-123",
+        isHidden: false,
+        exercises: [
+          {
+            exerciseId: "ex-1",
+            sortOrder: 1,
+            sets: 3,
+            reps: 10,
+            tempo: "3-0-3",
+          },
+        ],
+      };
+
+      const mockSupabase = createMockSupabase();
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation((table: string) => {
+        if (table === "users") {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "trainer-123", role: "trainer" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "exercises") {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "ex-1" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "plans") {
+          return {
+            insert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "plan-123", name: "Test Plan", trainer_id: "trainer-123" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "plan_exercises") {
+          return {
+            insert: vi.fn().mockReturnValue({
+              select: vi.fn().mockResolvedValue({
+                data: [],
+                error: null,
+              }),
+            }),
+          };
+        }
+        return {};
+      });
+
+      // Act
+      const result = await createPlan(mockSupabase, command, adminUser);
+
+      // Assert
+      expect(result).toBeDefined();
+      expect(result.id).toBe("plan-123");
+    });
+
+    it("should throw NotFoundError when admin creates plan with non-existent trainer", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const command: CreatePlanCommand = {
+        name: "Test Plan",
+        trainerId: "non-existent-trainer",
+        isHidden: false,
+        exercises: [
+          {
+            exerciseId: "ex-1",
+            sortOrder: 1,
+            sets: 3,
+            reps: 10,
+            tempo: "3-0-3",
+          },
+        ],
+      };
+
+      const mockSupabase = createMockSupabase();
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({
+              data: null,
+              error: { message: "Not found" },
+            }),
+          }),
+        }),
+      });
+
+      // Act & Assert
+      await expect(createPlan(mockSupabase, command, adminUser)).rejects.toThrow(NotFoundError);
+    });
+
+    it("should throw ValidationError when admin creates plan with non-trainer user as trainer", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const command: CreatePlanCommand = {
+        name: "Test Plan",
+        trainerId: "client-123",
+        isHidden: false,
+        exercises: [
+          {
+            exerciseId: "ex-1",
+            sortOrder: 1,
+            sets: 3,
+            reps: 10,
+            tempo: "3-0-3",
+          },
+        ],
+      };
+
+      const mockSupabase = createMockSupabase();
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({
+              data: { id: "client-123", role: "client" },
+              error: null,
+            }),
+          }),
+        }),
+      });
+
+      // Act & Assert
+      await expect(createPlan(mockSupabase, command, adminUser)).rejects.toThrow(ValidationError);
+    });
+
+    it("should handle admin creating plan with clientId", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const command: CreatePlanCommand = {
+        name: "Test Plan",
+        clientId: "client-123",
+        isHidden: false,
+        exercises: [
+          {
+            exerciseId: "ex-1",
+            sortOrder: 1,
+            sets: 3,
+            reps: 10,
+            tempo: "3-0-3",
+          },
+        ],
+      };
+
+      const mockSupabase = createMockSupabase();
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation((table: string) => {
+        if (table === "users") {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "client-123", role: "client", first_name: "John", last_name: "Doe" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "exercises") {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "ex-1" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "plans") {
+          return {
+            insert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: "plan-123", name: "Test Plan", client_id: "client-123" },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "plan_exercises") {
+          return {
+            insert: vi.fn().mockReturnValue({
+              select: vi.fn().mockResolvedValue({
+                data: [],
+                error: null,
+              }),
+            }),
+          };
+        }
+        return {};
+      });
+
+      // Act
+      const result = await createPlan(mockSupabase, command, adminUser);
+
+      // Assert
+      expect(result).toBeDefined();
+      expect(result.id).toBe("plan-123");
+    });
+  });
+
+  describe("listPlans - additional filters", () => {
+    let mockSupabase: SupabaseClient;
+
+    beforeEach(() => {
+      mockSupabase = createMockSupabase();
+    });
+
+    it("should apply trainerId filter for admin", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const query: ListPlansQuery = { trainerId: "trainer-123", page: 1, limit: 20 };
+
+      const mockEq = vi.fn().mockReturnValue({
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: [],
+            error: null,
+            count: 0,
+          }),
+        }),
+      });
+
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: mockEq,
+        }),
+      });
+
+      // Act
+      await listPlans(mockSupabase, query, adminUser);
+
+      // Assert
+      expect(mockEq).toHaveBeenCalledWith("trainer_id", "trainer-123");
+    });
+
+    it("should apply clientId filter for admin", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const query: ListPlansQuery = { clientId: "client-123", page: 1, limit: 20 };
+
+      const mockEq = vi.fn().mockReturnValue({
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: [],
+            error: null,
+            count: 0,
+          }),
+        }),
+      });
+
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: mockEq,
+        }),
+      });
+
+      // Act
+      await listPlans(mockSupabase, query, adminUser);
+
+      // Assert
+      expect(mockEq).toHaveBeenCalledWith("client_id", "client-123");
+    });
+
+    it("should apply both trainerId and clientId filters", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const query: ListPlansQuery = {
+        trainerId: "trainer-123",
+        clientId: "client-123",
+        page: 1,
+        limit: 20,
+      };
+
+      const mockEq = vi.fn().mockReturnThis();
+      const mockRange = vi.fn().mockReturnValue({
+        order: vi.fn().mockResolvedValue({
+          data: [],
+          error: null,
+          count: 0,
+        }),
+      });
+
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: mockEq,
+          range: mockRange,
+        }),
+      });
+
+      // Act
+      await listPlans(mockSupabase, query, adminUser);
+
+      // Assert
+      expect(mockEq).toHaveBeenCalledWith("trainer_id", "trainer-123");
+      expect(mockEq).toHaveBeenCalledWith("client_id", "client-123");
+    });
+
+    it("should handle includeExerciseDetails flag", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const query: ListPlansQuery = {
+        page: 1,
+        limit: 20,
+        includeExerciseDetails: true,
+      };
+
+      const mockPlans = [{ id: "plan-1", name: "Plan 1", trainer_id: null, client_id: null }];
+
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation((table: string) => {
+        if (table === "plans") {
+          return {
+            select: vi.fn().mockReturnValue({
+              range: vi.fn().mockReturnValue({
+                order: vi.fn().mockResolvedValue({
+                  data: mockPlans,
+                  error: null,
+                  count: 1,
+                }),
+              }),
+            }),
+          };
+        }
+        if (table === "plan_exercises") {
+          return {
+            select: vi.fn().mockReturnValue({
+              in: vi.fn().mockReturnValue({
+                order: vi.fn().mockResolvedValue({
+                  data: [],
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        return {};
+      });
+
+      // Act
+      const result = await listPlans(mockSupabase, query, adminUser);
+
+      // Assert
+      expect(result.data).toHaveLength(1);
+    });
+  });
+
+  describe("updatePlan - edge cases", () => {
+    let mockSupabase: SupabaseClient;
+
+    beforeEach(() => {
+      mockSupabase = createMockSupabase();
+    });
+
+    it("should throw ValidationError for invalid plan UUID", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "invalid-uuid";
+      const command = { name: "Updated Name" };
+
+      // Act & Assert
+      await expect(updatePlan(mockSupabase, planId, command, adminUser)).rejects.toThrow(ValidationError);
+    });
+
+    it("should throw DatabaseError when update fails", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "550e8400-e29b-41d4-a716-446655440000";
+      const command = { name: "Updated Name" };
+
+      let callCount = 0;
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation(() => {
+        callCount++;
+        if (callCount === 1) {
+          // Fetch plan
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: planId, name: "Original", trainer_id: null },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        // Update fails
+        return {
+          update: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: null,
+                  error: { message: "Update failed" },
+                }),
+              }),
+            }),
+          }),
+        };
+      });
+
+      // Act & Assert
+      await expect(updatePlan(mockSupabase, planId, command, adminUser)).rejects.toThrow(DatabaseError);
+    });
+  });
+
+  describe("deletePlan - edge cases", () => {
+    let mockSupabase: SupabaseClient;
+
+    beforeEach(() => {
+      mockSupabase = createMockSupabase();
+    });
+
+    it("should throw ValidationError for invalid plan UUID", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "invalid-uuid";
+
+      // Act & Assert
+      await expect(deletePlan(mockSupabase, planId, adminUser)).rejects.toThrow(ValidationError);
+    });
+
+    it("should throw DatabaseError when hard delete fails", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "550e8400-e29b-41d4-a716-446655440000";
+
+      let callCount = 0;
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation(() => {
+        callCount++;
+        if (callCount === 1) {
+          // Fetch plan
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: planId, trainer_id: null },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        // Delete fails
+        return {
+          delete: vi.fn().mockReturnValue({
+            eq: vi.fn().mockResolvedValue({
+              error: { message: "Delete failed" },
+            }),
+          }),
+        };
+      });
+
+      // Act & Assert
+      await expect(deletePlan(mockSupabase, planId, adminUser, true)).rejects.toThrow(DatabaseError);
+    });
+
+    it("should throw DatabaseError when soft delete fails", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "550e8400-e29b-41d4-a716-446655440000";
+
+      let callCount = 0;
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation(() => {
+        callCount++;
+        if (callCount === 1) {
+          // Fetch plan
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: planId, trainer_id: null },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        // Update (soft delete) fails
+        return {
+          update: vi.fn().mockReturnValue({
+            eq: vi.fn().mockResolvedValue({
+              error: { message: "Update failed" },
+            }),
+          }),
+        };
+      });
+
+      // Act & Assert
+      await expect(deletePlan(mockSupabase, planId, adminUser, false)).rejects.toThrow(DatabaseError);
+    });
+  });
+
+  describe("togglePlanVisibility - edge cases", () => {
+    let mockSupabase: SupabaseClient;
+
+    beforeEach(() => {
+      mockSupabase = createMockSupabase();
+    });
+
+    it("should throw ValidationError for invalid plan UUID", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "invalid-uuid";
+
+      // Act & Assert
+      await expect(togglePlanVisibility(mockSupabase, planId, true, adminUser)).rejects.toThrow(ValidationError);
+    });
+
+    it("should throw DatabaseError when visibility update fails", async () => {
+      // Arrange
+      const adminUser: AuthenticatedUser = { id: "admin-123", role: "admin" } as AuthenticatedUser;
+      const planId = "550e8400-e29b-41d4-a716-446655440000";
+
+      let callCount = 0;
+      (mockSupabase.from as ReturnType<typeof vi.fn>).mockImplementation(() => {
+        callCount++;
+        if (callCount === 1) {
+          // Fetch plan
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: planId, trainer_id: null, is_hidden: false },
+                  error: null,
+                }),
+              }),
+            }),
+          };
+        }
+        // Update fails
+        return {
+          update: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: null,
+                  error: { message: "Update failed" },
+                }),
+              }),
+            }),
+          }),
+        };
+      });
+
+      // Act & Assert
+      await expect(togglePlanVisibility(mockSupabase, planId, true, adminUser)).rejects.toThrow(DatabaseError);
+    });
+  });
 });
