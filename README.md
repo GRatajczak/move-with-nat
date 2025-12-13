@@ -346,7 +346,7 @@ The `.postman/` directory contains comprehensive Postman collections for testing
   - Profile management
 - **`Reasons-API.postman_collection.json`** — Standard reasons for incomplete exercises
   - List, create, update, delete reasons
-  - Admin-only operations
+  - Admin-only operations.
 
 ### Using the Collections
 
