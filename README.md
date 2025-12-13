@@ -26,7 +26,7 @@ A responsive web application enabling personal trainers and administrators to cr
 - **Backend & Database**: Supabase (Auth, RLS, PostgreSQL)
 - **Media**: Vimeo private playback (token-based)
 - **Email**: SendGrid transactional emails
-- **Build & Tooling**: Vite · GitHub Actions · DigitalOcean App Platform
+- **Build & Tooling**: Vite · GitHub Actions · Cloudflare Pages
 - **Testing**: Vitest · Playwright · Testing Library
 - **Utilities**: tailwind-merge · lucide-react · tw-animate-css
 
@@ -108,6 +108,62 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Deployment to Cloudflare Pages
+
+This project is configured for deployment on Cloudflare Pages with SSR support using the `@astrojs/cloudflare` adapter.
+
+### Prerequisites
+
+1. **Cloudflare Account** with Pages enabled
+2. **KV Namespace** for session storage
+
+### Setting up KV Namespace
+
+The application requires a Cloudflare KV namespace for session management. Create one in your Cloudflare dashboard:
+
+1. Navigate to **Workers & Pages** → **KV**
+2. Create a new namespace called `SESSION`
+3. Copy the namespace ID
+4. Update `wrangler.toml` with your production namespace ID:
+
+```toml
+[[env.production.kv_namespaces]]
+binding = "SESSION"
+id = "your-production-kv-namespace-id"
+```
+
+### Cloudflare Pages Configuration
+
+In your Cloudflare Pages dashboard:
+
+1. **Build command**: `npm run build`
+2. **Build output directory**: `dist`
+3. **Environment variables**: Add all required environment variables (Supabase, SendGrid, Vimeo)
+4. **KV Bindings**: Bind the SESSION namespace
+
+### Manual Deployment
+
+```bash
+# Build the project
+npm run build
+
+# Deploy to Cloudflare Pages
+npx wrangler pages deploy dist --project-name=move-with-nat
+```
+
+### GitHub Actions Deployment
+
+The project includes automated deployment via GitHub Actions. Required secrets:
+
+- `CLOUDFLARE_API_TOKEN` — API token with Pages permissions
+- `CLOUDFLARE_ACCOUNT_ID` — Your Cloudflare account ID
+- `SUPABASE_URL` — Supabase project URL
+- `SUPABASE_KEY` — Supabase service key
+- `SENDGRID_API_KEY` — SendGrid API key
+- `SENDGRID_FROM_EMAIL` — Verified sender email
+- `SENDGRID_TEMPLATE_ACTIVATION` — Template ID for activation emails
+- `SENDGRID_TEMPLATE_PASSWORD_RESET` — Template ID for password reset emails
 
 ## Available Scripts
 

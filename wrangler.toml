@@ -6,8 +6,8 @@ pages_build_output_dir = "./dist"
 # Session KV binding required by @astrojs/cloudflare adapter
 [[kv_namespaces]]
 binding = "SESSION"
-id = "placeholder"
-preview_id = "placeholder"
+id = "s-3znUqNeOG4hzBN8U4jKmWtte2ZpKsfGTBvV-X7"
+preview_id = "s-3znUqNeOG4hzBN8U4jKmWtte2ZpKsfGTBvV-X7"
 
 # Production environment overrides
 # You'll need to update these IDs after creating actual KV namespaces
