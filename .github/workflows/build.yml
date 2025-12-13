@@ -105,6 +105,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
           wranglerVersion: "3.90.0"
-
-      - name: Print deployment URL
-        run: echo "Deployment URL: ${{ steps.deploy.outputs.deployment-url }}"
