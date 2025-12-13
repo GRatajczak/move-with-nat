@@ -153,15 +153,21 @@ export async function sendInvite(supabase: SupabaseClient, command: InviteUserCo
  *
  * @throws {UnauthorizedError} If token is invalid or expired
  * @throws {NotFoundError} If user not found
- * @throws {ConflictError} If user is already active
+ * @throws {ConflictError} If user is already active (only for activation tokens)
  * @throws {DatabaseError} If database operation fails
  */
 export async function activateAccount(
   supabase: SupabaseClient,
   command: ActivateAccountCommand
 ): Promise<MessageResponse> {
-  // Verify and decode token
-  const decoded = verifyToken(command.token, "activation");
+  // Try to verify token - it can be either activation or password-reset token
+  let decoded: TokenPayload;
+  try {
+    decoded = verifyToken(command.token, "activation");
+  } catch {
+    // If it's not an activation token, try password-reset token
+    decoded = verifyToken(command.token, "password-reset");
+  }
 
   // Fetch user
   const { data: user, error: fetchError } = await supabase
@@ -174,8 +180,8 @@ export async function activateAccount(
     throw new NotFoundError("User not found");
   }
 
-  // Check if already activated
-  if (user.status === "active") {
+  // Only check activation status for activation tokens
+  if (decoded.purpose === "activation" && user.status === "active") {
     throw new ConflictError("Account already activated");
   }
 
@@ -187,31 +193,37 @@ export async function activateAccount(
     });
   }
 
-  // Confirm the user's email in Supabase Auth
-  const { error: authUserError } = await supabase.auth.admin.updateUserById(user.id, {
-    email_confirm: true,
-  });
+  // Only activate account for activation tokens, not for password-reset tokens
+  if (decoded.purpose === "activation") {
+    // Confirm the user's email in Supabase Auth
+    const { error: authUserError } = await supabase.auth.admin.updateUserById(user.id, {
+      email_confirm: true,
+    });
 
-  if (authUserError) {
-    console.error("Failed to confirm user email in Auth:", authUserError);
-    throw new DatabaseError("Failed to confirm user email");
+    if (authUserError) {
+      console.error("Failed to confirm user email in Auth:", authUserError);
+      throw new DatabaseError("Failed to confirm user email");
+    }
+
+    // Activate user (set status = 'active')
+    const { error } = await supabase
+      .from("users")
+      .update({
+        status: "active",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+
+    if (error) {
+      console.error("Failed to activate account:", error);
+      throw new DatabaseError("Failed to activate account");
+    }
+
+    return { message: "Account activated successfully" };
+  } else {
+    // For password-reset tokens, just update the password (already done above)
+    return { message: "Password reset successfully" };
   }
-
-  // Activate user (set status = 'active')
-  const { error } = await supabase
-    .from("users")
-    .update({
-      status: "active",
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", user.id);
-
-  if (error) {
-    console.error("Failed to activate account:", error);
-    throw new DatabaseError("Failed to activate account");
-  }
-
-  return { message: "Account activated successfully" };
 }
 
 /**
@@ -240,7 +252,7 @@ export async function requestPasswordReset(
   if (!user || user.status !== "active") {
     // Log attempt but return success
     console.log(`Password reset requested for non-existent or inactive email: ${command.email}`);
-    return { message: "If your email exists in our system, you will receive a password reset link" };
+    return { message: "Jeśli twój adres email istnieje w naszym systemie, otrzymasz link do resetowania hasła" };
   }
 
   // Generate reset token (1h expiry)

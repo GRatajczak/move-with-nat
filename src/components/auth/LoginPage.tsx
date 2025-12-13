@@ -107,7 +107,7 @@ const LoginPage = () => {
                     className="ml-auto inline-block text-sm underline"
                     data-testid="login-forgot-password"
                   >
-                    Forgot your password?
+                    Przypomnij hasło
                   </a>
                 </div>
                 <div className="relative">

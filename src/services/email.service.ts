@@ -120,7 +120,8 @@ export async function sendActivationEmail(email: string, firstName: string, toke
  */
 export async function sendPasswordResetEmail(email: string, firstName: string, resetToken: string): Promise<void> {
   const baseUrl = import.meta.env.PUBLIC_APP_URL || "http://localhost:4321";
-  const resetLink = `${baseUrl}/auth/reset-password?token=${resetToken}`;
+  // Use the same activation page for password reset (token purpose is embedded in the token)
+  const resetLink = `${baseUrl}/auth/activate?token=${resetToken}`;
 
   await sendEmail({
     to: email,
