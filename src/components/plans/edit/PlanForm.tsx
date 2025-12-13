@@ -131,7 +131,12 @@ export const PlanForm = ({ plan, onSubmit, onCancel, isSubmitting, mode }: PlanF
                   <FormItem>
                     <FormLabel>Nazwa planu *</FormLabel>
                     <FormControl>
-                      <Input placeholder="np. Plan treningowy - Tydzień 1" {...field} maxLength={100} />
+                      <Input
+                        placeholder="np. Plan treningowy - Tydzień 1"
+                        {...field}
+                        maxLength={100}
+                        data-testid="plan-name-input"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,6 +157,7 @@ export const PlanForm = ({ plan, onSubmit, onCancel, isSubmitting, mode }: PlanF
                         rows={4}
                         {...field}
                         maxLength={1000}
+                        data-testid="plan-description-input"
                       />
                     </FormControl>
                     <FormDescription>
@@ -215,7 +221,12 @@ export const PlanForm = ({ plan, onSubmit, onCancel, isSubmitting, mode }: PlanF
                   <CardTitle>Ćwiczenia</CardTitle>
                   <CardDescription>Dodaj ćwiczenia i określ ich parametry</CardDescription>
                 </div>
-                <Button type="button" variant="outline" onClick={() => setIsAddExerciseModalOpen(true)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsAddExerciseModalOpen(true)}
+                  data-testid="add-exercise-button"
+                >
                   <Plus className="mr-2 h-4 w-4" />
                   Dodaj ćwiczenie
                 </Button>
@@ -249,7 +260,7 @@ export const PlanForm = ({ plan, onSubmit, onCancel, isSubmitting, mode }: PlanF
             <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
               Anuluj
             </Button>
-            <Button type="submit" disabled={isSubmitting || !form.formState.isValid}>
+            <Button type="submit" disabled={isSubmitting || !form.formState.isValid} data-testid="plan-form-submit">
               {isSubmitting ? "Zapisywanie..." : "Zapisz"}
             </Button>
           </div>

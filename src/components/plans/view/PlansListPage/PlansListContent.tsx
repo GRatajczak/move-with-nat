@@ -184,7 +184,7 @@ export const PlansListContent = ({
             <ArrowLeft className="h-4 w-4" />
             Dashboard
           </Button>
-          <Button onClick={handleCreateClick} className="gap-2">
+          <Button onClick={handleCreateClick} className="gap-2" data-testid="create-plan-button">
             <Plus className="h-4 w-4" />
             Stwórz plan
           </Button>

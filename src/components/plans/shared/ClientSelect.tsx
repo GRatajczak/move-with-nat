@@ -69,7 +69,7 @@ export const ClientSelect = ({ value, onChange, disabled = false, className, all
 
   return (
     <Select value={value || "all"} onValueChange={(val) => onChange(val === "all" ? null : val)} disabled={disabled}>
-      <SelectTrigger className={className}>
+      <SelectTrigger className={className} data-testid="client-select">
         <SelectValue placeholder="Wybierz podopiecznego" />
       </SelectTrigger>
       <SelectContent>

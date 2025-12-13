@@ -18,7 +18,7 @@ interface SuccessModalProps {
 export const SuccessModal = ({ open, onOpenChange, onConfirm }: SuccessModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" data-testid="plan-success-modal">
         <DialogHeader>
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -31,7 +31,7 @@ export const SuccessModal = ({ open, onOpenChange, onConfirm }: SuccessModalProp
           </div>
         </DialogHeader>
         <DialogFooter className="sm:justify-start">
-          <Button className="ml-auto w-full sm:w-auto" onClick={onConfirm}>
+          <Button className="ml-auto w-full sm:w-auto" onClick={onConfirm} data-testid="return-to-plans-list">
             Wróć do listy planów
           </Button>
         </DialogFooter>

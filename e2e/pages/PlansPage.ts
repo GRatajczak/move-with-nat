@@ -8,7 +8,7 @@ export class PlansPage {
   constructor(page: Page) {
     this.page = page;
     this.heading = page.getByRole("heading", { name: /plany treningowe/i });
-    this.createPlanButton = page.getByRole("button", { name: /stwórz plan/i });
+    this.createPlanButton = page.getByTestId("create-plan-button");
   }
 
   async expectLoaded() {
@@ -16,7 +16,14 @@ export class PlansPage {
   }
 
   async startCreatePlan() {
-    await this.createPlanButton.click();
+    // Ensure button is ready before clicking
+    await this.createPlanButton.waitFor({ state: "visible" });
+    await this.createPlanButton.isEnabled();
+
+    await Promise.all([
+      this.page.waitForURL(/\/trainer\/plans\/new/, { timeout: 10000 }),
+      this.createPlanButton.click(),
+    ]);
   }
 
   async expectPlanVisible(planName: string) {

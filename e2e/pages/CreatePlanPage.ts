@@ -14,26 +14,31 @@ export class CreatePlanPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.heading = page.getByRole("heading", { name: /nowy plan treningowy/i });
-    this.nameInput = page.getByLabel(/nazwa planu/i);
-    this.descriptionInput = page.getByLabel(/^opis/i);
-    this.clientSelect = page.getByRole("combobox");
-    this.addExerciseButton = page.getByRole("button", { name: /dodaj ćwiczenie/i });
+    this.heading = page.getByTestId("create-plan-heading");
+    this.nameInput = page.getByTestId("plan-name-input");
+    this.descriptionInput = page.getByTestId("plan-description-input");
+    this.clientSelect = page.getByTestId("client-select");
+    this.addExerciseButton = page.getByTestId("add-exercise-button");
     this.exerciseSearchInput = page.getByPlaceholder(/szukaj ćwiczenia/i);
-    this.saveButton = page.getByRole("button", { name: /^zapisz/i });
-    this.successDialog = page.getByRole("dialog", { name: /plan utworzony/i });
-    this.returnToListButton = page.getByRole("button", { name: /wróć do listy planów/i });
+    this.saveButton = page.getByTestId("plan-form-submit");
+    this.successDialog = page.getByTestId("plan-success-modal");
+    this.returnToListButton = page.getByTestId("return-to-plans-list");
   }
 
   async expectLoaded() {
-    await expect(this.heading).toBeVisible({ timeout: 15000 });
+    await this.heading.waitFor({ state: "visible", timeout: 15000 });
+    await this.page.waitForTimeout(1000); // Wait for form to hydrate
   }
 
   async fillPlanName(name: string) {
+    await this.nameInput.click();
+    await this.nameInput.clear();
     await this.nameInput.fill(name);
   }
 
   async fillDescription(description: string) {
+    await this.descriptionInput.click();
+    await this.descriptionInput.clear();
     await this.descriptionInput.fill(description);
   }
 
@@ -73,7 +78,16 @@ export class CreatePlanPage {
   }
 
   async submit() {
-    await this.saveButton.click();
+    await this.saveButton.waitFor({ state: "visible" });
+    await this.saveButton.isEnabled();
+
+    await Promise.all([
+      this.page.waitForResponse(
+        (response) => response.url().includes("/api/plans") && response.request().method() === "POST",
+        { timeout: 15000 }
+      ),
+      this.saveButton.click(),
+    ]);
   }
 
   async waitForSuccessModal() {

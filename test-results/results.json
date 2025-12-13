@@ -68,415 +68,6 @@
   },
   "suites": [
     {
-      "title": "tests/create-exercise-admin.spec.ts",
-      "file": "tests/create-exercise-admin.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Admin Exercise Creation",
-          "file": "tests/create-exercise-admin.spec.ts",
-          "line": 8,
-          "column": 6,
-          "specs": [
-            {
-              "title": "should display create exercise form",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 5145,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.932Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-594b7953ec3162e1aeb2",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 31,
-              "column": 3
-            },
-            {
-              "title": "should create a new exercise with all fields",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 25139,
-                      "error": {
-                        "message": "TimeoutError: page.waitForResponse: Timeout 20000ms exceeded while waiting for event \"response\"",
-                        "stack": "TimeoutError: page.waitForResponse: Timeout 20000ms exceeded while waiting for event \"response\"\n    at AdminCreateExercisePage.submit (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts:65:17)\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:62:35",
-                        "location": {
-                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                          "column": 17,
-                          "line": 65
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mpages/AdminCreateExercisePage.ts:65\n\n\u001b[0m \u001b[90m 63 |\u001b[39m   \u001b[36masync\u001b[39m submit() {\n \u001b[90m 64 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 65 |\u001b[39m       \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForResponse(\n \u001b[90m    |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 66 |\u001b[39m         (response) \u001b[33m=>\u001b[39m\n \u001b[90m 67 |\u001b[39m           response\u001b[33m.\u001b[39murl()\u001b[33m.\u001b[39mincludes(\u001b[32m\"/api/exercises\"\u001b[39m) \u001b[33m&&\u001b[39m\n \u001b[90m 68 |\u001b[39m           response\u001b[33m.\u001b[39mrequest()\u001b[33m.\u001b[39mmethod() \u001b[33m===\u001b[39m \u001b[32m\"POST\"\u001b[39m \u001b[33m&&\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                            "column": 17,
-                            "line": 65
-                          },
-                          "message": "TimeoutError: page.waitForResponse: Timeout 20000ms exceeded while waiting for event \"response\"\n\n\u001b[90m   at \u001b[39mpages/AdminCreateExercisePage.ts:65\n\n\u001b[0m \u001b[90m 63 |\u001b[39m   \u001b[36masync\u001b[39m submit() {\n \u001b[90m 64 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 65 |\u001b[39m       \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForResponse(\n \u001b[90m    |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 66 |\u001b[39m         (response) \u001b[33m=>\u001b[39m\n \u001b[90m 67 |\u001b[39m           response\u001b[33m.\u001b[39murl()\u001b[33m.\u001b[39mincludes(\u001b[32m\"/api/exercises\"\u001b[39m) \u001b[33m&&\u001b[39m\n \u001b[90m 68 |\u001b[39m           response\u001b[33m.\u001b[39mrequest()\u001b[33m.\u001b[39mmethod() \u001b[33m===\u001b[39m \u001b[32m\"POST\"\u001b[39m \u001b[33m&&\u001b[39m\u001b[0m\n\u001b[2m    at AdminCreateExercisePage.submit (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts:65:17)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:62:35\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.899Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-48d90-ew-exercise-with-all-fields-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-48d90-ew-exercise-with-all-fields-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-48d90-ew-exercise-with-all-fields-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                        "column": 17,
-                        "line": 65
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-c46f1080e40e6e00a51e",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 46,
-              "column": 3
-            },
-            {
-              "title": "should create a new exercise with only required fields",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 7850,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\nExpected: visible\nError: strict mode violation: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' }) resolved to 2 elements:\n    1) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]\">…</td> aka getByRole('cell', { name: 'Test Exercise Minimal' }).first()\n    2) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-medium\">Test Exercise Minimal 1765636219286</td> aka getByText('Test Exercise Minimal')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\nExpected: visible\nError: strict mode violation: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' }) resolved to 2 elements:\n    1) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]\">…</td> aka getByRole('cell', { name: 'Test Exercise Minimal' }).first()\n    2) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-medium\">Test Exercise Minimal 1765636219286</td> aka getByText('Test Exercise Minimal')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\u001b[22m\n\n    at AdminExercisesPage.expectExerciseVisible (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminExercisesPage.ts:26:57)\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:92:30",
-                        "location": {
-                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminExercisesPage.ts",
-                          "column": 57,
-                          "line": 26
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mpages/AdminExercisesPage.ts:26\n\n\u001b[0m \u001b[90m 24 |\u001b[39m\n \u001b[90m 25 |\u001b[39m   \u001b[36masync\u001b[39m expectExerciseVisible(name\u001b[33m:\u001b[39m string) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"cell\"\u001b[39m\u001b[33m,\u001b[39m { name }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m   }\n \u001b[90m 28 |\u001b[39m }\n \u001b[90m 29 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminExercisesPage.ts",
-                            "column": 57,
-                            "line": 26
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\nExpected: visible\nError: strict mode violation: getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' }) resolved to 2 elements:\n    1) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]\">…</td> aka getByRole('cell', { name: 'Test Exercise Minimal' }).first()\n    2) <td data-slot=\"table-cell\" class=\"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-medium\">Test Exercise Minimal 1765636219286</td> aka getByText('Test Exercise Minimal')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('cell', { name: 'Test Exercise Minimal 1765636219286' })\u001b[22m\n\n\n\u001b[90m   at \u001b[39mpages/AdminExercisesPage.ts:26\n\n\u001b[0m \u001b[90m 24 |\u001b[39m\n \u001b[90m 25 |\u001b[39m   \u001b[36masync\u001b[39m expectExerciseVisible(name\u001b[33m:\u001b[39m string) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"cell\"\u001b[39m\u001b[33m,\u001b[39m { name }))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m   }\n \u001b[90m 28 |\u001b[39m }\n \u001b[90m 29 |\u001b[39m\u001b[0m\n\u001b[2m    at AdminExercisesPage.expectExerciseVisible (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminExercisesPage.ts:26:57)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:92:30\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.916Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-46c64-e-with-only-required-fields-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-46c64-e-with-only-required-fields-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-46c64-e-with-only-required-fields-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminExercisesPage.ts",
-                        "column": 57,
-                        "line": 26
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-97611f75e1f0bf1ecf29",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 73,
-              "column": 3
-            },
-            {
-              "title": "should show validation errors for empty required fields",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 4912,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.917Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-9a459c966bb2de9a8276",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 96,
-              "column": 3
-            },
-            {
-              "title": "should show validation error for empty exercise name",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 4983,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.894Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-a31b45fa9315be4fbf14",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 109,
-              "column": 3
-            },
-            {
-              "title": "should show validation error for empty vimeo link",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "failed",
-                      "duration": 9896,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel(/nazwa ćwiczenia/i)\nExpected: \u001b[32m\"Test Exercise No Vimeo 1765636218715\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel(/nazwa ćwiczenia/i)\u001b[22m\n\u001b[2m    9 × locator resolved to <input value=\"\" name=\"name\" aria-invalid=\"false\" id=\"«r1R2m»-form-item\" data-slot=\"form-control\" placeholder=\"np. Przysiad ze sztangą\" aria-describedby=\"«r1R2m»-form-item-description\" class=\"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-t…/>\u001b[22m\n\u001b[2m      - unexpected value \"\"\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel(/nazwa ćwiczenia/i)\nExpected: \u001b[32m\"Test Exercise No Vimeo 1765636218715\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel(/nazwa ćwiczenia/i)\u001b[22m\n\u001b[2m    9 × locator resolved to <input value=\"\" name=\"name\" aria-invalid=\"false\" id=\"«r1R2m»-form-item\" data-slot=\"form-control\" placeholder=\"np. Przysiad ze sztangą\" aria-describedby=\"«r1R2m»-form-item-description\" class=\"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-t…/>\u001b[22m\n\u001b[2m      - unexpected value \"\"\u001b[22m\n\n    at AdminCreateExercisePage.fillForm (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts:51:34)\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:142:5",
-                        "location": {
-                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                          "column": 34,
-                          "line": 51
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mpages/AdminCreateExercisePage.ts:51\n\n\u001b[0m \u001b[90m 49 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput)\u001b[33m.\u001b[39mtoBeEnabled()\u001b[33m;\u001b[39m\n \u001b[90m 50 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput\u001b[33m.\u001b[39mfill(name)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 51 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput)\u001b[33m.\u001b[39mtoHaveValue(name)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mvimeoInput\u001b[33m.\u001b[39mfill(vimeoToken)\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mdescriptionInput\u001b[33m.\u001b[39mfill(description)\u001b[33m;\u001b[39m\n \u001b[90m 54 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mtipsInput\u001b[33m.\u001b[39mfill(tips)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                            "column": 34,
-                            "line": 51
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel(/nazwa ćwiczenia/i)\nExpected: \u001b[32m\"Test Exercise No Vimeo 1765636218715\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel(/nazwa ćwiczenia/i)\u001b[22m\n\u001b[2m    9 × locator resolved to <input value=\"\" name=\"name\" aria-invalid=\"false\" id=\"«r1R2m»-form-item\" data-slot=\"form-control\" placeholder=\"np. Przysiad ze sztangą\" aria-describedby=\"«r1R2m»-form-item-description\" class=\"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-t…/>\u001b[22m\n\u001b[2m      - unexpected value \"\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mpages/AdminCreateExercisePage.ts:51\n\n\u001b[0m \u001b[90m 49 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput)\u001b[33m.\u001b[39mtoBeEnabled()\u001b[33m;\u001b[39m\n \u001b[90m 50 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput\u001b[33m.\u001b[39mfill(name)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 51 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnameInput)\u001b[33m.\u001b[39mtoHaveValue(name)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mvimeoInput\u001b[33m.\u001b[39mfill(vimeoToken)\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mdescriptionInput\u001b[33m.\u001b[39mfill(description)\u001b[33m;\u001b[39m\n \u001b[90m 54 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mtipsInput\u001b[33m.\u001b[39mfill(tips)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AdminCreateExercisePage.fillForm (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts:51:34)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-exercise-admin.spec.ts:142:5\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:14.925Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-cd76c--error-for-empty-vimeo-link-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-cd76c--error-for-empty-vimeo-link-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-exercise-admi-cd76c--error-for-empty-vimeo-link-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/AdminCreateExercisePage.ts",
-                        "column": 34,
-                        "line": 51
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-66714aa258f3fcdc8831",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 129,
-              "column": 3
-            },
-            {
-              "title": "should allow cancellation and return to exercises list",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 3604,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:20.383Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-1546a0e5ba13dd539c6c",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 150,
-              "column": 3
-            },
-            {
-              "title": "should persist form data when navigating away and back",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 5125,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T14:30:20.450Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fdbe6049b0a8a7a81e01-0114d6744178d09508b4",
-              "file": "tests/create-exercise-admin.spec.ts",
-              "line": 163,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
       "title": "tests/create-plan-trainer.spec.ts",
       "file": "tests/create-plan-trainer.spec.ts",
       "column": 0,
@@ -505,12 +96,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6401,
+                      "duration": 7547,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:20.656Z",
+                      "startTime": "2025-12-13T14:57:37.587Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -553,15 +144,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 2,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 348,
+                      "duration": 1370,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:24.500Z",
+                      "startTime": "2025-12-13T14:57:37.597Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -587,15 +178,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 1309,
+                      "duration": 2565,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:24.089Z",
+                      "startTime": "2025-12-13T14:57:37.594Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -621,15 +212,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 2,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 1265,
+                      "duration": 2567,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:25.043Z",
+                      "startTime": "2025-12-13T14:57:37.599Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -655,15 +246,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 7,
-                      "parallelIndex": 5,
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 1112,
+                      "duration": 2679,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:25.974Z",
+                      "startTime": "2025-12-13T14:57:37.606Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -689,15 +280,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 487,
+                      "duration": 1527,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:25.413Z",
+                      "startTime": "2025-12-13T14:57:37.592Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -723,15 +314,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 402,
+                      "duration": 411,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:25.610Z",
+                      "startTime": "2025-12-13T14:57:39.559Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -757,15 +348,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 460,
+                      "duration": 372,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:25.907Z",
+                      "startTime": "2025-12-13T14:57:39.716Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -791,15 +382,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 483,
+                      "duration": 437,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:26.027Z",
+                      "startTime": "2025-12-13T14:57:39.978Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -833,15 +424,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 2,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 1853,
+                      "duration": 2168,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T14:30:26.320Z",
+                      "startTime": "2025-12-13T14:57:40.096Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -861,11 +452,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-13T14:30:14.171Z",
-    "duration": 26448.844999999998,
-    "expected": 15,
+    "startTime": "2025-12-13T14:57:37.081Z",
+    "duration": 8680.264,
+    "expected": 10,
     "skipped": 0,
-    "unexpected": 3,
+    "unexpected": 0,
     "flaky": 0
   }
 }
