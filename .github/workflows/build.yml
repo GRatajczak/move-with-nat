@@ -65,7 +65,7 @@ jobs:
       contents: read
       deployments: write
     environment:
-      name: ${{ github.event.inputs.environment || 'preview' }}
+      name: production
 
     steps:
       - name: Checkout code
@@ -86,29 +86,25 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      - name: Deploy to Cloudflare Pages (Production)
-        id: deploy-prod
-        if: github.event.inputs.environment == 'production'
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }} --branch=main --commit-dirty=true
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Debug - Check dist directory
+        run: |
+          echo "=== Contents of dist/ directory ==="
+          ls -laR dist/
+          echo ""
+          echo "=== File count ==="
+          find dist/ -type f | wc -l
+          echo ""
+          echo "=== Looking for _worker.js ==="
+          find dist/ -name "_worker.js" -o -name "*.worker.js"
 
-      - name: Deploy to Cloudflare Pages (Preview)
-        id: deploy-preview
-        if: github.event.inputs.environment != 'production'
+      - name: Deploy to Cloudflare Pages
+        id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }} --commit-dirty=true
+          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          wranglerVersion: "3.90.0"
 
       - name: Print deployment URL
-        run: |
-          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
-            echo "Deployment URL: ${{ steps.deploy-prod.outputs.deployment-url }}"
-          else
-            echo "Deployment URL: ${{ steps.deploy-preview.outputs.deployment-url }}"
-          fi
+        run: echo "Deployment URL: ${{ steps.deploy.outputs.deployment-url }}"
