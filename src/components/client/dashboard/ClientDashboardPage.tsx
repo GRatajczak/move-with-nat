@@ -20,13 +20,15 @@ function ClientDashboardPageContent() {
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Moje plany</h1>
+          <h1 className="text-3xl font-bold tracking-tight" data-testid="client-dashboard-heading">
+            Moje plany
+          </h1>
           <p className="text-muted-foreground mt-1">Przeglądaj swoje plany treningowe i śledź postępy</p>
         </div>
       </div>
 
       {/* Content */}
-      <div>
+      <div data-testid="client-plans-content">
         {/* Loading state */}
         {isLoading && <PlanCardsSkeleton count={4} />}
 

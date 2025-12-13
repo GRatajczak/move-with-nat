@@ -74,10 +74,15 @@ export function PlanCard({ plan }: ClientPlanCardProps) {
       }}
       role="link"
       aria-label={`Zobacz plan ${plan.name}`}
+      data-testid="client-plan-card"
+      data-plan-id={plan.id}
     >
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors text-lg font-semibold">
+          <CardTitle
+            className="line-clamp-2 group-hover:text-primary transition-colors text-lg font-semibold"
+            data-testid="plan-card-title"
+          >
             {plan.name}
           </CardTitle>
           {isCompleted && (
