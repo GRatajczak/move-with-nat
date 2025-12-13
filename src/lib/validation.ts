@@ -566,15 +566,14 @@ export const UpdateClientFormSchema = z.object({
     .trim(),
   phone: z
     .string()
+    .min(1, "Telefon jest wymagany")
     .regex(/^\+?[0-9\s\-()]{7,15}$/, "Nieprawidłowy format numeru telefonu")
-    .optional()
-    .or(z.literal("")),
+    .trim(),
   dateOfBirth: z
     .string()
+    .min(1, "Data urodzenia jest wymagana")
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Data musi być w formacie RRRR-MM-DD")
-    .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
-    .optional()
-    .or(z.literal("")),
+    .refine((date) => new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości"),
 });
 
 /**

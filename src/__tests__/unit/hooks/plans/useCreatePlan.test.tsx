@@ -120,7 +120,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -176,7 +176,7 @@ describe("useCreatePlan", () => {
         })
       );
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -229,6 +229,9 @@ describe("useCreatePlan", () => {
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 400,
+        headers: {
+          get: (name: string) => (name === "content-type" ? "application/json" : null),
+        },
         json: async () => errorDetails,
       });
 
@@ -245,7 +248,7 @@ describe("useCreatePlan", () => {
       await expect(result.current.mutateAsync(invalidCommand)).rejects.toThrow(ValidationError);
 
       await waitFor(() => {
-      expect(result.current.isError).toBe(true);
+        expect(result.current.isError).toBe(true);
       });
     });
 
@@ -259,6 +262,9 @@ describe("useCreatePlan", () => {
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 400,
+        headers: {
+          get: (name: string) => (name === "content-type" ? "application/json" : null),
+        },
         json: async () => errorResponse,
       });
 
@@ -290,7 +296,10 @@ describe("useCreatePlan", () => {
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 500,
-        json: async () => ({ error: "Internal server error" }),
+        headers: {
+          get: (name: string) => (name === "content-type" ? "application/json" : null),
+        },
+        json: async () => ({}),
       });
 
       const command: CreatePlanCommand = {
@@ -344,6 +353,9 @@ describe("useCreatePlan", () => {
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 400,
+        headers: {
+          get: (name: string) => (name === "content-type" ? "application/json" : null),
+        },
         json: async () => {
           throw new Error("Invalid JSON");
         },
@@ -408,7 +420,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
       expect(global.fetch).toHaveBeenCalledWith(
         "/api/plans",
@@ -451,7 +463,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -533,7 +545,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -567,7 +579,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -602,7 +614,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
   });
@@ -638,7 +650,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -671,7 +683,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
 
@@ -711,7 +723,7 @@ describe("useCreatePlan", () => {
 
       // Assert
       await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+        expect(result.current.isSuccess).toBe(true);
       });
     });
   });
@@ -756,7 +768,7 @@ describe("useCreatePlan", () => {
 
       // Assert - Should be pending immediately after calling mutate
       await waitFor(() => {
-      expect(result.current.isPending).toBe(true);
+        expect(result.current.isPending).toBe(true);
       });
 
       await mutationPromise;
@@ -767,6 +779,9 @@ describe("useCreatePlan", () => {
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 500,
+        headers: {
+          get: (name: string) => (name === "content-type" ? "application/json" : null),
+        },
         json: async () => ({ error: "Server error" }),
       });
 

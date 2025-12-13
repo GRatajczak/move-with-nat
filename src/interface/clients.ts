@@ -87,8 +87,8 @@ export interface UpdateClientCommand {
   email: string;
   firstName: string;
   lastName: string;
-  phone?: string | null;
-  dateOfBirth?: string | null;
+  phone: string;
+  dateOfBirth: string;
 }
 
 /** Form data types **/
@@ -105,8 +105,8 @@ export interface EditClientFormData {
   email: string;
   firstName: string;
   lastName: string;
-  phone?: string;
-  dateOfBirth?: string;
+  phone: string;
+  dateOfBirth: string;
 }
 
 /** Form props **/

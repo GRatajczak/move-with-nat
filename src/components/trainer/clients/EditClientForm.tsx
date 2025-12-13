@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { UpdateClientFormSchema } from "@/lib/validation";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EditClientFormData, EditClientFormProps } from "@/interface";
+import { toast } from "sonner";
 
 export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: EditClientFormProps) => {
   const defaultValues: EditClientFormData = {
@@ -56,7 +57,7 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
       // This prevents the "Leave site" warning after successful submission
       form.reset(data);
     } catch (error) {
-      console.error(error);
+      toast.error(error instanceof Error ? error.message : "Wystąpił błąd podczas zapisywania zmian");
     }
   };
 
@@ -123,11 +124,10 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Telefon</FormLabel>
+                <FormLabel>Telefon *</FormLabel>
                 <FormControl>
                   <Input type="tel" placeholder="+48 123 456 789" {...field} disabled={isSubmitting} />
                 </FormControl>
-                <FormDescription>Opcjonalny numer telefonu podopiecznego</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -139,7 +139,7 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
             name="dateOfBirth"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Data urodzenia</FormLabel>
+                <FormLabel>Data urodzenia *</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -172,7 +172,6 @@ export const EditClientForm = ({ client, onSubmit, onCancel, isSubmitting }: Edi
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Opcjonalna data urodzenia</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

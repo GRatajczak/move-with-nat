@@ -15,8 +15,8 @@ const EditClientContent = ({ clientId }: { clientId: string }) => {
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      phone: data.phone || null,
-      dateOfBirth: data.dateOfBirth || null,
+      phone: data.phone,
+      dateOfBirth: data.dateOfBirth,
     };
 
     await updateClient({ clientId, command });

@@ -11,9 +11,9 @@ export const TrainerQuickActions = () => {
         </a>
       </Button>
       <Button asChild variant="outline">
-        <a href="/trainer/clients">
+        <a href="/trainer/plans/new">
           <Users className="mr-2 h-4 w-4" />
-          Wszyscy Podopieczni
+          Stwórz plan treningowy
         </a>
       </Button>
     </div>
