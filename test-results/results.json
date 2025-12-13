@@ -77,11 +77,11 @@
         {
           "title": "Client Plan View",
           "file": "tests/client-plan-view.spec.ts",
-          "line": 11,
+          "line": 13,
           "column": 6,
           "specs": [
             {
-              "title": "should display client dashboard with or without plans",
+              "title": "should display client dashboard with test plan",
               "ok": true,
               "tags": [],
               "tests": [
@@ -96,12 +96,19 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5272,
+                      "duration": 3791,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Created test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.763Z",
+                      "startTime": "2025-12-13T16:25:38.282Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -109,9 +116,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "8aa793801bc4b9618f1c-3467cca46a1db05e88db",
+              "id": "8aa793801bc4b9618f1c-d464c4fedb11df1ac30e",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 28,
+              "line": 51,
               "column": 3
             },
             {
@@ -121,51 +128,38 @@
               "tests": [
                 {
                   "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 53,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
+                  "annotations": [],
+                  "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 5246,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3719,
                       "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.771Z",
-                      "annotations": [
+                      "stdout": [
                         {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 53,
-                            "column": 12
-                          }
+                          "text": "✓ Cleaning up test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
+                        },
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
                         }
                       ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:43.847Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-d536d3a852ecf3f6294a",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 46,
+              "line": 59,
               "column": 3
             },
             {
@@ -175,51 +169,38 @@
               "tests": [
                 {
                   "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 80,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
+                  "annotations": [],
+                  "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "skipped",
-                      "duration": 5218,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5138,
                       "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.795Z",
-                      "annotations": [
+                      "stdout": [
                         {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 80,
-                            "column": 12
-                          }
+                          "text": "✓ Created test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
                         }
                       ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:38.259Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-566ff16e284180a0aa45",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 73,
+              "line": 74,
               "column": 3
             },
             {
@@ -229,163 +210,42 @@
               "tests": [
                 {
                   "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 126,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
+                  "annotations": [],
+                  "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "skipped",
-                      "duration": 5210,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4447,
                       "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.780Z",
-                      "annotations": [
+                      "stdout": [
                         {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 126,
-                            "column": 12
-                          }
+                          "text": "✓ Cleaning up test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
+                        },
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
                         }
                       ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:45.221Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-d7a0832e9e7e28f22c22",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 119,
+              "line": 99,
               "column": 3
             },
             {
               "title": "should display exercise details correctly",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 149,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "skipped",
-                      "duration": 5272,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.778Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 149,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8aa793801bc4b9618f1c-a005fbf97d31aca742b7",
-              "file": "tests/client-plan-view.spec.ts",
-              "line": 142,
-              "column": 3
-            },
-            {
-              "title": "should display plan description if available",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 187,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "skipped",
-                      "duration": 5221,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:12.794Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 187,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "8aa793801bc4b9618f1c-aace5f6aecfc6a389ffd",
-              "file": "tests/client-plan-view.spec.ts",
-              "line": 180,
-              "column": 3
-            },
-            {
-              "title": "should handle empty plans gracefully",
               "ok": true,
               "tags": [],
               "tests": [
@@ -400,12 +260,19 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 2428,
+                      "duration": 4484,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Created test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.608Z",
+                      "startTime": "2025-12-13T16:25:38.282Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -413,9 +280,91 @@
                   "status": "expected"
                 }
               ],
-              "id": "8aa793801bc4b9618f1c-e05f9ccb5a1c56562aeb",
+              "id": "8aa793801bc4b9618f1c-a005fbf97d31aca742b7",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 205,
+              "line": 112,
+              "column": 3
+            },
+            {
+              "title": "should display plan description",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3482,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Cleaning up test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
+                        },
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:44.537Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8aa793801bc4b9618f1c-bc1710fc2265248af3a3",
+              "file": "tests/client-plan-view.spec.ts",
+              "line": 137,
+              "column": 3
+            },
+            {
+              "title": "should have at least one plan visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3938,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Created test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:38.254Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8aa793801bc4b9618f1c-f2c4a5c85fe11a266023",
+              "file": "tests/client-plan-view.spec.ts",
+              "line": 151,
               "column": 3
             },
             {
@@ -425,51 +374,38 @@
               "tests": [
                 {
                   "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 224,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
+                  "annotations": [],
+                  "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "skipped",
-                      "duration": 2482,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4162,
                       "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.609Z",
-                      "annotations": [
+                      "stdout": [
                         {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 224,
-                            "column": 12
-                          }
+                          "text": "✓ Cleaning up test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
+                        },
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
                         }
                       ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:43.972Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-77684c29258f74789f04",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 217,
+              "line": 161,
               "column": 3
             },
             {
@@ -479,51 +415,44 @@
               "tests": [
                 {
                   "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "description": "Client has no plans assigned - skipping test",
-                      "location": {
-                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                        "line": 252,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
+                  "annotations": [],
+                  "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "skipped",
-                      "duration": 2445,
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 4757,
                       "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.612Z",
-                      "annotations": [
+                      "stdout": [
                         {
-                          "type": "skip",
-                          "description": "Client has no plans assigned - skipping test",
-                          "location": {
-                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
-                            "line": 252,
-                            "column": 12
-                          }
+                          "text": "✓ Created test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
+                        },
+                        {
+                          "text": "✓ Cleaning up test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
+                        },
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
                         }
                       ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T16:25:38.247Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-61131394d2d28e8ab6e5",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 245,
+              "line": 177,
               "column": 3
             }
           ]
@@ -540,7 +469,7 @@
         {
           "title": "Trainer Plan Creation",
           "file": "tests/create-plan-trainer.spec.ts",
-          "line": 8,
+          "line": 13,
           "column": 6,
           "specs": [
             {
@@ -556,15 +485,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 9526,
+                      "duration": 10971,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.637Z",
+                      "startTime": "2025-12-13T16:25:38.267Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -574,7 +507,7 @@
               ],
               "id": "bf6670ecc9a3dc87f6dc-27a010fe9e46c47b3251",
               "file": "tests/create-plan-trainer.spec.ts",
-              "line": 9,
+              "line": 14,
               "column": 3
             }
           ]
@@ -610,12 +543,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 976,
+                      "duration": 618,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.659Z",
+                      "startTime": "2025-12-13T16:25:45.280Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -641,15 +574,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 2503,
+                      "duration": 1340,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:18.659Z",
+                      "startTime": "2025-12-13T16:25:45.913Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -678,12 +611,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 2745,
+                      "duration": 1438,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:19.646Z",
+                      "startTime": "2025-12-13T16:25:47.268Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -709,15 +642,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2262,
+                      "duration": 1567,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:21.072Z",
+                      "startTime": "2025-12-13T16:25:48.184Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -743,15 +676,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 1372,
+                      "duration": 1066,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:21.096Z",
+                      "startTime": "2025-12-13T16:25:48.615Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -777,15 +710,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 1349,
+                      "duration": 997,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:21.122Z",
+                      "startTime": "2025-12-13T16:25:48.684Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -811,15 +744,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 1414,
+                      "duration": 994,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:21.170Z",
+                      "startTime": "2025-12-13T16:25:48.715Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -845,15 +778,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 556,
+                      "duration": 405,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:22.455Z",
+                      "startTime": "2025-12-13T16:25:49.693Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -887,15 +820,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 2663,
+                      "duration": 1671,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T15:19:22.476Z",
+                      "startTime": "2025-12-13T16:25:49.699Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -915,10 +848,10 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-13T15:19:12.019Z",
-    "duration": 16190.088,
-    "expected": 12,
-    "skipped": 7,
+    "startTime": "2025-12-13T16:25:37.614Z",
+    "duration": 13794.048,
+    "expected": 19,
+    "skipped": 0,
     "unexpected": 0,
     "flaky": 0
   }

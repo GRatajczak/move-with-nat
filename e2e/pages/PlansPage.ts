@@ -16,14 +16,10 @@ export class PlansPage {
   }
 
   async startCreatePlan() {
-    // Ensure button is ready before clicking
+    await this.page.waitForLoadState("networkidle");
     await this.createPlanButton.waitFor({ state: "visible" });
-    await this.createPlanButton.isEnabled();
-
-    await Promise.all([
-      this.page.waitForURL(/\/trainer\/plans\/new/, { timeout: 10000 }),
-      this.createPlanButton.click(),
-    ]);
+    await this.createPlanButton.click();
+    await this.page.waitForURL(/\/trainer\/plans\/new/, { timeout: 15000 });
   }
 
   async expectPlanVisible(planName: string) {

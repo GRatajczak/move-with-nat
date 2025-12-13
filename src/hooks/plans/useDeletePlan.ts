@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { NotFoundError } from "../../lib/errors";
+import { plansKeys } from "../queryKeys";
 
 /**
  * Deletes a training plan
@@ -25,7 +26,7 @@ export function useDeletePlan() {
   return useMutation({
     mutationFn: ({ planId, hard = false }: { planId: string; hard?: boolean }) => deletePlan(planId, hard),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["plans", "list"] });
+      queryClient.invalidateQueries({ queryKey: plansKeys.lists() });
       toast.success("Plan usunięty");
     },
     onError: () => {

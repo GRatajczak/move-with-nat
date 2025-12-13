@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { DuplicatePlanData, PlanDto, CreatePlanCommand, PlanViewModel } from "../../interface/plans";
 import { toast } from "sonner";
 import { NotFoundError, ValidationError } from "../../lib/errors";
+import { plansKeys } from "../queryKeys";
 
 /**
  * Fetches single plan details (for duplication)
@@ -75,7 +76,7 @@ export function useDuplicatePlan() {
   return useMutation({
     mutationFn: ({ planId, data }: { planId: string; data: DuplicatePlanData }) => duplicatePlan(planId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["plans", "list"] });
+      queryClient.invalidateQueries({ queryKey: plansKeys.lists() });
       toast.success("Plan zduplikowany");
     },
     onError: () => {

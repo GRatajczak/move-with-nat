@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreatePlanCommand, PlanDto } from "../../interface/plans";
 import { ValidationError } from "../../lib/errors";
+import { plansKeys } from "../queryKeys";
 
 /**
  * Creates a new training plan
@@ -34,7 +35,7 @@ export function useCreatePlan() {
   return useMutation({
     mutationFn: (data: CreatePlanCommand) => createPlan(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["plans", "list"] });
+      queryClient.invalidateQueries({ queryKey: plansKeys.lists() });
     },
   });
 }

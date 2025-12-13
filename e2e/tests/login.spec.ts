@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, testUsers } from "../fixtures";
+import { invalidCredentials } from "../fixtures/test-users";
 import { LoginPage } from "../pages/LoginPage";
 import { DashboardPage } from "../pages/DashboardPage";
-import { testUsers, invalidCredentials } from "../fixtures/test-users";
 
 test.describe("Login Flow", () => {
   let loginPage: LoginPage;

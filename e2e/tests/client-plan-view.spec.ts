@@ -1,17 +1,26 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, testUsers } from "../fixtures";
 import { LoginPage } from "../pages/LoginPage";
 import { ClientDashboardPage } from "../pages/ClientDashboardPage";
 import { ClientPlanDetailsPage } from "../pages/ClientPlanDetailsPage";
-import { testUsers } from "../fixtures/test-users";
 
 /**
  * E2E Test Suite for Client Plan View
  * Tests the flow of a client viewing their training plans and plan details
+ *
+ * Note: Uses testPlan fixture which creates a plan once before all tests.
+ * The plan is cleaned up after ALL tests in this suite complete.
  */
 test.describe("Client Plan View", () => {
   let loginPage: LoginPage;
   let clientDashboard: ClientDashboardPage;
   let planDetailsPage: ClientPlanDetailsPage;
+  let testPlanId: string;
+
+  test.beforeAll(async ({ testPlan }) => {
+    // Store test plan ID for cleanup
+    testPlanId = testPlan.id;
+    console.log(`✓ Using test plan: ${testPlan.id}`);
+  });
 
   test.beforeEach(async ({ page }) => {
     // Arrange - Initialize page objects
@@ -23,39 +32,31 @@ test.describe("Client Plan View", () => {
     await loginPage.goto();
     await loginPage.login(testUsers.client.email, testUsers.client.password);
     await loginPage.waitForSuccessfulLogin();
+
+    // Wait for dashboard to load
+    await clientDashboard.expectLoaded();
+    // Ensure at least the test plan exists (may be multiple plans in parallel execution)
+    await clientDashboard.expectHasPlans();
   });
 
-  test("should display client dashboard with or without plans", async () => {
-    // Assert - Verify dashboard is loaded
-    await clientDashboard.expectLoaded();
+  test.afterAll(async ({ supabaseTestClient }) => {
+    // Cleanup test plan after ALL tests complete
+    console.log(`✓ Cleaning up test plan: ${testPlanId}`);
+    const { cleanupPlans, createTeardownTracker } = await import("../fixtures/teardown.fixture");
+    const tracker = createTeardownTracker();
+    tracker.planIds.add(testPlanId);
+    await cleanupPlans(supabaseTestClient, tracker);
+  });
 
-    // Assert - Check if plans are loaded (may be empty)
-    const hasPlans = await clientDashboard.hasPlans();
+  test("should display client dashboard with test plan", async () => {
+    // Assert - Verify dashboard is loaded with test plan
+    await clientDashboard.expectHasPlans();
+
     const plansCount = await clientDashboard.getPlansCount();
-
-    // Test passes regardless of whether client has plans or not
-    // This is more realistic as clients may not have plans assigned yet
-    expect(plansCount).toBeGreaterThanOrEqual(0);
-
-    // Only verify plan cards if they exist
-    if (hasPlans) {
-      await clientDashboard.expectHasPlans();
-    }
+    expect(plansCount).toBeGreaterThanOrEqual(1);
   });
 
   test("should navigate to plan details when clicking a plan card", async ({ page }) => {
-    // Arrange - Ensure dashboard is loaded
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
-
     // Get the first plan's title for verification
     const firstPlanTitle = await clientDashboard.getPlanTitle(0);
 
@@ -71,18 +72,6 @@ test.describe("Client Plan View", () => {
   });
 
   test("should display plan details with exercises", async () => {
-    // Arrange - Navigate to dashboard
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
-
     // Act - Click on the first plan
     await clientDashboard.clickPlanCard(0);
 
@@ -91,43 +80,24 @@ test.describe("Client Plan View", () => {
 
     // Assert - Verify plan title is visible
     const planTitle = await planDetailsPage.getPlanTitle();
-    expect(planTitle).toBeTruthy();
+    expect(planTitle.length).toBeGreaterThan(0);
 
     // Assert - Verify exercises list is visible
     await planDetailsPage.expectExercisesListVisible();
 
-    // Assert - Check if plan has exercises
-    const hasExercises = await planDetailsPage.hasExercises();
+    // Assert - Verify plan has at least one exercise (test plan should have exercises)
+    const exercisesCount = await planDetailsPage.getExercisesCount();
+    expect(exercisesCount).toBeGreaterThan(0);
 
-    if (hasExercises) {
-      // Verify at least one exercise is visible
-      const exercisesCount = await planDetailsPage.getExercisesCount();
-      expect(exercisesCount).toBeGreaterThan(0);
-
-      // Verify first exercise details are visible
-      const firstExercise = await planDetailsPage.getExerciseDetails(0);
-      expect(firstExercise.name).toBeTruthy();
-      expect(firstExercise.sets).toBeTruthy();
-      expect(firstExercise.reps).toBeTruthy();
-    } else {
-      // Verify empty state is shown
-      const hasEmptyState = await planDetailsPage.hasEmptyExercisesState();
-      expect(hasEmptyState).toBe(true);
-    }
+    // Verify first exercise details are visible
+    const firstExercise = await planDetailsPage.getExerciseDetails(0);
+    expect(firstExercise.name).toBeTruthy();
+    expect(firstExercise.sets).toBeTruthy();
+    expect(firstExercise.reps).toBeTruthy();
   });
 
   test("should navigate back to dashboard from plan details", async ({ page }) => {
     // Arrange - Navigate to a plan details page
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
     await clientDashboard.clickPlanCard(0);
     await planDetailsPage.expectLoaded();
 
@@ -141,92 +111,54 @@ test.describe("Client Plan View", () => {
 
   test("should display exercise details correctly", async () => {
     // Arrange - Navigate to plan details
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
     await clientDashboard.clickPlanCard(0);
     await planDetailsPage.expectLoaded();
 
     // Act & Assert - Verify exercises have required information
-    const hasExercises = await planDetailsPage.hasExercises();
+    const exercisesCount = await planDetailsPage.getExercisesCount();
+    expect(exercisesCount).toBeGreaterThan(0);
 
-    if (hasExercises) {
-      const exercisesCount = await planDetailsPage.getExercisesCount();
+    // Verify each exercise has name, sets, and reps
+    for (let i = 0; i < exercisesCount; i++) {
+      const exercise = await planDetailsPage.getExerciseDetails(i);
 
-      // Verify each exercise has name, sets, and reps
-      for (let i = 0; i < exercisesCount; i++) {
-        const exercise = await planDetailsPage.getExerciseDetails(i);
+      // Assert - Exercise has a name
+      expect(exercise.name).toBeTruthy();
+      expect(exercise.name.length).toBeGreaterThan(0);
 
-        // Assert - Exercise has a name
-        expect(exercise.name).toBeTruthy();
-        expect(exercise.name.length).toBeGreaterThan(0);
+      // Assert - Exercise has sets information
+      expect(exercise.sets).toContain("serii");
 
-        // Assert - Exercise has sets information
-        expect(exercise.sets).toContain("serii");
-
-        // Assert - Exercise has reps information
-        expect(exercise.reps).toContain("powt.");
-      }
+      // Assert - Exercise has reps information
+      expect(exercise.reps).toContain("powt.");
     }
   });
 
-  test("should display plan description if available", async () => {
+  test("should display plan description", async () => {
     // Arrange - Navigate to plan details
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
     await clientDashboard.clickPlanCard(0);
     await planDetailsPage.expectLoaded();
 
     // Act - Check if description is present
     const hasDescription = await planDetailsPage.hasPlanDescription();
 
-    // Assert - If description exists, it should have content
-    if (hasDescription) {
-      const description = await planDetailsPage.getPlanDescription();
-      expect(description.length).toBeGreaterThan(0);
-    }
+    // Assert - Test plan should have a description
+    expect(hasDescription).toBe(true);
+    const description = await planDetailsPage.getPlanDescription();
+    expect(description.length).toBeGreaterThan(0);
   });
 
-  test("should handle empty plans gracefully", async () => {
-    // Arrange - Navigate to client dashboard
-    await clientDashboard.expectLoaded();
-
-    // Assert - Verify the page loads without errors even if no plans
+  test("should have at least one plan visible", async () => {
+    // Assert - Verify at least one plan is visible
     const plansCount = await clientDashboard.getPlansCount();
+    expect(plansCount).toBeGreaterThanOrEqual(1);
 
-    // The test passes as long as the dashboard loads successfully
-    // Either with plans (count > 0) or without (count === 0)
-    expect(plansCount).toBeGreaterThanOrEqual(0);
+    // Verify the first plan has a title
+    const firstPlanTitle = await clientDashboard.getPlanTitle(0);
+    expect(firstPlanTitle.length).toBeGreaterThan(0);
   });
 
   test("should maintain correct URL structure when navigating", async ({ page }) => {
-    // Arrange - Navigate to dashboard
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
-
     // Act - Click on first plan
     await clientDashboard.clickPlanCard(0);
     await planDetailsPage.expectLoaded();
@@ -244,24 +176,14 @@ test.describe("Client Plan View", () => {
 
   test("should display all plan information consistently", async () => {
     // Arrange - Get plan info from dashboard
-    await clientDashboard.expectLoaded();
-
-    // Check if client has plans
-    const hasPlans = await clientDashboard.hasPlans();
-    if (!hasPlans) {
-      test.skip(true, "Client has no plans assigned - skipping test");
-      return;
-    }
-
-    await clientDashboard.expectHasPlans();
-
     const dashboardPlanTitle = await clientDashboard.getPlanTitle(0);
+    expect(dashboardPlanTitle.length).toBeGreaterThan(0);
 
     // Act - Navigate to plan details
     await clientDashboard.clickPlanCard(0);
     await planDetailsPage.expectLoaded();
 
-    // Assert - Verify plan title consistency
+    // Assert - Verify plan title consistency between dashboard and details page
     const detailsPlanTitle = await planDetailsPage.getPlanTitle();
     expect(detailsPlanTitle).toBe(dashboardPlanTitle);
   });

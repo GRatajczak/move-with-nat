@@ -56,11 +56,20 @@ const reactConfig = tseslint.config({
   },
 });
 
+const e2eConfig = tseslint.config({
+  files: ["e2e/**/*.ts"],
+  rules: {
+    "react-hooks/rules-of-hooks": "off",
+    "no-empty-pattern": "off",
+  },
+});
+
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
   baseConfig,
   jsxA11yConfig,
   reactConfig,
   eslintPluginAstro.configs["flat/recommended"],
-  eslintPluginPrettier
+  eslintPluginPrettier,
+  e2eConfig
 );

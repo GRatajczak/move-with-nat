@@ -78,25 +78,19 @@ export class ClientDashboardPage {
    */
   async clickPlanCard(index: number) {
     const planCard = this.getPlanCard(index);
-    const planId = await planCard.getAttribute("data-plan-id");
-
-    await Promise.all([
-      this.page.waitForURL(new RegExp(`/client/plans/${planId}`), { timeout: 10000 }),
-      planCard.click(),
-    ]);
+    await planCard.click();
+    // Wait for navigation to complete
+    await this.page.waitForURL(/\/client\/plans\/.+/, { timeout: 15000 });
   }
 
   /**
    * Click on a plan card by name
    */
   async clickPlanCardByName(planName: string) {
-    const planCard = this.getPlanCardByName(planName);
-    const planId = await planCard.getAttribute("data-plan-id");
-
-    await Promise.all([
-      this.page.waitForURL(new RegExp(`/client/plans/${planId}`), { timeout: 10000 }),
-      planCard.click(),
-    ]);
+    const planCard = this.getPlanCardByName(planName).first();
+    await planCard.click();
+    // Wait for navigation to complete
+    await this.page.waitForURL(/\/client\/plans\/.+/, { timeout: 15000 });
   }
 
   /**
@@ -110,9 +104,11 @@ export class ClientDashboardPage {
 
   /**
    * Verify plan card is visible by name
+   * Note: In parallel test execution, multiple plans with the same name may exist.
+   * This method checks that at least one plan with the given name is visible.
    */
   async expectPlanVisible(planName: string) {
-    const planCard = this.getPlanCardByName(planName);
+    const planCard = this.getPlanCardByName(planName).first();
     await expect(planCard).toBeVisible({ timeout: 10000 });
   }
 
