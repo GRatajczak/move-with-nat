@@ -27,6 +27,11 @@ interface ImportMetaEnv {
   readonly SUPABASE_URL_TEST?: string;
   readonly SUPABASE_KEY_TEST?: string;
   readonly SUPABASE_SERVICE_ROLE_KEY_TEST?: string;
+  readonly SENDGRID_API_KEY: string;
+  readonly SENDGRID_FROM_EMAIL?: string;
+  readonly SENDGRID_TEMPLATE_ACTIVATION?: string;
+  readonly SENDGRID_TEMPLATE_PASSWORD_RESET?: string;
+  readonly PUBLIC_APP_URL?: string;
 }
 
 interface ImportMeta {

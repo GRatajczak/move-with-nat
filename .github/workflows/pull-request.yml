@@ -95,6 +95,9 @@ jobs:
           E2E_USERNAME_ID_CLIENT: ${{ secrets.E2E_USERNAME_ID_CLIENT }}
           E2E_USERNAME_CLIENT: ${{ secrets.E2E_USERNAME_CLIENT }}
           E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+          SENDGRID_TEMPLATE_ACTIVATION: ${{ secrets.SENDGRID_TEMPLATE_ACTIVATION }}
 
       - name: Upload test results
         if: always()
