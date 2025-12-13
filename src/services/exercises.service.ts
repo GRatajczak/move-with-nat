@@ -1,7 +1,7 @@
 // src/services/exercises.service.ts
 
 import { z } from "zod";
-import { supabaseClient } from "../db/supabase.client";
+import type { SupabaseClient } from "../db/supabase.client";
 import type { Database } from "../db/database.types";
 import type {
   CreateExerciseCommand,

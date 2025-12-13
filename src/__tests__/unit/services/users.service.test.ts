@@ -50,6 +50,7 @@ describe("users.service", () => {
 
   beforeEach(() => {
     // Silence expected error logs to keep test output clean
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 

@@ -9,18 +9,18 @@ export const prerender = false;
 
 /**
  * PUT /api/reasons/:id
- * 
+ *
  * Updates an existing standard reason
- * 
+ *
  * Authorization:
  * - Admin only
- * 
+ *
  * Request Body:
  * {
  *   "code": "updated_code",     // optional
  *   "label": "Updated label"    // optional
  * }
- * 
+ *
  * Response (200):
  * {
  *   "id": "uuid",
@@ -66,13 +66,10 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
     // Update reason
     const result = await updateReason(locals.supabase, id, validated, locals.user);
 
-    return new Response(
-      JSON.stringify(result),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     return handleAPIError(error);
   }
@@ -80,15 +77,15 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
 
 /**
  * DELETE /api/reasons/:id
- * 
+ *
  * Deletes a standard reason
- * 
+ *
  * Authorization:
  * - Admin only
- * 
+ *
  * Business Rules:
  * - Cannot delete a reason that is in use
- * 
+ *
  * Response (204):
  * No content
  */
@@ -133,4 +130,3 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
     return handleAPIError(error);
   }
 };
-
