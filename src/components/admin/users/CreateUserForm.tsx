@@ -205,13 +205,13 @@ export const CreateUserForm = ({ onSubmit, onCancel, isSubmitting }: CreateUserF
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="administrator">Administrator</SelectItem>
+                  <SelectItem value="admin">Administrator</SelectItem>
                   <SelectItem value="trainer">Trener</SelectItem>
                   <SelectItem value="client">Podopieczny</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                {selectedRole === "administrator" && "Pełny dostęp do systemu, zarządzanie użytkownikami i treściami."}
+                {selectedRole === "admin" && "Pełny dostęp do systemu, zarządzanie użytkownikami i treściami."}
                 {selectedRole === "trainer" && "Dostęp do zarządzania swoimi podopiecznymi i planami treningowymi."}
                 {selectedRole === "client" && "Dostęp do własnych planów treningowych i postępów."}
               </FormDescription>

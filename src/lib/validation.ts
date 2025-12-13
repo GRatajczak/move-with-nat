@@ -75,7 +75,12 @@ export const CreateUserCommandSchema = z
       .refine((date) => new Date(date) <= new Date(), "Date of birth cannot be in the future")
       .optional()
       .nullable(),
-    trainerId: z.string().uuid("Invalid trainer ID format").optional(),
+    trainerId: z
+      .string()
+      .uuid("Invalid trainer ID format")
+      .optional()
+      .or(z.literal(""))
+      .transform((val) => (val === "" ? undefined : val)),
   })
   .refine((data) => data.role !== "client" || !!data.trainerId, {
     message: "trainerId is required when role is 'client'",
@@ -424,7 +429,7 @@ export const ChangePasswordFormSchema = z
 export const CreateUserFormSchema = z
   .object({
     email: z.string().min(1, "Email jest wymagany").email("Nieprawidłowy format adresu email").trim().toLowerCase(),
-    role: z.enum(["administrator", "trainer", "client"], {
+    role: z.enum(["admin", "trainer", "client"], {
       required_error: "Rola jest wymagana",
       invalid_type_error: "Nieprawidłowa rola",
     }),
@@ -451,7 +456,12 @@ export const CreateUserFormSchema = z
       .refine((date) => !date || new Date(date) <= new Date(), "Data urodzenia nie może być w przyszłości")
       .optional()
       .or(z.literal("")),
-    trainerId: z.string().uuid("Nieprawidłowy identyfikator trenera").optional(),
+    trainerId: z
+      .string()
+      .uuid("Nieprawidłowy identyfikator trenera")
+      .optional()
+      .or(z.literal(""))
+      .transform((val) => (val === "" ? undefined : val)),
   })
   .refine((data) => data.role !== "client" || !!data.trainerId, {
     message: "Trener jest wymagany dla podopiecznego",
