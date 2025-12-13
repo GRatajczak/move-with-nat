@@ -63,7 +63,6 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: lint
-    environment: integrations
 
     steps:
       - name: Checkout code
@@ -86,11 +85,18 @@ jobs:
         env:
           CI: true
           BASE_URL: http://localhost:3000
-          SUPABASE_URL_TEST: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          SUPABASE_KEY_TEST: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY_TEST: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          E2E_USERNAME_ID_ADMIN: ${{ secrets.E2E_USERNAME_ID_ADMIN }}
+          E2E_USERNAME_ADMIN: ${{ secrets.E2E_USERNAME_ADMIN }}
+          E2E_USERNAME_ID_TRAINER: ${{ secrets.E2E_USERNAME_ID_TRAINER }}
+          E2E_USERNAME_TRAINER: ${{ secrets.E2E_USERNAME_TRAINER }}
+          E2E_USERNAME_ID_CLIENT: ${{ secrets.E2E_USERNAME_ID_CLIENT }}
+          E2E_USERNAME_CLIENT: ${{ secrets.E2E_USERNAME_CLIENT }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
 
       - name: Upload test results
         if: always()
@@ -129,8 +135,8 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+          PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
