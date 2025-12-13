@@ -9,8 +9,8 @@ import type {
   ListPlansQuery,
   PaginatedResponse,
   AuthenticatedUser,
+  UpdatePlanCommand,
 } from "@/interface";
-import type { UpdatePlanCommand } from "@/types/plans";
 import { DatabaseError, ForbiddenError, NotFoundError, ValidationError } from "@/lib/errors";
 import { isValidUUID } from "@/lib/api-helpers";
 import { mapPlanToDTO, mapPlanWithExercisesToDTO, mapPlanExerciseToDTO } from "../lib/mappers";

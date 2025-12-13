@@ -1,0 +1,286 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - complementary [ref=e4]:
+        - link "MoveWithNat" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e7]: MoveWithNat
+        - navigation "Nawigacja główna" [ref=e8]:
+          - list [ref=e9]:
+            - listitem [ref=e11]:
+              - link "Dashboard" [ref=e12] [cursor=pointer]:
+                - /url: /admin
+                - img [ref=e13]
+                - generic [ref=e18]: Dashboard
+            - listitem [ref=e20]:
+              - link "Użytkownicy" [ref=e21] [cursor=pointer]:
+                - /url: /admin/users
+                - img [ref=e22]
+                - generic [ref=e27]: Użytkownicy
+            - listitem [ref=e29]:
+              - link "Ćwiczenia" [ref=e30] [cursor=pointer]:
+                - /url: /admin/exercises
+                - img [ref=e31]
+                - generic [ref=e37]: Ćwiczenia
+            - listitem [ref=e39]:
+              - link "Plany treningowe" [ref=e40] [cursor=pointer]:
+                - /url: /admin/plans
+                - img [ref=e41]
+                - generic [ref=e44]: Plany treningowe
+            - listitem [ref=e46]:
+              - link "Powody niewykonania" [ref=e47] [cursor=pointer]:
+                - /url: /admin/reasons
+                - img [ref=e48]
+                - generic [ref=e50]: Powody niewykonania
+            - listitem [ref=e52]:
+              - link "Profil" [ref=e53] [cursor=pointer]:
+                - /url: /admin/profile
+                - img [ref=e54]
+                - generic [ref=e57]: Profil
+        - button "Zwiń menu" [ref=e59] [cursor=pointer]:
+          - img
+      - generic [ref=e60]:
+        - banner [ref=e61]:
+          - navigation "Breadcrumb" [ref=e63]:
+            - list [ref=e64]:
+              - listitem [ref=e65]:
+                - link "Dashboard" [ref=e66] [cursor=pointer]:
+                  - /url: /admin
+              - listitem [ref=e67]:
+                - img [ref=e68]
+                - generic [ref=e70]: Ćwiczenia
+          - button "Test Test Test Test" [ref=e72]:
+            - generic "Test Test" [ref=e73]: TT
+            - generic [ref=e74]: Test Test
+        - main [ref=e75]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]:
+                - heading "Biblioteka Ćwiczeń" [level=1] [ref=e82]
+                - paragraph [ref=e83]: Zarządzaj bazą ćwiczeń dostępnych w planach treningowych.
+              - button "Powrót do Dashboard" [ref=e84] [cursor=pointer]:
+                - img
+                - text: Powrót do Dashboard
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - img [ref=e87]
+                - searchbox "Szukaj ćwiczenia..." [ref=e90]
+              - button "Dodaj ćwiczenie" [ref=e91] [cursor=pointer]:
+                - img
+                - text: Dodaj ćwiczenie
+            - table [ref=e94]:
+              - rowgroup [ref=e95]:
+                - row "Thumbnail Nazwa Domyślny ciężar Utworzono Tempo Użycie Widoczność Akcje" [ref=e96]:
+                  - columnheader "Thumbnail" [ref=e97]
+                  - columnheader "Nazwa" [ref=e98]
+                  - columnheader "Domyślny ciężar" [ref=e99]
+                  - columnheader "Utworzono" [ref=e100]
+                  - columnheader "Tempo" [ref=e101]
+                  - columnheader "Użycie" [ref=e102]
+                  - columnheader "Widoczność" [ref=e103]
+                  - columnheader "Akcje" [ref=e104]
+              - rowgroup [ref=e105]:
+                - row "Test Exercise Minimal 1765636219286 Test Exercise Minimal 1765636219286 — 12/13/2025 Nie określono 0 planów Widoczne Otwórz menu" [ref=e106] [cursor=pointer]:
+                  - cell "Test Exercise Minimal 1765636219286" [ref=e107]:
+                    - img "Test Exercise Minimal 1765636219286" [ref=e108]
+                  - cell "Test Exercise Minimal 1765636219286" [ref=e109]
+                  - cell "—" [ref=e110]
+                  - cell "12/13/2025" [ref=e111]
+                  - cell "Nie określono" [ref=e112]
+                  - cell "0 planów" [ref=e113]
+                  - cell "Widoczne" [ref=e114]
+                  - cell "Otwórz menu" [ref=e115]:
+                    - button "Otwórz menu" [ref=e116]:
+                      - generic [ref=e117]: Otwórz menu
+                      - img
+                - row "Test Test 0.5 kg 12/13/2025 3333 0 planów Widoczne Otwórz menu" [ref=e118] [cursor=pointer]:
+                  - cell "Test" [ref=e119]:
+                    - img "Test" [ref=e120]
+                  - cell "Test" [ref=e121]
+                  - cell "0.5 kg" [ref=e122]
+                  - cell "12/13/2025" [ref=e123]
+                  - cell "3333" [ref=e124]
+                  - cell "0 planów" [ref=e125]
+                  - cell "Widoczne" [ref=e126]
+                  - cell "Otwórz menu" [ref=e127]:
+                    - button "Otwórz menu" [ref=e128]:
+                      - generic [ref=e129]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765634420893 Test Exercise 1765634420893 10 kg 12/13/2025 2020 2 planów Widoczne Otwórz menu" [ref=e130] [cursor=pointer]:
+                  - cell "Test Exercise 1765634420893" [ref=e131]:
+                    - img "Test Exercise 1765634420893" [ref=e132]
+                  - cell "Test Exercise 1765634420893" [ref=e133]
+                  - cell "10 kg" [ref=e134]
+                  - cell "12/13/2025" [ref=e135]
+                  - cell "2020" [ref=e136]
+                  - cell "2 planów" [ref=e137]
+                  - cell "Widoczne" [ref=e138]
+                  - cell "Otwórz menu" [ref=e139]:
+                    - button "Otwórz menu" [ref=e140]:
+                      - generic [ref=e141]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765634257662 Test Exercise 1765634257662 10 kg 12/13/2025 2020 0 planów Widoczne Otwórz menu" [ref=e142] [cursor=pointer]:
+                  - cell "Test Exercise 1765634257662" [ref=e143]:
+                    - img "Test Exercise 1765634257662" [ref=e144]
+                  - cell "Test Exercise 1765634257662" [ref=e145]
+                  - cell "10 kg" [ref=e146]
+                  - cell "12/13/2025" [ref=e147]
+                  - cell "2020" [ref=e148]
+                  - cell "0 planów" [ref=e149]
+                  - cell "Widoczne" [ref=e150]
+                  - cell "Otwórz menu" [ref=e151]:
+                    - button "Otwórz menu" [ref=e152]:
+                      - generic [ref=e153]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765634121042 Test Exercise 1765634121042 10 kg 12/13/2025 2020 0 planów Widoczne Otwórz menu" [ref=e154] [cursor=pointer]:
+                  - cell "Test Exercise 1765634121042" [ref=e155]:
+                    - img "Test Exercise 1765634121042" [ref=e156]
+                  - cell "Test Exercise 1765634121042" [ref=e157]
+                  - cell "10 kg" [ref=e158]
+                  - cell "12/13/2025" [ref=e159]
+                  - cell "2020" [ref=e160]
+                  - cell "0 planów" [ref=e161]
+                  - cell "Widoczne" [ref=e162]
+                  - cell "Otwórz menu" [ref=e163]:
+                    - button "Otwórz menu" [ref=e164]:
+                      - generic [ref=e165]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765634066994 Test Exercise 1765634066994 10 kg 12/13/2025 2020 0 planów Widoczne Otwórz menu" [ref=e166] [cursor=pointer]:
+                  - cell "Test Exercise 1765634066994" [ref=e167]:
+                    - img "Test Exercise 1765634066994" [ref=e168]
+                  - cell "Test Exercise 1765634066994" [ref=e169]
+                  - cell "10 kg" [ref=e170]
+                  - cell "12/13/2025" [ref=e171]
+                  - cell "2020" [ref=e172]
+                  - cell "0 planów" [ref=e173]
+                  - cell "Widoczne" [ref=e174]
+                  - cell "Otwórz menu" [ref=e175]:
+                    - button "Otwórz menu" [ref=e176]:
+                      - generic [ref=e177]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765633986198 Test Exercise 1765633986198 10 kg 12/13/2025 2020 0 planów Widoczne Otwórz menu" [ref=e178] [cursor=pointer]:
+                  - cell "Test Exercise 1765633986198" [ref=e179]:
+                    - img "Test Exercise 1765633986198" [ref=e180]
+                  - cell "Test Exercise 1765633986198" [ref=e181]
+                  - cell "10 kg" [ref=e182]
+                  - cell "12/13/2025" [ref=e183]
+                  - cell "2020" [ref=e184]
+                  - cell "0 planów" [ref=e185]
+                  - cell "Widoczne" [ref=e186]
+                  - cell "Otwórz menu" [ref=e187]:
+                    - button "Otwórz menu" [ref=e188]:
+                      - generic [ref=e189]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765633775062 Test Exercise 1765633775062 10 kg 12/13/2025 2020 0 planów Widoczne Otwórz menu" [ref=e190] [cursor=pointer]:
+                  - cell "Test Exercise 1765633775062" [ref=e191]:
+                    - img "Test Exercise 1765633775062" [ref=e192]
+                  - cell "Test Exercise 1765633775062" [ref=e193]
+                  - cell "10 kg" [ref=e194]
+                  - cell "12/13/2025" [ref=e195]
+                  - cell "2020" [ref=e196]
+                  - cell "0 planów" [ref=e197]
+                  - cell "Widoczne" [ref=e198]
+                  - cell "Otwórz menu" [ref=e199]:
+                    - button "Otwórz menu" [ref=e200]:
+                      - generic [ref=e201]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765633664976 Test Exercise 1765633664976 10 kg 12/13/2025 2020 1 planów Widoczne Otwórz menu" [ref=e202] [cursor=pointer]:
+                  - cell "Test Exercise 1765633664976" [ref=e203]:
+                    - img "Test Exercise 1765633664976" [ref=e204]
+                  - cell "Test Exercise 1765633664976" [ref=e205]
+                  - cell "10 kg" [ref=e206]
+                  - cell "12/13/2025" [ref=e207]
+                  - cell "2020" [ref=e208]
+                  - cell "1 planów" [ref=e209]
+                  - cell "Widoczne" [ref=e210]
+                  - cell "Otwórz menu" [ref=e211]:
+                    - button "Otwórz menu" [ref=e212]:
+                      - generic [ref=e213]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765633065361 Test Exercise 1765633065361 10 kg 12/13/2025 2020 2 planów Widoczne Otwórz menu" [ref=e214] [cursor=pointer]:
+                  - cell "Test Exercise 1765633065361" [ref=e215]:
+                    - img "Test Exercise 1765633065361" [ref=e216]
+                  - cell "Test Exercise 1765633065361" [ref=e217]
+                  - cell "10 kg" [ref=e218]
+                  - cell "12/13/2025" [ref=e219]
+                  - cell "2020" [ref=e220]
+                  - cell "2 planów" [ref=e221]
+                  - cell "Widoczne" [ref=e222]
+                  - cell "Otwórz menu" [ref=e223]:
+                    - button "Otwórz menu" [ref=e224]:
+                      - generic [ref=e225]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765632777342 Test Exercise 1765632777342 10 kg 12/13/2025 2020 1 planów Widoczne Otwórz menu" [ref=e226] [cursor=pointer]:
+                  - cell "Test Exercise 1765632777342" [ref=e227]:
+                    - img "Test Exercise 1765632777342" [ref=e228]
+                  - cell "Test Exercise 1765632777342" [ref=e229]
+                  - cell "10 kg" [ref=e230]
+                  - cell "12/13/2025" [ref=e231]
+                  - cell "2020" [ref=e232]
+                  - cell "1 planów" [ref=e233]
+                  - cell "Widoczne" [ref=e234]
+                  - cell "Otwórz menu" [ref=e235]:
+                    - button "Otwórz menu" [ref=e236]:
+                      - generic [ref=e237]: Otwórz menu
+                      - img
+                - row "asdddxxxx asdddxxxx 11 kg 12/12/2025 1111 4 planów Widoczne Otwórz menu" [ref=e238] [cursor=pointer]:
+                  - cell "asdddxxxx" [ref=e239]:
+                    - img "asdddxxxx" [ref=e240]
+                  - cell "asdddxxxx" [ref=e241]
+                  - cell "11 kg" [ref=e242]
+                  - cell "12/12/2025" [ref=e243]
+                  - cell "1111" [ref=e244]
+                  - cell "4 planów" [ref=e245]
+                  - cell "Widoczne" [ref=e246]
+                  - cell "Otwórz menu" [ref=e247]:
+                    - button "Otwórz menu" [ref=e248]:
+                      - generic [ref=e249]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765574658773 Test Exercise 1765574658773 10 kg 12/12/2025 2020 1 planów Widoczne Otwórz menu" [ref=e250] [cursor=pointer]:
+                  - cell "Test Exercise 1765574658773" [ref=e251]:
+                    - img "Test Exercise 1765574658773" [ref=e252]
+                  - cell "Test Exercise 1765574658773" [ref=e253]
+                  - cell "10 kg" [ref=e254]
+                  - cell "12/12/2025" [ref=e255]
+                  - cell "2020" [ref=e256]
+                  - cell "1 planów" [ref=e257]
+                  - cell "Widoczne" [ref=e258]
+                  - cell "Otwórz menu" [ref=e259]:
+                    - button "Otwórz menu" [ref=e260]:
+                      - generic [ref=e261]: Otwórz menu
+                      - img
+                - row "Test Exercise 1765574489099 Test Exercise 1765574489099 10 kg 12/12/2025 2020 2 planów Widoczne Otwórz menu" [ref=e262] [cursor=pointer]:
+                  - cell "Test Exercise 1765574489099" [ref=e263]:
+                    - img "Test Exercise 1765574489099" [ref=e264]
+                  - cell "Test Exercise 1765574489099" [ref=e265]
+                  - cell "10 kg" [ref=e266]
+                  - cell "12/12/2025" [ref=e267]
+                  - cell "2020" [ref=e268]
+                  - cell "2 planów" [ref=e269]
+                  - cell "Widoczne" [ref=e270]
+                  - cell "Otwórz menu" [ref=e271]:
+                    - button "Otwórz menu" [ref=e272]:
+                      - generic [ref=e273]: Otwórz menu
+                      - img
+    - region "Notifications alt+T"
+  - generic:
+    - region "Notifications alt+T"
+  - generic [ref=e276]:
+    - button "Menu" [ref=e277]:
+      - img [ref=e279]
+      - generic: Menu
+    - button "Inspect" [ref=e283]:
+      - img [ref=e285]
+      - generic: Inspect
+    - button "Audit" [ref=e287]:
+      - generic [ref=e288]:
+        - img [ref=e289]
+        - img [ref=e292]
+      - generic: Audit
+    - button "Settings" [ref=e295]:
+      - img [ref=e297]
+      - generic: Settings
+```

@@ -46,7 +46,10 @@ export const prerender = false;
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
     if (!locals.user || !locals.supabase) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Parse and validate query parameters
@@ -105,7 +108,10 @@ export const GET: APIRoute = async ({ request, locals }) => {
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     if (!locals.user || !locals.supabase) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Parse and validate request body

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { exerciseKeys } from "../queryKeys";
+import { parseErrorResponse } from "../../lib/api-helpers";
 import type { CreateExerciseCommand, ExerciseDto } from "../../interface";
 
 async function createExercise(command: CreateExerciseCommand): Promise<ExerciseDto> {
@@ -11,8 +12,8 @@ async function createExercise(command: CreateExerciseCommand): Promise<ExerciseD
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Failed to create exercise");
+    const errorMessage = await parseErrorResponse(response);
+    throw new Error(errorMessage);
   }
 
   return response.json();

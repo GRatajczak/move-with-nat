@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { useExercisesList } from "@/hooks/exercises/useExercisesList";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ExerciseQuickPreviewModal } from "../../exercises/ExerciseQuickPreviewModal";
@@ -22,14 +22,20 @@ export const AddExerciseModal = ({ isOpen, onClose, onConfirm, excludeExerciseId
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [previewExercise, setPreviewExercise] = useState<ExerciseDto | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { exercises, isLoading } = useExercisesList({
+  const { exercises, pagination, isLoading } = useExercisesList({
     search: searchQuery,
-    page: 1,
-    limit: 50,
+    page: currentPage,
+    limit: 10,
   });
 
   const availableExercises = exercises?.filter((ex) => !excludeExerciseIds.includes(ex.id)) || [];
+
+  // Reset to first page when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const handleToggle = (exerciseId: string) => {
     const newSelected = new Set(selectedIds);
@@ -46,18 +52,24 @@ export const AddExerciseModal = ({ isOpen, onClose, onConfirm, excludeExerciseId
     onConfirm(selected);
     setSelectedIds(new Set());
     setSearchQuery("");
+    setCurrentPage(1);
   };
 
   const handleClose = () => {
     setSelectedIds(new Set());
     setSearchQuery("");
+    setCurrentPage(1);
     onClose();
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col">
+        <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col overflow-hidden">
           <DialogHeader>
             <DialogTitle>Dodaj ćwiczenia</DialogTitle>
             <DialogDescription>Wybierz ćwiczenia z biblioteki, które chcesz dodać do planu</DialogDescription>
@@ -78,7 +90,7 @@ export const AddExerciseModal = ({ isOpen, onClose, onConfirm, excludeExerciseId
             </div>
 
             {/* Exercise list */}
-            <ScrollArea className="flex-1 pr-4">
+            <ScrollArea className="pr-4 h-[calc(80vh-340px)]">
               {isLoading ? (
                 <ExerciseListSkeleton />
               ) : availableExercises.length === 0 ? (
@@ -135,6 +147,37 @@ export const AddExerciseModal = ({ isOpen, onClose, onConfirm, excludeExerciseId
                 </div>
               )}
             </ScrollArea>
+
+            {/* Pagination */}
+            {pagination && pagination.total > pagination.limit && (
+              <div className="flex items-center justify-center gap-2 py-2 border-t">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Poprzednia
+                </Button>
+
+                <div className="flex items-center gap-1 text-sm font-medium px-2">
+                  Strona {currentPage} z {Math.ceil(pagination.total / pagination.limit)}
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage >= Math.ceil(pagination.total / pagination.limit)}
+                >
+                  Następna
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            )}
           </div>
 
           <DialogFooter className="flex items-center justify-between sm:justify-between">

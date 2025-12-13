@@ -50,6 +50,22 @@ test.describe("Login Flow", () => {
     await expect(dashboardPage.heading).toBeVisible({ timeout: 15000 });
   });
 
+  test("should login successfully as client", async ({ page }) => {
+    // Arrange
+    const dashboardPage = new DashboardPage(page);
+
+    // Act
+    await loginPage.login(testUsers.client.email, testUsers.client.password);
+
+    // Assert
+    await loginPage.waitForSuccessfulLogin();
+    await expect(page).not.toHaveURL(/\/auth\/login/);
+    await expect
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("user") || "{}").email), { timeout: 10000 })
+      .toBe(testUsers.client.email);
+    await expect(dashboardPage.heading).toBeVisible({ timeout: 15000 });
+  });
+
   test("should show error message for invalid credentials", async () => {
     // Act
     await loginPage.login(invalidCredentials.email, invalidCredentials.password);

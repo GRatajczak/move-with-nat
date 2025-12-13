@@ -156,7 +156,9 @@ export const AdminUsersContent = () => {
           onDelete={handleDeleteClick}
         />
       )}
-      {data?.meta && <Pagination meta={data.meta} onPageChange={(page) => handleFiltersChange({ page })} />}
+      {data?.meta && (
+        <Pagination meta={data.meta} onPageChange={(page) => handleFiltersChange({ page })} itemLabel="użytkowników" />
+      )}
       <DeleteUserModal
         user={deleteModalUser}
         isOpen={!!deleteModalUser}

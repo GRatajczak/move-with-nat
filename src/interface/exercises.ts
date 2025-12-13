@@ -143,6 +143,7 @@ export interface VimeoPreviewWidgetProps {
 export interface PaginationProps {
   meta: PaginationMetaDto;
   onPageChange: (page: number) => void;
+  itemLabel?: string;
 }
 
 export interface ExercisesTableProps {

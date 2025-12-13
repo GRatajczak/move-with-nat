@@ -13,11 +13,16 @@ async function createPlan(data: CreatePlanCommand): Promise<PlanDto> {
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    if (response.status === 400) {
-      throw new ValidationError(error.details || { message: error.error });
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const error = await response.json();
+      if (response.status === 400 && error.details) {
+        throw new ValidationError(error.details);
+      }
+      throw new Error(error.message || error.error || "Failed to create plan");
     }
-    throw new Error("Failed to create plan");
+    const text = await response.text();
+    throw new Error(text || "Failed to create plan");
   }
 
   return response.json();

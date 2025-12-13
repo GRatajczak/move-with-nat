@@ -56,7 +56,7 @@ export const PlansListContent = ({
     visible: visible !== null ? !visible : undefined, // Convert isHidden to visible
     sortBy: sortBy as "created_at",
     page,
-    limit: 20,
+    limit: 10,
   };
 
   // Fetch data
@@ -126,8 +126,8 @@ export const PlansListContent = ({
   const handleToggleVisibility = async (planId: string, isHidden: boolean) => {
     try {
       await toggleVisibility({ planId, isHidden });
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Error is handled by React Query
     }
   };
 
@@ -142,8 +142,8 @@ export const PlansListContent = ({
     try {
       await duplicatePlan({ planId: duplicateModalPlan.id, data });
       setDuplicateModalPlan(null);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Error is handled by React Query
     }
   };
 
@@ -156,8 +156,8 @@ export const PlansListContent = ({
     try {
       await deletePlan({ planId, hard });
       setDeleteModalPlan(null);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Error is handled by React Query
     }
   };
 
@@ -230,7 +230,7 @@ export const PlansListContent = ({
       )}
 
       {/* Pagination */}
-      {data && data.meta && <Pagination meta={data.meta} onPageChange={setPage} />}
+      {data && data.meta && <Pagination meta={data.meta} onPageChange={setPage} itemLabel="planów treningowych" />}
 
       {/* Modals */}
       <DeletePlanConfirmationModal

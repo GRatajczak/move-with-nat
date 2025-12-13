@@ -62,7 +62,7 @@ export const CreateExerciseContent = () => {
       </div>
 
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent data-testid="exercise-success-modal" className="sm:max-w-md">
           <DialogHeader>
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -75,7 +75,7 @@ export const CreateExerciseContent = () => {
             </div>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
-            <Button onClick={handleGoBack} className="ml-auto w-full sm:w-auto">
+            <Button data-testid="return-to-exercise-list" onClick={handleGoBack} className="ml-auto w-full sm:w-auto">
               Wróć do listy ćwiczeń
             </Button>
           </DialogFooter>

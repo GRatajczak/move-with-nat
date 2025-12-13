@@ -103,3 +103,17 @@ export function requireAdmin(user: NonNullable<App.Locals["user"]>): void {
     throw new ValidationError({ role: "Administrator access required" });
   }
 }
+
+/**
+ * Safely parses API error response
+ * Handles both JSON and plain text responses
+ */
+export async function parseErrorResponse(response: Response): Promise<string> {
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const error = await response.json();
+    return error.message || error.error || "Request failed";
+  }
+  const text = await response.text();
+  return text || "Request failed";
+}

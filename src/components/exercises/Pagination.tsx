@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { PaginationProps } from "@/interface";
 
-export const Pagination = ({ meta, onPageChange }: PaginationProps) => {
+export const Pagination = ({ meta, onPageChange, itemLabel = "elementów" }: PaginationProps) => {
   const { page, limit, total } = meta;
   const totalPages = Math.ceil(total / limit);
 
@@ -14,7 +14,7 @@ export const Pagination = ({ meta, onPageChange }: PaginationProps) => {
   return (
     <div className="flex items-center justify-between py-4">
       <div className="text-sm text-muted-foreground">
-        Wyświetlono {startItem}-{endItem} z {total} ćwiczeń
+        Wyświetlono {startItem}-{endItem} z {total} {itemLabel}
       </div>
 
       <div className="flex items-center gap-2">

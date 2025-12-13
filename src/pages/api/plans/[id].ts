@@ -1,9 +1,9 @@
 // src/pages/api/plans/[id].ts
 
 import type { APIRoute } from "astro";
-import { getPlan, updatePlan, deletePlan, UpdatePlanCommandSchema } from "../../../services/plans.service";
+import { getPlan, updatePlan, deletePlan } from "../../../services/plans.service";
 import { handleAPIError } from "../../../lib/api-helpers";
-import { parseQueryParams } from "../../../lib/validation";
+import { parseQueryParams, UpdatePlanCommandSchema } from "../../../lib/validation";
 import { z } from "zod";
 
 export const prerender = false;
@@ -41,11 +41,13 @@ export const prerender = false;
  */
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
-    // AUTHENTICATION DISABLED FOR TESTING
     // Check authentication
-    // if (!locals.user || !locals.supabase) {
-    //   throw new UnauthorizedError("Authentication required");
-    // }
+    if (!locals.user || !locals.supabase) {
+      return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const planId = params.id;
 
@@ -57,9 +59,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
     }
 
     // Get plan
-    // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
-    const result = await getPlan(locals.supabase, planId, mockUser);
+    const result = await getPlan(locals.supabase, planId, locals.user);
 
     return new Response(JSON.stringify(result), {
       status: 200,
@@ -112,11 +112,13 @@ export const GET: APIRoute = async ({ params, locals }) => {
  */
 export const PUT: APIRoute = async ({ params, request, locals }) => {
   try {
-    // AUTHENTICATION DISABLED FOR TESTING
     // Check authentication
-    // if (!locals.user || !locals.supabase) {
-    //   throw new UnauthorizedError("Authentication required");
-    // }
+    if (!locals.user || !locals.supabase) {
+      return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const planId = params.id;
 
@@ -132,9 +134,7 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
     const validatedCommand = UpdatePlanCommandSchema.parse(body);
 
     // Update plan
-    // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
-    const result = await updatePlan(locals.supabase, planId, { ...validatedCommand, id: planId }, mockUser);
+    const result = await updatePlan(locals.supabase, planId, { ...validatedCommand, id: planId }, locals.user);
 
     return new Response(JSON.stringify(result), {
       status: 200,
@@ -164,11 +164,13 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
  */
 export const DELETE: APIRoute = async ({ params, request, locals }) => {
   try {
-    // AUTHENTICATION DISABLED FOR TESTING
     // Check authentication
-    // if (!locals.user || !locals.supabase) {
-    //   throw new UnauthorizedError("Authentication required");
-    // }
+    if (!locals.user || !locals.supabase) {
+      return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const planId = params.id;
 
@@ -188,9 +190,7 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
     const { hard } = hardDeleteSchema.parse(rawQuery);
 
     // Delete plan
-    // Using mock user for testing
-    const mockUser = { id: "test-id", role: "admin" as const, email: "test@example.com" };
-    await deletePlan(locals.supabase, planId, mockUser, hard);
+    await deletePlan(locals.supabase, planId, locals.user, hard);
 
     return new Response(null, {
       status: 204,
@@ -199,4 +199,3 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
     return handleAPIError(error);
   }
 };
-

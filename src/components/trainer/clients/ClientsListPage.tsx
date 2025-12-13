@@ -194,7 +194,7 @@ const ClientsListContent = () => {
       )}
 
       {/* Pagination */}
-      {data && data.meta && <Pagination meta={data.meta} onPageChange={setPage} />}
+      {data && data.meta && <Pagination meta={data.meta} onPageChange={setPage} itemLabel="klientów" />}
     </div>
   );
 };

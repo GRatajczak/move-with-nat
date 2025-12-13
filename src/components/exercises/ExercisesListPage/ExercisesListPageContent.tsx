@@ -102,7 +102,7 @@ export const ExercisesListContent = () => {
         />
       )}
 
-      {pagination && <Pagination meta={pagination} onPageChange={setPage} />}
+      {pagination && <Pagination meta={pagination} onPageChange={setPage} itemLabel="ćwiczeń" />}
 
       {/* Modals */}
       <ExerciseQuickPreviewModal

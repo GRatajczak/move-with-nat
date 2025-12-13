@@ -18,7 +18,7 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/plans", method: "GET", role: "trainer" },
   { path: "/api/plans", method: "POST", role: "trainer" },
   { path: "/api/plans", method: "PUT", role: "trainer" },
-  { path: "/api/plans", method: "DELETE", role: "admin" },
+  { path: "/api/plans", method: "DELETE", role: "trainer" },
   { path: "/api/reasons", method: "GET", role: "trainer" },
   { path: "/api/reasons", method: "POST", role: "admin" },
   { path: "/api/reasons", method: "PUT", role: "admin" },
@@ -54,7 +54,10 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
   if (!isUserLoggedIn) {
     if (!PUBLIC_PATHS.includes(url.pathname)) {
       if (url.pathname.startsWith("/api")) {
-        return new Response("Unauthorized", { status: 401 });
+        return new Response(JSON.stringify({ error: "Authentication required", code: "UNAUTHORIZED" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        });
       }
       return redirect("/auth/login");
     }

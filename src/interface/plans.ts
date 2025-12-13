@@ -94,7 +94,7 @@ export interface UpdateExerciseInPlanCommand {
 /** Update plan command **/
 export interface UpdatePlanCommand extends Partial<Omit<CreatePlanCommand, "exercises">> {
   id: string;
-  exercises?: PlanExerciseDto[];
+  exercises?: Exercise[];
 }
 
 /** Frontend ViewModel Types **/

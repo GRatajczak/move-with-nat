@@ -14,7 +14,9 @@ export class DashboardPage {
   constructor(page: Page) {
     this.page = page;
 
-    this.heading = page.getByTestId("admin-dashboard-heading").or(page.getByRole("heading", { name: /dashboard/i }));
+    this.heading = page
+      .getByTestId("admin-dashboard-heading")
+      .or(page.getByRole("heading", { name: /dashboard|moje plany/i }));
     this.userMenu = page.getByTestId("user-menu-trigger");
     this.logoutButton = page.getByTestId("user-menu-logout");
     this.navigationMenu = page.getByRole("navigation");
