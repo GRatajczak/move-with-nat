@@ -74,8 +74,8 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your email below to login to your account.</CardDescription>
+          <CardTitle className="text-2xl">Zaloguj się</CardTitle>
+          <CardDescription>Wprowadź swój adres email i hasło, aby zalogować się do swojego konta.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} data-testid="login-form" data-hydrated={hydrated} noValidate>
