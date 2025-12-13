@@ -137,12 +137,18 @@ id = "your-production-kv-namespace-id"
 
 In your Cloudflare Pages dashboard:
 
-1. **Build command**: `npm run build`
-2. **Build output directory**: `dist`
-3. **Environment variables**: Add all required environment variables (Supabase, SendGrid, Vimeo)
-4. **KV Bindings**: Bind the SESSION namespace
+1. **Framework preset**: `Astro`
+2. **Build command**: `npm run build`
+3. **Build output directory**: `dist`
+4. **Deploy command**: Leave **empty** (Cloudflare Pages auto-deploys after build)
+5. **Environment variables**: Add all required environment variables (Supabase, SendGrid, Vimeo)
+6. **KV Bindings**: Bind the SESSION namespace (Settings → Functions → KV namespace bindings)
 
-### Manual Deployment
+**Important**: Do NOT set a deploy command in Cloudflare Pages settings. The platform automatically deploys the built files from the `dist` directory.
+
+### Manual Deployment (Local Testing Only)
+
+For local testing of deployments:
 
 ```bash
 # Build the project
@@ -151,6 +157,8 @@ npm run build
 # Deploy to Cloudflare Pages
 npx wrangler pages deploy dist --project-name=move-with-nat
 ```
+
+Note: Manual deployments via CLI don't use Cloudflare Dashboard settings. Configure bindings and environment variables in `wrangler.toml` for local deployments.
 
 ### GitHub Actions Deployment
 
