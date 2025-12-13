@@ -77,7 +77,7 @@
         {
           "title": "Client Plan View",
           "file": "tests/client-plan-view.spec.ts",
-          "line": 13,
+          "line": 14,
           "column": 6,
           "specs": [
             {
@@ -96,19 +96,19 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3791,
+                      "duration": 2842,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "✓ Created test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
+                          "text": "✓ Created test plan: c381d279-35e7-4de0-b577-442afe932c7c\n"
                         },
                         {
-                          "text": "✓ Using test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
+                          "text": "✓ Using test plan: c381d279-35e7-4de0-b577-442afe932c7c\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.282Z",
+                      "startTime": "2025-12-13T17:05:37.449Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -118,7 +118,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-d464c4fedb11df1ac30e",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 51,
+              "line": 55,
               "column": 3
             },
             {
@@ -137,19 +137,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3719,
+                      "duration": 3170,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Cleaning up test plan: 4c52f473-95ea-473d-9612-d2c25bd55bd5\n"
-                        },
-                        {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:43.847Z",
+                      "startTime": "2025-12-13T17:05:42.379Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -159,7 +152,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-d536d3a852ecf3f6294a",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 59,
+              "line": 63,
               "column": 3
             },
             {
@@ -175,22 +168,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5138,
+                      "duration": 3755,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Created test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
-                        },
-                        {
-                          "text": "✓ Using test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.259Z",
+                      "startTime": "2025-12-13T17:05:45.567Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -200,7 +186,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-566ff16e284180a0aa45",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 74,
+              "line": 78,
               "column": 3
             },
             {
@@ -216,22 +202,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4447,
+                      "duration": 4574,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Cleaning up test plan: 688b6341-8838-4b19-8615-ee5ed4aaf853\n"
-                        },
-                        {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:45.221Z",
+                      "startTime": "2025-12-13T17:05:49.354Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -241,7 +220,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-d7a0832e9e7e28f22c22",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 99,
+              "line": 103,
               "column": 3
             },
             {
@@ -257,22 +236,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4484,
+                      "duration": 3084,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Created test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
-                        },
-                        {
-                          "text": "✓ Using test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.282Z",
+                      "startTime": "2025-12-13T17:05:53.943Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -282,7 +254,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-a005fbf97d31aca742b7",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 112,
+              "line": 116,
               "column": 3
             },
             {
@@ -298,22 +270,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3482,
+                      "duration": 3002,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Cleaning up test plan: 7b6bd2f3-d295-4371-adce-5d22bbc8c6f5\n"
-                        },
-                        {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:44.537Z",
+                      "startTime": "2025-12-13T17:05:57.036Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -323,7 +288,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-bc1710fc2265248af3a3",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 137,
+              "line": 141,
               "column": 3
             },
             {
@@ -339,22 +304,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3938,
+                      "duration": 1996,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Created test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
-                        },
-                        {
-                          "text": "✓ Using test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.254Z",
+                      "startTime": "2025-12-13T17:06:00.046Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -364,7 +322,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-f2c4a5c85fe11a266023",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 151,
+              "line": 155,
               "column": 3
             },
             {
@@ -380,14 +338,14 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4162,
+                      "duration": 3285,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "✓ Cleaning up test plan: 6c0dc540-0346-45dc-813b-ef30b3ab9a35\n"
+                          "text": "✓ Cleaning up test plan: c381d279-35e7-4de0-b577-442afe932c7c\n"
                         },
                         {
                           "text": "✓ Cleaned up 1 test plan(s)\n"
@@ -395,7 +353,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:43.972Z",
+                      "startTime": "2025-12-13T17:06:02.064Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -405,54 +363,7 @@
               ],
               "id": "8aa793801bc4b9618f1c-77684c29258f74789f04",
               "file": "tests/client-plan-view.spec.ts",
-              "line": 161,
-              "column": 3
-            },
-            {
-              "title": "should display all plan information consistently",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 4757,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Created test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
-                        },
-                        {
-                          "text": "✓ Using test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
-                        },
-                        {
-                          "text": "✓ Cleaning up test plan: 42e542f9-2fe7-4eb4-8439-dba35ddefcb6\n"
-                        },
-                        {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.247Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8aa793801bc4b9618f1c-61131394d2d28e8ab6e5",
-              "file": "tests/client-plan-view.spec.ts",
-              "line": 177,
+              "line": 165,
               "column": 3
             }
           ]
@@ -473,7 +384,151 @@
           "column": 6,
           "specs": [
             {
-              "title": "trainer can create a new plan with exercises",
+              "title": "should display create plan form correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7201,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:37.758Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-801408c917533105da64",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "should create a basic plan with required fields only",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 10299,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:37.761Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-b340ecda3b047768cbb4",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "should create a complete plan with all fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10631,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:37.450Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-3768c03331175617002e",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 73,
+              "column": 3
+            },
+            {
+              "title": "should validate required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 6248,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:37.536Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-ed3fd0edb73154ddd4f5",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "should show validation error when name is missing",
               "ok": true,
               "tags": [],
               "tests": [
@@ -488,7 +543,41 @@
                       "workerIndex": 5,
                       "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 10971,
+                      "duration": 8157,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:37.478Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-6f69d27bb83ee5911120",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 104,
+              "column": 3
+            },
+            {
+              "title": "should create plan with visibility toggle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 7755,
                       "errors": [],
                       "stdout": [
                         {
@@ -497,7 +586,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:38.267Z",
+                      "startTime": "2025-12-13T17:05:44.538Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -505,9 +594,115 @@
                   "status": "expected"
                 }
               ],
-              "id": "bf6670ecc9a3dc87f6dc-27a010fe9e46c47b3251",
+              "id": "bf6670ecc9a3dc87f6dc-34f4d4af53828a3e13c5",
               "file": "tests/create-plan-trainer.spec.ts",
-              "line": 14,
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "should navigate back to plans list using back button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5145,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:45.507Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-fef2c88a312d16d12edd",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 133,
+              "column": 3
+            },
+            {
+              "title": "should cancel plan creation and return to list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 5180,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:46.460Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-6066a3803a1b71c83aee",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 142,
+              "column": 3
+            },
+            {
+              "title": "should handle long description",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 6749,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [
+                        {
+                          "text": "Failed to query plans for tracking after retries: {\n  code: \u001b[32m'42704'\u001b[39m,\n  details: \u001b[1mnull\u001b[22m,\n  hint: \u001b[1mnull\u001b[22m,\n  message: \u001b[32m'unrecognized configuration parameter \"request.jwt.claims.sub\"'\u001b[39m\n}\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2025-12-13T17:05:48.613Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bf6670ecc9a3dc87f6dc-b45b4d33ee7f3e0877e9",
+              "file": "tests/create-plan-trainer.spec.ts",
+              "line": 154,
               "column": 3
             }
           ]
@@ -540,15 +735,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 618,
+                      "duration": 308,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:45.280Z",
+                      "startTime": "2025-12-13T17:05:48.960Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -574,15 +769,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 1340,
+                      "duration": 1461,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:45.913Z",
+                      "startTime": "2025-12-13T17:05:49.276Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -608,15 +803,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 1438,
+                      "duration": 1375,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:47.268Z",
+                      "startTime": "2025-12-13T17:05:50.686Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -642,15 +837,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 1567,
+                      "duration": 1414,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:48.184Z",
+                      "startTime": "2025-12-13T17:05:50.745Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -676,15 +871,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 1066,
+                      "duration": 471,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:48.615Z",
+                      "startTime": "2025-12-13T17:05:51.663Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -710,15 +905,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 997,
+                      "duration": 564,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:48.684Z",
+                      "startTime": "2025-12-13T17:05:52.076Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -744,15 +939,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 994,
+                      "duration": 589,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:48.715Z",
+                      "startTime": "2025-12-13T17:05:52.141Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -781,12 +976,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 405,
+                      "duration": 533,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:49.693Z",
+                      "startTime": "2025-12-13T17:05:52.166Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -820,15 +1015,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 1671,
+                      "duration": 1841,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T16:25:49.699Z",
+                      "startTime": "2025-12-13T17:05:52.341Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -848,9 +1043,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-13T16:25:37.614Z",
-    "duration": 13794.048,
-    "expected": 19,
+    "startTime": "2025-12-13T17:05:36.102Z",
+    "duration": 29789.715,
+    "expected": 26,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
