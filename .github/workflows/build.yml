@@ -1,7 +1,8 @@
-name: Build and Deploy to Cloudflare Pages
+name: Build and Test
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [master, dev]
 
 jobs:
   lint:
@@ -9,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: ".nvmrc"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -30,13 +31,13 @@ jobs:
     needs: lint
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: ".nvmrc"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -56,45 +57,60 @@ jobs:
           name: unit-tests
           fail_ci_if_error: false
 
-  deploy:
-    name: Deploy to Cloudflare Pages
-    needs: [lint, unit-tests]
+  e2e-tests:
+    name: E2E Tests
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-    environment:
-      name: production
-      url: ${{ steps.deployment.outputs.url }}
+    needs: lint
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: ".nvmrc"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Astro site
+      - name: Install Playwright Chromium browser
+        run: npx playwright install chromium --with-deps
+
+      - name: Run E2E tests
+        run: npm run test:e2e
         env:
+          CI: true
+          BASE_URL: http://localhost:3000
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          E2E_USERNAME_ID_ADMIN: ${{ secrets.E2E_USERNAME_ID_ADMIN }}
+          E2E_USERNAME_ADMIN: ${{ secrets.E2E_USERNAME_ADMIN }}
+          E2E_USERNAME_ID_TRAINER: ${{ secrets.E2E_USERNAME_ID_TRAINER }}
+          E2E_USERNAME_TRAINER: ${{ secrets.E2E_USERNAME_TRAINER }}
+          E2E_USERNAME_ID_CLIENT: ${{ secrets.E2E_USERNAME_ID_CLIENT }}
+          E2E_USERNAME_CLIENT: ${{ secrets.E2E_USERNAME_CLIENT }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
           SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
           SENDGRID_TEMPLATE_ACTIVATION: ${{ secrets.SENDGRID_TEMPLATE_ACTIVATION }}
-          SENDGRID_TEMPLATE_PASSWORD_RESET: ${{ secrets.SENDGRID_TEMPLATE_PASSWORD_RESET }}
-        run: npm run build
 
-      - name: Deploy to Cloudflare Pages
-        id: deployment
-        uses: cloudflare/wrangler-action@v3
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v6
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=move-with-nat
-          packageManager: npm
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test videos
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-videos
+          path: test-results/
+          retention-days: 7
