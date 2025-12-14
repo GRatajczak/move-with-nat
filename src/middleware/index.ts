@@ -24,7 +24,6 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/exercises", method: "GET", role: "trainer" },
   { path: "/api/exercises", method: "POST", role: "trainer" },
   { path: "/api/exercises", method: "PUT", role: "trainer" },
-  { path: "/api/plans", method: "GET", role: "trainer" },
   { path: "/api/plans", method: "POST", role: "trainer" },
   { path: "/api/plans", method: "PUT", role: "trainer" },
   { path: "/api/plans", method: "DELETE", role: "trainer" },
@@ -35,7 +34,6 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
 
   // Client permissions
   { path: "/api/plans", method: "GET", role: "client" },
-  { path: "/api/plans", method: "POST", role: "client" },
   { path: "/api/users", method: "GET", role: "client" },
   { path: "/api/users", method: "PUT", role: "client" },
 ];
