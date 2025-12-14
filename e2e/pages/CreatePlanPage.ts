@@ -34,7 +34,7 @@ export class CreatePlanPage {
     this.cancelButton = page.getByRole("button", { name: /anuluj/i });
     this.successDialog = page.getByTestId("plan-success-modal");
     this.returnToListButton = page.getByTestId("return-to-plans-list");
-    this.backButton = page.getByRole("button", { name: /powrót do listy/i });
+    this.backButton = page.getByRole("link", { name: /powrót do listy/i });
     this.exercisesList = page.getByTestId("plan-exercises-list");
     this.exerciseItems = page.getByTestId("plan-exercise-item");
     // Hidden switch - use role and accessible name

@@ -11,7 +11,7 @@ import { DeletePlanConfirmationModal } from "../../edit/DeletePlanConfirmationMo
 import { DuplicatePlanModal } from "../../edit/DuplicatePlanModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { PlanViewModel, ListPlansQuery, DuplicatePlanData } from "@/interface/plans";
 import type { PaginatedResponse } from "@/interface/common";
@@ -111,10 +111,6 @@ export const PlansListContent = ({
     setPage(1);
   };
 
-  const handleCreateClick = () => {
-    window.location.href = `${baseUrl}/plans/new`;
-  };
-
   const handleRowClick = (planId: string) => {
     window.location.href = `${baseUrl}/plans/${planId}`;
   };
@@ -184,10 +180,14 @@ export const PlansListContent = ({
             <ArrowLeft className="h-4 w-4" />
             Dashboard
           </a>
-          <Button onClick={handleCreateClick} className="gap-2" data-testid="create-plan-button">
+          <a
+            href={`${baseUrl}/plans/new`}
+            className={buttonVariants({ className: "gap-2" })}
+            data-testid="create-plan-button"
+          >
             <Plus className="h-4 w-4" />
             Stwórz plan
-          </Button>
+          </a>
         </div>
       </div>
 

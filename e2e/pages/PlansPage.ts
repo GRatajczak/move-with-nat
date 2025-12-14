@@ -8,6 +8,7 @@ export class PlansPage {
   constructor(page: Page) {
     this.page = page;
     this.heading = page.getByRole("heading", { name: /plany treningowe/i });
+    // Create plan button is now a link (styled as button)
     this.createPlanButton = page.getByTestId("create-plan-button");
   }
 
@@ -19,6 +20,7 @@ export class PlansPage {
     await this.page.waitForLoadState("networkidle");
     await this.createPlanButton.waitFor({ state: "visible" });
     await this.createPlanButton.click();
+    // Wait for navigation - link click should trigger proper navigation
     await this.page.waitForURL(/\/trainer\/plans\/new/, { timeout: 15000 });
   }
 

@@ -13,58 +13,10 @@ export interface TeardownTracker {
 }
 
 /**
- * Cache for authenticated session (per worker)
- * Service role key has full access, but we cache session to avoid rate limits
+ * No authentication needed for teardown operations
+ * The Supabase client is already created with service role key which has full database access.
+ * Previous authentication attempts were causing failures and are unnecessary.
  */
-let isAuthenticated = false;
-
-/**
- * Authenticate the Supabase client as admin for teardown operations
- * Note: Service role key already has full database access, but we authenticate
- * only once per worker to avoid rate limiting issues.
- */
-const authenticateClient = async (client: SupabaseTestClient): Promise<void> => {
-  // If already authenticated in this worker, skip
-  if (isAuthenticated) {
-    return;
-  }
-
-  const adminEmail = process.env.E2E_USERNAME_ADMIN;
-  const password = process.env.E2E_PASSWORD;
-
-  if (!adminEmail || !password) {
-    console.warn("Missing E2E_USERNAME_ADMIN or E2E_PASSWORD - teardown may fail");
-    return;
-  }
-
-  try {
-    const { error: signInError } = await client.auth.signInWithPassword({
-      email: adminEmail,
-      password: password,
-    });
-
-    if (signInError) {
-      // If rate limited, log warning but don't fail (service role key has access anyway)
-      if (signInError.status === 429) {
-        console.warn("Rate limited during teardown auth - continuing with service role key");
-        isAuthenticated = true;
-        return;
-      }
-      console.error("Failed to authenticate for teardown:", signInError);
-      throw signInError;
-    }
-
-    isAuthenticated = true;
-  } catch (error) {
-    // If error is rate limit, continue anyway (service role key has access)
-    if (error && typeof error === "object" && "status" in error && error.status === 429) {
-      console.warn("Rate limited during teardown auth - continuing with service role key");
-      isAuthenticated = true;
-      return;
-    }
-    throw error;
-  }
-};
 
 /**
  * Create a new teardown tracker
@@ -114,9 +66,6 @@ export const cleanupPlans = async (client: SupabaseTestClient, tracker: Teardown
     return;
   }
 
-  // Service role key has full access, but we still auth once per worker to maintain compatibility
-  await authenticateClient(client);
-
   const planIds = Array.from(tracker.planIds);
 
   try {
@@ -160,9 +109,6 @@ export const cleanupExercises = async (client: SupabaseTestClient, tracker: Tear
   if (tracker.exerciseIds.size === 0) {
     return;
   }
-
-  // Service role key has full access, but we still auth once per worker to maintain compatibility
-  await authenticateClient(client);
 
   const exerciseIds = Array.from(tracker.exerciseIds);
 
@@ -223,9 +169,6 @@ export const trackPlansByName = async (
   tracker: TeardownTracker,
   namePattern: string
 ): Promise<void> => {
-  // Service role key has full access, but we still auth once per worker to maintain compatibility
-  await authenticateClient(client);
-
   try {
     const { data, error } = await retryWithBackoff(async () => {
       const result = await client.from("plans").select("id").like("name", namePattern);
@@ -258,9 +201,6 @@ export const trackPlansAfterTimestamp = async (
   tracker: TeardownTracker,
   afterTimestamp: string
 ): Promise<void> => {
-  // Service role key has full access, but we still auth once per worker to maintain compatibility
-  await authenticateClient(client);
-
   try {
     const { data, error } = await retryWithBackoff(async () => {
       const result = await client.from("plans").select("id").gt("created_at", afterTimestamp);
