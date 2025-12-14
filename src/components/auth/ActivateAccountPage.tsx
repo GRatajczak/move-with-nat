@@ -13,6 +13,7 @@ const ActivateAccountPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [tokenPurpose, setTokenPurpose] = useState<TokenPurpose>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     // Decode token to determine its purpose (client-side display only)
@@ -66,9 +67,10 @@ const ActivateAccountPage = () => {
             ? "Hasło zostało zresetowane pomyślnie!"
             : "Konto zostało aktywowane pomyślnie!";
         toast.success(data.message || successMessage);
+        setIsSuccess(true);
         setTimeout(() => {
-          window.location.href = "/login";
-        }, 3000);
+          window.location.href = "/auth/login";
+        }, 1000);
       } else {
         toast.error(data.error || "Nie udało się przetworzyć żądania");
       }
@@ -123,7 +125,7 @@ const ActivateAccountPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  disabled={isLoading}
+                  disabled={isLoading || isSuccess}
                   placeholder="Min. 8 znaków, duże, małe, cyfra, znak specjalny"
                 />
               </div>
@@ -135,12 +137,18 @@ const ActivateAccountPage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  disabled={isLoading}
+                  disabled={isLoading || isSuccess}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {getButtonText()}
-              </Button>
+              {!isSuccess ? (
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {getButtonText()}
+                </Button>
+              ) : (
+                <div className="text-center text-sm text-muted-foreground">
+                  Zaraz zostaniesz przeniesiony na stronę logowania...
+                </div>
+              )}
             </div>
           </form>
         </CardContent>
