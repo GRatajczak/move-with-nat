@@ -1,6 +1,5 @@
-import React from "react";
 import { useClient } from "@/hooks/clients/useClient";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,14 +9,6 @@ import { QueryProvider } from "@/components/QueryProvider";
 
 const ClientDetailContent = ({ clientId }: { clientId: string }) => {
   const { data: client, isLoading, error } = useClient(clientId);
-
-  const handleEdit = () => {
-    window.location.href = `/trainer/clients/${clientId}/edit`;
-  };
-
-  const handleBack = () => {
-    window.location.href = "/trainer/clients";
-  };
 
   if (isLoading) {
     return <DetailSkeleton />;
@@ -30,9 +21,9 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
           Nie udało się załadować podopiecznego:{" "}
           {error ? (error instanceof Error ? error.message : "Nieznany błąd") : "Nie znaleziono"}
         </p>
-        <Button variant="link" onClick={handleBack} className="pl-0 mt-2">
+        <a href="/trainer/clients" className={buttonVariants({ variant: "link", className: "pl-0 mt-2" })}>
           Wróć do listy
-        </Button>
+        </a>
       </div>
     );
   }
@@ -75,9 +66,9 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 md:px-0 px-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={handleBack}>
+          <a href="/trainer/clients" className={buttonVariants({ variant: "ghost", size: "icon" })}>
             <ArrowLeft className="h-5 w-5" />
-          </Button>
+          </a>
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               <AvatarFallback className="text-lg">{getInitials()}</AvatarFallback>
@@ -99,10 +90,13 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleEdit}>
+          <a
+            href={`/trainer/clients/${clientId}/edit`}
+            className={buttonVariants({ variant: "outline", className: "gap-2" })}
+          >
             <Pencil className="mr-2 h-4 w-4" />
             Edytuj
-          </Button>
+          </a>
         </div>
       </div>
 
@@ -207,15 +201,13 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
                     </p>
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => (window.location.href = `/trainer/plans/${client.lastActivePlan?.id}`)}
-                  className="gap-2"
+                <a
+                  href={`/trainer/plans/${client.lastActivePlan?.id}`}
+                  className={buttonVariants({ variant: "outline", size: "sm", className: "gap-2" })}
                 >
                   Zobacz plan
                   <ExternalLink className="h-4 w-4" />
-                </Button>
+                </a>
               </div>
             </CardContent>
           </Card>
@@ -236,14 +228,12 @@ const ClientDetailContent = ({ clientId }: { clientId: string }) => {
               <div className="text-center py-8 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p className="text-sm">Brak aktywnych planów treningowych dla tego podopiecznego</p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => (window.location.href = `/trainer/plans/new?clientId=${client.id}`)}
-                  className="mt-4"
+                <a
+                  href={`/trainer/plans/new?clientId=${client.id}`}
+                  className={buttonVariants({ variant: "outline", size: "sm", className: "mt-4" })}
                 >
                   Utwórz pierwszy plan
-                </Button>
+                </a>
               </div>
             </CardContent>
           </Card>

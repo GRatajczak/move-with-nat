@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 
 export const CreateExerciseContent = () => {
@@ -51,10 +51,10 @@ export const CreateExerciseContent = () => {
           <h1 className="text-3xl font-bold tracking-tight">Nowe ćwiczenie</h1>
           <p className="text-muted-foreground">Dodaj nowe ćwiczenie do biblioteki.</p>
         </div>
-        <Button variant="outline" onClick={() => (window.location.href = "/admin/exercises")} className="gap-2">
+        <a href="/admin/exercises" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
           <ArrowLeft className="h-4 w-4" />
           Powrót do listy
-        </Button>
+        </a>
       </div>
 
       <div className="bg-card rounded-lg border px-4 shadow-sm">

@@ -1,7 +1,7 @@
 import { EditUserForm } from "../EditUserForm";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import type { UpdateUserCommand } from "@/interface";
 
@@ -39,9 +39,9 @@ export const EditUserContent = ({ userId }: { userId: string }) => {
     return (
       <div className="p-4 text-red-500 bg-red-50 rounded-md border border-red-200">
         <p>Wystąpił błąd podczas ładowania użytkownika: {error instanceof Error ? error.message : "Nieznany błąd"}</p>
-        <Button variant="outline" onClick={() => (window.location.href = "/admin/users")} className="mt-4">
+        <a href="/admin/users" className={buttonVariants({ variant: "outline", className: "mt-4" })}>
           Powrót do listy użytkowników
-        </Button>
+        </a>
       </div>
     );
   }

@@ -82,7 +82,7 @@
           "specs": [
             {
               "title": "should display client dashboard with test plan",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -95,25 +95,88 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 5115,
-                      "errors": [],
-                      "stdout": [
+                      "status": "timedOut",
+                      "duration": 33244,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts:29:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
+                          "column": 8,
+                          "line": 29
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 27 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     \u001b[90m// Arrange - Initialize page objects\u001b[39m\n \u001b[90m 31 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m     clientDashboard \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mClientDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
                         {
-                          "text": "✓ Created test plan: 53c93685-a726-44b0-b860-492700b51f2a\n"
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
+                            "column": 8,
+                            "line": 29
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 27 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     \u001b[90m// Arrange - Initialize page objects\u001b[39m\n \u001b[90m 31 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m     clientDashboard \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mClientDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts:29:8\u001b[22m"
                         },
                         {
-                          "text": "✓ Using test plan: 53c93685-a726-44b0-b860-492700b51f2a\n"
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts:38:21\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/fixtures/teardown.fixture.ts",
+                            "column": 36,
+                            "line": 41
+                          },
+                          "message": "AuthApiError: Invalid login credentials\n\n\u001b[90m   at \u001b[39mfixtures/teardown.fixture.ts:41\n\n\u001b[0m \u001b[90m 39 |\u001b[39m\n \u001b[90m 40 |\u001b[39m   \u001b[36mtry\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     \u001b[36mconst\u001b[39m { error\u001b[33m:\u001b[39m signInError } \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m client\u001b[33m.\u001b[39mauth\u001b[33m.\u001b[39msignInWithPassword({\n \u001b[90m    |\u001b[39m                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m       email\u001b[33m:\u001b[39m adminEmail\u001b[33m,\u001b[39m\n \u001b[90m 43 |\u001b[39m       password\u001b[33m:\u001b[39m password\u001b[33m,\u001b[39m\n \u001b[90m 44 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at handleError (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/node_modules/@supabase/auth-js/src/lib/fetch.ts:102:9)\u001b[22m\n\u001b[2m    at _handleRequest (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/node_modules/@supabase/auth-js/src/lib/fetch.ts:195:5)\u001b[22m\n\u001b[2m    at _request (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/node_modules/@supabase/auth-js/src/lib/fetch.ts:157:16)\u001b[22m\n\u001b[2m    at SupabaseAuthClient.signInWithPassword (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/node_modules/@supabase/auth-js/src/GoTrueClient.ts:676:15)\u001b[22m\n\u001b[2m    at authenticateClient (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/fixtures/teardown.fixture.ts:41:36)\u001b[22m\n\u001b[2m    at cleanupPlans (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/fixtures/teardown.fixture.ts:118:3)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts:52:5\u001b[22m"
                         }
                       ],
-                      "stderr": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Created test plan: ca497ce9-addd-4e20-b758-c4909db83bdf\n"
+                        },
+                        {
+                          "text": "✓ Using test plan: ca497ce9-addd-4e20-b758-c4909db83bdf\n"
+                        },
+                        {
+                          "text": "✓ Cleaning up test plan: ca497ce9-addd-4e20-b758-c4909db83bdf\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "Failed to authenticate for teardown: AuthApiError: Invalid login credentials\n    at handleError \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4m@supabase/auth-js\u001b[24m/src/lib/fetch.ts:102:9\u001b[90m)\u001b[39m\n\u001b[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)\u001b[39m\n    at _handleRequest \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4m@supabase/auth-js\u001b[24m/src/lib/fetch.ts:195:5\u001b[90m)\u001b[39m\n    at _request \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4m@supabase/auth-js\u001b[24m/src/lib/fetch.ts:157:16\u001b[90m)\u001b[39m\n    at SupabaseAuthClient.signInWithPassword \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4m@supabase/auth-js\u001b[24m/src/GoTrueClient.ts:676:15\u001b[90m)\u001b[39m\n    at authenticateClient \u001b[90m(file:///Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39me2e/fixtures/teardown.fixture.ts:41:36\u001b[90m)\u001b[39m\n    at cleanupPlans \u001b[90m(file:///Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39me2e/fixtures/teardown.fixture.ts:118:3\u001b[90m)\u001b[39m\n    at \u001b[90mfile:///Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39me2e/tests/client-plan-view.spec.ts:52:5\n    at \u001b[90m/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/testInfo.js:311:11\n    at TimeoutManager.withRunnable \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/timeoutManager.js:67:14\u001b[90m)\u001b[39m\n    at TestInfoImpl._runWithTimeout \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/testInfo.js:309:7\u001b[90m)\u001b[39m\n    at FixtureRunner.resolveParametersAndRunFunction \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/fixtureRunner.js:228:5\u001b[90m)\u001b[39m\n    at \u001b[90m/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:441:13\n    at TestInfoImpl._runAsStep \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/testInfo.js:300:7\u001b[90m)\u001b[39m\n    at WorkerMain._runAllHooksForSuite \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:436:9\u001b[90m)\u001b[39m\n    at WorkerMain._runAfterAllHooksForSuite \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:466:5\u001b[90m)\u001b[39m\n    at \u001b[90m/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:352:13\n    at TestInfoImpl._runAsStep \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/testInfo.js:300:7\u001b[90m)\u001b[39m\n    at WorkerMain._runTest \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:330:5\u001b[90m)\u001b[39m\n    at WorkerMain.runTestGroup \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerMain.js:199:11\u001b[90m)\u001b[39m\n    at process.<anonymous> \u001b[90m(/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/common/process.js:65:22\u001b[90m)\u001b[39m {\n  __isAuthError: \u001b[33mtrue\u001b[39m,\n  status: \u001b[33m400\u001b[39m,\n  code: \u001b[32m'invalid_credentials'\u001b[39m\n}\n"
+                        }
+                      ],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.662Z",
+                      "startTime": "2025-12-14T14:34:08.680Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-client-plan-view-Cli-0f432-nt-dashboard-with-test-plan-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-client-plan-view-Cli-0f432-nt-dashboard-with-test-plan-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-client-plan-view-Cli-0f432-nt-dashboard-with-test-plan-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/client-plan-view.spec.ts",
+                        "column": 8,
+                        "line": 29
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-d464c4fedb11df1ac30e",
@@ -134,20 +197,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3771,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:41.607Z",
+                      "startTime": "2025-12-14T14:34:44.590Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-d536d3a852ecf3f6294a",
@@ -168,20 +231,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3251,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:45.389Z",
+                      "startTime": "2025-12-14T14:34:44.596Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-566ff16e284180a0aa45",
@@ -202,20 +265,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4086,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:48.647Z",
+                      "startTime": "2025-12-14T14:34:44.599Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-d7a0832e9e7e28f22c22",
@@ -236,20 +299,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2934,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:52.739Z",
+                      "startTime": "2025-12-14T14:34:44.620Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-a005fbf97d31aca742b7",
@@ -270,20 +333,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2930,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:55.677Z",
+                      "startTime": "2025-12-14T14:34:44.633Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-bc1710fc2265248af3a3",
@@ -304,20 +367,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 1873,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:58.613Z",
+                      "startTime": "2025-12-14T14:34:44.633Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-f2c4a5c85fe11a266023",
@@ -338,27 +401,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3261,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "✓ Cleaning up test plan: 53c93685-a726-44b0-b860-492700b51f2a\n"
-                        },
-                        {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:20:00.491Z",
+                      "startTime": "2025-12-14T14:34:44.646Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
               "id": "8aa793801bc4b9618f1c-77684c29258f74789f04",
@@ -385,7 +441,7 @@
           "specs": [
             {
               "title": "should display create plan form correctly",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -398,18 +454,66 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 8520,
-                      "errors": [],
+                      "status": "timedOut",
+                      "duration": 34276,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.662Z",
+                      "startTime": "2025-12-14T14:34:08.631Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--72529--create-plan-form-correctly-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--72529--create-plan-form-correctly-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--72529--create-plan-form-correctly-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-801408c917533105da64",
@@ -419,7 +523,7 @@
             },
             {
               "title": "should create a basic plan with required fields only",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -432,22 +536,66 @@
                     {
                       "workerIndex": 2,
                       "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 12261,
-                      "errors": [],
-                      "stdout": [
+                      "status": "timedOut",
+                      "duration": 34053,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
                         {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
                         }
                       ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.663Z",
+                      "startTime": "2025-12-14T14:34:08.642Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595fe-n-with-required-fields-only-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595fe-n-with-required-fields-only-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595fe-n-with-required-fields-only-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-b340ecda3b047768cbb4",
@@ -457,7 +605,7 @@
             },
             {
               "title": "should create a complete plan with all fields",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -470,22 +618,66 @@
                     {
                       "workerIndex": 3,
                       "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 12318,
-                      "errors": [],
-                      "stdout": [
+                      "status": "timedOut",
+                      "duration": 34361,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
                         {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
                         }
                       ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.662Z",
+                      "startTime": "2025-12-14T14:34:08.652Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--9b7e1-mplete-plan-with-all-fields-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--9b7e1-mplete-plan-with-all-fields-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--9b7e1-mplete-plan-with-all-fields-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-3768c03331175617002e",
@@ -495,7 +687,7 @@
             },
             {
               "title": "should validate required fields",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -508,18 +700,66 @@
                     {
                       "workerIndex": 4,
                       "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 8525,
-                      "errors": [],
+                      "status": "timedOut",
+                      "duration": 33432,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.668Z",
+                      "startTime": "2025-12-14T14:34:08.577Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--e0c36-ld-validate-required-fields-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--e0c36-ld-validate-required-fields-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--e0c36-ld-validate-required-fields-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-ed3fd0edb73154ddd4f5",
@@ -529,7 +769,7 @@
             },
             {
               "title": "should show validation error when name is missing",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -542,18 +782,66 @@
                     {
                       "workerIndex": 5,
                       "parallelIndex": 5,
-                      "status": "passed",
-                      "duration": 9474,
-                      "errors": [],
+                      "status": "timedOut",
+                      "duration": 33965,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:35.660Z",
+                      "startTime": "2025-12-14T14:34:08.652Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--bb07c--error-when-name-is-missing-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--bb07c--error-when-name-is-missing-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--bb07c--error-when-name-is-missing-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-6f69d27bb83ee5911120",
@@ -563,7 +851,7 @@
             },
             {
               "title": "should create plan with visibility toggle",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -574,24 +862,68 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 6,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 6927,
-                      "errors": [],
-                      "stdout": [
+                      "status": "timedOut",
+                      "duration": 31146,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
                         {
-                          "text": "✓ Cleaned up 1 test plan(s)\n"
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
                         }
                       ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:44.648Z",
+                      "startTime": "2025-12-14T14:34:45.502Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--38256-plan-with-visibility-toggle-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--38256-plan-with-visibility-toggle-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--38256-plan-with-visibility-toggle-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-34f4d4af53828a3e13c5",
@@ -601,7 +933,7 @@
             },
             {
               "title": "should navigate back to plans list using back button",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -612,20 +944,68 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 5171,
-                      "errors": [],
+                      "workerIndex": 7,
+                      "parallelIndex": 5,
+                      "status": "timedOut",
+                      "duration": 31216,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:44.654Z",
+                      "startTime": "2025-12-14T14:34:45.505Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595a7-lans-list-using-back-button-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595a7-lans-list-using-back-button-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--595a7-lans-list-using-back-button-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-fef2c88a312d16d12edd",
@@ -635,7 +1015,7 @@
             },
             {
               "title": "should cancel plan creation and return to list",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -646,20 +1026,68 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "passed",
-                      "duration": 4809,
-                      "errors": [],
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "timedOut",
+                      "duration": 31108,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:45.601Z",
+                      "startTime": "2025-12-14T14:34:45.508Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--6939e-creation-and-return-to-list-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--6939e-creation-and-return-to-list-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--6939e-creation-and-return-to-list-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-6066a3803a1b71c83aee",
@@ -669,7 +1097,7 @@
             },
             {
               "title": "should handle long description",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -680,20 +1108,68 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 8,
                       "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 6254,
-                      "errors": [],
+                      "status": "timedOut",
+                      "duration": 31127,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8",
+                        "location": {
+                          "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                          "column": 8,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                            "column": 8,
+                            "line": 19
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   \u001b[36mlet\u001b[39m createPlanPage\u001b[33m:\u001b[39m \u001b[33mCreatePlanPage\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Initialize page objects\u001b[39m\n \u001b[90m 21 |\u001b[39m     loginPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mLoginPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m     dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:19:8\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:48.393Z",
+                      "startTime": "2025-12-14T14:34:45.504Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--ea93f-uld-handle-long-description-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--ea93f-uld-handle-long-description-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-create-plan-trainer--ea93f-uld-handle-long-description-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/create-plan-trainer.spec.ts",
+                        "column": 8,
+                        "line": 19
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "bf6670ecc9a3dc87f6dc-b45b4d33ee7f3e0877e9",
@@ -731,15 +1207,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 380,
+                      "duration": 1412,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:48.451Z",
+                      "startTime": "2025-12-14T14:34:45.596Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -754,7 +1230,7 @@
             },
             {
               "title": "should login successfully as admin",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -765,20 +1241,52 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 2116,
-                      "errors": [],
+                      "workerIndex": 11,
+                      "parallelIndex": 4,
+                      "status": "timedOut",
+                      "duration": 31129,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/login.spec.ts:29:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:48.843Z",
+                      "startTime": "2025-12-14T14:34:45.633Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-admin-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-admin-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-admin-chromium/error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "6b6dc33e290e5a0a43b1-006a3dfb56688023a33d",
@@ -788,7 +1296,7 @@
             },
             {
               "title": "should login successfully as trainer",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -799,20 +1307,52 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 1446,
-                      "errors": [],
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 31426,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/login.spec.ts:45:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:49.864Z",
+                      "startTime": "2025-12-14T14:34:47.605Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-trainer-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-trainer-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-trainer-chromium/error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "6b6dc33e290e5a0a43b1-eb8a9f502044791f1f18",
@@ -822,7 +1362,7 @@
             },
             {
               "title": "should login successfully as client",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -833,20 +1373,52 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "passed",
-                      "duration": 1616,
-                      "errors": [],
+                      "workerIndex": 12,
+                      "parallelIndex": 4,
+                      "status": "timedOut",
+                      "duration": 30926,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/login.spec.ts:61:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:50.436Z",
+                      "startTime": "2025-12-14T14:35:18.131Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-client-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-client-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Login-Flow-should-login-successfully-as-client-chromium/error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "6b6dc33e290e5a0a43b1-478a21505bf32825c3b8",
@@ -867,15 +1439,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 13,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 495,
+                      "duration": 1510,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:50.993Z",
+                      "startTime": "2025-12-14T14:35:18.134Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -901,15 +1473,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
+                      "workerIndex": 14,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 518,
+                      "duration": 1497,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:51.321Z",
+                      "startTime": "2025-12-14T14:35:18.131Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -935,15 +1507,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 15,
+                      "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 550,
+                      "duration": 1479,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:51.500Z",
+                      "startTime": "2025-12-14T14:35:18.148Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -969,15 +1541,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 16,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 617,
+                      "duration": 1579,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:51.599Z",
+                      "startTime": "2025-12-14T14:35:18.133Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1000,7 +1572,7 @@
           "specs": [
             {
               "title": "should logout successfully",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -1011,20 +1583,52 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 1699,
-                      "errors": [],
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30915,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts",
+                            "column": 21,
+                            "line": 96
+                          },
+                          "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n\u001b[90m   at \u001b[39mpages/LoginPage.ts:96\n\n\u001b[0m \u001b[90m 94 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 95 |\u001b[39m   \u001b[36masync\u001b[39m waitForSuccessfulLogin() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 96 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForFunction(() \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39m\u001b[33m!\u001b[39mlocalStorage\u001b[33m.\u001b[39mgetItem(\u001b[32m\"user\"\u001b[39m)\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m {\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 97 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 99 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForURL((url) \u001b[33m=>\u001b[39m \u001b[33m!\u001b[39murl\u001b[33m.\u001b[39mpathname\u001b[33m.\u001b[39mstartsWith(\u001b[32m\"/auth/login\"\u001b[39m)\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at LoginPage.waitForSuccessfulLogin (/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/pages/LoginPage.ts:96:21)\u001b[22m\n\u001b[2m    at /Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/e2e/tests/login.spec.ts:119:21\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-12-13T19:19:51.852Z",
+                      "startTime": "2025-12-14T14:35:20.192Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Authenticated--8a55a--should-logout-successfully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Authenticated--8a55a--should-logout-successfully-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/grzegorzratajczak/Desktop/workspace/move-with-nat/move-with-nat/test-results/tests-login-Authenticated--8a55a--should-logout-successfully-chromium/error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "6b6dc33e290e5a0a43b1-4e994188b5f484332205",
@@ -1039,11 +1643,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-13T19:19:32.352Z",
-    "duration": 31955.21,
-    "expected": 26,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2025-12-14T14:34:07.516Z",
+    "duration": 103776.144,
+    "expected": 5,
+    "skipped": 7,
+    "unexpected": 14,
     "flaky": 0
   }
 }

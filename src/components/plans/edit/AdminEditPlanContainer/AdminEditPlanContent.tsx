@@ -1,7 +1,7 @@
 import { usePlan } from "@/hooks/plans/usePlan";
 import { useUpdatePlan } from "@/hooks/plans/useUpdatePlan";
 import { AdminPlanForm } from "../AdminPlanForm";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "../../../navigation/Breadcrumbs";
@@ -55,9 +55,9 @@ export const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: s
           <p className="text-sm text-muted-foreground mt-1">
             {error instanceof Error ? error.message : "Nieznany błąd"}
           </p>
-          <Button variant="outline" onClick={() => (window.location.href = `${baseUrl}/plans`)} className="mt-4">
+          <a href={`${baseUrl}/plans`} className={buttonVariants({ variant: "outline", className: "mt-4" })}>
             Powrót do listy planów
-          </Button>
+          </a>
         </div>
       </div>
     );
@@ -91,14 +91,10 @@ export const AdminEditPlanContent = ({ planId, userRole = "admin" }: { planId: s
           <h1 className="text-3xl font-bold tracking-tight">Edycja planu: {plan.name}</h1>
           <p className="text-muted-foreground">Edytuj plan treningowy (możesz zmienić trenera i podopiecznego)</p>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => (window.location.href = `${baseUrl}/plans/${planId}`)}
-          className="gap-2"
-        >
+        <a href={`${baseUrl}/plans/${planId}`} className={buttonVariants({ variant: "outline", className: "gap-2" })}>
           <ArrowLeft className="h-4 w-4" />
           Powrót do planu
-        </Button>
+        </a>
       </div>
 
       {/* Form */}

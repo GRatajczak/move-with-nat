@@ -8,7 +8,7 @@ import { ClientsTable } from "./ClientsTable";
 import { ClientsCards } from "./ClientsCards";
 import { Pagination } from "../../exercises/Pagination";
 import { QueryProvider } from "../../QueryProvider";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { ClientDto, ClientsPageQuery, ClientStatus } from "@/interface/clients";
 import type { PaginatedResponse } from "@/interface/common";
@@ -128,10 +128,10 @@ const ClientsListContent = () => {
               <Plus className="h-4 w-4" />
               Dodaj podopiecznego
             </Button>
-            <Button variant="outline" onClick={() => (window.location.href = "/trainer")} className="gap-2">
+            <a href="/trainer" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
               <ArrowLeft className="h-4 w-4" />
               Dashboard
-            </Button>
+            </a>
           </div>
         </div>
 
@@ -156,10 +156,10 @@ const ClientsListContent = () => {
             <Plus className="h-4 w-4" />
             Dodaj podopiecznego
           </Button>
-          <Button variant="outline" onClick={() => (window.location.href = "/trainer")} className="gap-2">
+          <a href="/trainer" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
             <ArrowLeft className="h-4 w-4" />
             Dashboard
-          </Button>
+          </a>
         </div>
       </div>
 

@@ -417,18 +417,10 @@ export const UserDetailContent = ({ userId }: { userId: string }) => {
               ) : clientsData?.data && clientsData.data.length > 0 ? (
                 <div className="space-y-2">
                   {clientsData.data.map((client) => (
-                    <div
+                    <a
                       key={client.id}
+                      href={`/admin/users/${client.id}`}
                       className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer"
-                      onClick={() => (window.location.href = `/admin/users/${client.id}`)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          window.location.href = `/admin/users/${client.id}`;
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
                     >
                       <Avatar className="h-10 w-10">
                         <AvatarFallback>
@@ -450,7 +442,7 @@ export const UserDetailContent = ({ userId }: { userId: string }) => {
                       <Badge variant={getStatusBadgeVariant(client.status)} className="text-xs">
                         {getStatusLabel(client.status)}
                       </Badge>
-                    </div>
+                    </a>
                   ))}
                 </div>
               ) : (

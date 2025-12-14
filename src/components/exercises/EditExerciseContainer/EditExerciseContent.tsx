@@ -3,7 +3,7 @@ import { useUpdateExercise } from "@/hooks/exercises/useUpdateExercise";
 import { useExercise } from "@/hooks/exercises/useExercise";
 import type { ExerciseFormData } from "@/interface";
 import EditSkeleton from "./EditSkeleton";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 export const EditExerciseContent = ({ id }: { id: string }) => {
@@ -50,10 +50,10 @@ export const EditExerciseContent = ({ id }: { id: string }) => {
         <div className="flex flex-col space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Edytuj ćwiczenie: {exercise.name}</h1>
         </div>
-        <Button variant="outline" onClick={() => (window.location.href = "/admin/exercises")} className="gap-2">
+        <a href="/admin/exercises" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
           <ArrowLeft className="h-4 w-4" />
           Powrót do listy
-        </Button>
+        </a>
       </div>
 
       <div className="bg-card rounded-lg border px-4 shadow-sm">

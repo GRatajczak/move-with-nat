@@ -10,7 +10,7 @@ import { ProgressSection } from "../ProgressSection";
 import { PlanExercisesDetailList } from "../PlanExercisesDetailList";
 import { DeletePlanConfirmationModal } from "../../edit/DeletePlanConfirmationModal";
 import { DuplicatePlanModal } from "../../edit/DuplicatePlanModal";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "../../../navigation/Breadcrumbs";
@@ -85,9 +85,9 @@ export const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailCo
           <p className="text-sm text-muted-foreground mt-1">
             {planError instanceof Error ? planError.message : "Nieznany błąd"}
           </p>
-          <Button variant="outline" onClick={() => (window.location.href = `${baseUrl}/plans`)} className="mt-4">
+          <a href={`${baseUrl}/plans`} className={buttonVariants({ variant: "outline", className: "mt-4" })}>
             Powrót do listy planów
-          </Button>
+          </a>
         </div>
       </div>
     );
@@ -118,10 +118,10 @@ export const PlanDetailContent = ({ planId, userRole = "trainer" }: PlanDetailCo
       {/* Back button and breadcrumbs */}
       <div className="flex items-start md:items-center justify-between md:px-0 px-4 flex-col-reverse md:flex-row gap-4">
         <Breadcrumbs items={breadcrumbs} />
-        <Button variant="outline" onClick={() => (window.location.href = `${baseUrl}/plans`)} className="gap-2">
+        <a href={`${baseUrl}/plans`} className={buttonVariants({ variant: "outline", className: "gap-2" })}>
           <ArrowLeft className="h-4 w-4" />
           Lista planów
-        </Button>
+        </a>
       </div>
 
       {/* Header with title, status, client info, and actions */}

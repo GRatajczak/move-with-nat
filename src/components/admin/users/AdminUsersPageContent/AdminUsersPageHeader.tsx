@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 export const AdminUsersPageHeader = () => {
@@ -10,10 +10,10 @@ export const AdminUsersPageHeader = () => {
           Zarządzaj użytkownikami systemu (administratorzy, trenerzy, podopieczni).
         </p>
       </div>
-      <Button variant="outline" onClick={() => (window.location.href = "/admin")} className="gap-2">
+      <a href="/admin" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
         <ArrowLeft className="h-4 w-4" />
         Powrót do Dashboard
-      </Button>
+      </a>
     </div>
   );
 };

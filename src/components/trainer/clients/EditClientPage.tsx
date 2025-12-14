@@ -1,7 +1,7 @@
 import { EditClientForm } from "./EditClientForm";
 import { useClient } from "@/hooks/clients/useClient";
 import { useUpdateClient } from "@/hooks/clients/useUpdateClient";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { QueryProvider } from "@/components/QueryProvider";
 import type { EditClientFormData } from "@/interface";
@@ -30,9 +30,9 @@ const EditClientContent = ({ clientId }: { clientId: string }) => {
     return (
       <div className="p-4 text-red-500 bg-red-50 rounded-md border border-red-200">
         <p>Wystąpił błąd podczas ładowania podopiecznego: {error instanceof Error ? error.message : "Nieznany błąd"}</p>
-        <Button variant="outline" onClick={() => (window.location.href = "/trainer/clients")} className="mt-4">
+        <a href="/trainer/clients" className={buttonVariants({ variant: "outline", className: "mt-4" })}>
           Powrót do listy podopiecznych
-        </Button>
+        </a>
       </div>
     );
   }

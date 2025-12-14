@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 
 import { Breadcrumbs } from "../../../navigation/Breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import type { BreadcrumbsProps } from "@/interface/navigation";
 
 export const AdminCreatePlanHeader = ({ breadcrumbs, baseUrl }: { breadcrumbs: BreadcrumbsProps; baseUrl: string }) => {
@@ -12,10 +12,10 @@ export const AdminCreatePlanHeader = ({ breadcrumbs, baseUrl }: { breadcrumbs: B
         <h1 className="text-3xl font-bold tracking-tight">Nowy plan treningowy</h1>
         <p className="text-muted-foreground">Stwórz nowy plan dla wybranego trenera i podopiecznego</p>
       </div>
-      <Button variant="outline" onClick={() => (window.location.href = `${baseUrl}/plans`)} className="gap-2">
+      <a href={`${baseUrl}/plans`} className={buttonVariants({ variant: "outline", className: "gap-2" })}>
         <ArrowLeft className="h-4 w-4" />
         Powrót do listy
-      </Button>
+      </a>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { Pagination } from "../Pagination";
 import { ExerciseQuickPreviewModal } from "../ExerciseQuickPreviewModal";
 import { DeleteConfirmationModal } from "../DeleteConfirmationModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { ExerciseViewModel } from "@/interface";
 
@@ -69,10 +69,10 @@ export const ExercisesListContent = () => {
           <h1 className="text-3xl font-bold tracking-tight">Biblioteka Ćwiczeń</h1>
           <p className="text-muted-foreground">Zarządzaj bazą ćwiczeń dostępnych w planach treningowych.</p>
         </div>
-        <Button variant="outline" onClick={() => (window.location.href = "/admin")} className="gap-2">
+        <a href="/admin" className={buttonVariants({ variant: "outline", className: "gap-2" })}>
           <ArrowLeft className="h-4 w-4" />
           Powrót do Dashboard
-        </Button>
+        </a>
       </div>
 
       <ExercisesFilterToolbar

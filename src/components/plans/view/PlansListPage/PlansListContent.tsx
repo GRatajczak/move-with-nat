@@ -11,7 +11,7 @@ import { DeletePlanConfirmationModal } from "../../edit/DeletePlanConfirmationMo
 import { DuplicatePlanModal } from "../../edit/DuplicatePlanModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
 import type { PlanViewModel, ListPlansQuery, DuplicatePlanData } from "@/interface/plans";
 import type { PaginatedResponse } from "@/interface/common";
@@ -180,10 +180,10 @@ export const PlansListContent = ({
           <p className="text-muted-foreground">Zarządzaj planami treningowymi dla swoich podopiecznych.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => (window.location.href = baseUrl)} className="gap-2">
+          <a href={baseUrl} className={buttonVariants({ variant: "outline", className: "gap-2" })}>
             <ArrowLeft className="h-4 w-4" />
             Dashboard
-          </Button>
+          </a>
           <Button onClick={handleCreateClick} className="gap-2" data-testid="create-plan-button">
             <Plus className="h-4 w-4" />
             Stwórz plan
