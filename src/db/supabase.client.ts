@@ -64,11 +64,27 @@ let supabaseAdmin: SupabaseClient | null = null;
 export const getSupabaseAdminClient = () => {
   if (!supabaseAdmin) {
     const { url } = resolveSupabaseEnv();
-    const supabaseServiceRoleKey =
-      import.meta.env.SUPABASE_SERVICE_ROLE_KEY ?? import.meta.env.SUPABASE_SERVICE_ROLE_KEY_TEST;
+    const isTestMode = import.meta.env.MODE === "test";
+    const supabaseServiceRoleKey = isTestMode
+      ? import.meta.env.SUPABASE_SERVICE_ROLE_KEY_TEST
+      : import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (!url || !supabaseServiceRoleKey) {
-      throw new Error("Missing Supabase URL or Service Role Key");
+    if (!url) {
+      throw new Error("Missing Supabase URL. Check SUPABASE_URL in your .env file.");
+    }
+
+    if (!supabaseServiceRoleKey) {
+      throw new Error(
+        `Missing Supabase Service Role Key. Check ${isTestMode ? "SUPABASE_SERVICE_ROLE_KEY_TEST" : "SUPABASE_SERVICE_ROLE_KEY"} in your .env file.`
+      );
+    }
+
+    // Validate that the service role key is not a placeholder
+    if (supabaseServiceRoleKey.includes("###") || supabaseServiceRoleKey.length < 20) {
+      throw new Error(
+        "Invalid Supabase Service Role Key. Please set a valid service role key in your .env file. " +
+          "You can find this key in your Supabase project settings under API > Project API keys > service_role key."
+      );
     }
 
     supabaseAdmin = createClient<Database>(url, supabaseServiceRoleKey, {

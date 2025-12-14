@@ -5,7 +5,7 @@ import type { CreateUserCommand } from "@/interface";
 import { CreateUserPageHeader } from "./CreateUserPageHeader";
 import { CreateUserSuccessModal } from "./CreateUserSuccessModal";
 
-export const CreateUserContent: React.FC = () => {
+export const CreateUserContent = () => {
   const { mutateAsync: createUser, isPending: isSubmitting } = useCreateUser();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -15,24 +15,18 @@ export const CreateUserContent: React.FC = () => {
     lastName: string;
     phone?: string;
     dateOfBirth?: string;
-    role: "administrator" | "trainer" | "client";
+    role: "admin" | "trainer" | "client";
     trainerId?: string;
   }) => {
-    const mapRoleToAPI = (role: "administrator" | "trainer" | "client"): "admin" | "trainer" | "client" => {
-      if (role === "administrator") {
-        return "admin";
-      }
-      return role;
-    };
-
     const command: CreateUserCommand = {
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone || undefined,
       dateOfBirth: data.dateOfBirth || undefined,
-      role: mapRoleToAPI(data.role),
-      trainerId: data.trainerId,
+      role: data.role,
+      // Only include trainerId if role is "client"
+      trainerId: data.role === "client" ? data.trainerId : undefined,
     };
 
     await createUser(command);

@@ -11,28 +11,33 @@ const TRAINER_PATH = "/trainer";
 const CLIENT_PATH = "/client";
 
 const API_ROLES: { path: string; method: string; role: UserRole }[] = [
+  // Admin permissions
+  { path: "/api/exercises", method: "DELETE", role: "admin" },
+  { path: "/api/reasons", method: "POST", role: "admin" },
+  { path: "/api/reasons", method: "PUT", role: "admin" },
+  { path: "/api/reasons", method: "DELETE", role: "admin" },
+  { path: "/api/users", method: "POST", role: "admin" },
+  { path: "/api/users", method: "DELETE", role: "admin" },
+  { path: "/api/trainer/clients", method: "DELETE", role: "admin" },
+
+  // Trainer permissions
   { path: "/api/exercises", method: "GET", role: "trainer" },
   { path: "/api/exercises", method: "POST", role: "trainer" },
   { path: "/api/exercises", method: "PUT", role: "trainer" },
-  { path: "/api/exercises", method: "DELETE", role: "admin" },
-  { path: "/api/plans", method: "GET", role: "client" },
-  { path: "/api/plans", method: "POST", role: "client" },
   { path: "/api/plans", method: "GET", role: "trainer" },
   { path: "/api/plans", method: "POST", role: "trainer" },
   { path: "/api/plans", method: "PUT", role: "trainer" },
   { path: "/api/plans", method: "DELETE", role: "trainer" },
   { path: "/api/reasons", method: "GET", role: "trainer" },
-  { path: "/api/reasons", method: "POST", role: "admin" },
-  { path: "/api/reasons", method: "PUT", role: "admin" },
-  { path: "/api/reasons", method: "DELETE", role: "admin" },
-  { path: "/api/users", method: "GET", role: "client" },
-  { path: "/api/users", method: "POST", role: "admin" },
-  { path: "/api/users", method: "PUT", role: "client" },
-  { path: "/api/users", method: "DELETE", role: "admin" },
   { path: "/api/trainer/clients", method: "GET", role: "trainer" },
   { path: "/api/trainer/clients", method: "POST", role: "trainer" },
   { path: "/api/trainer/clients", method: "PUT", role: "trainer" },
-  { path: "/api/trainer/clients", method: "DELETE", role: "admin" },
+
+  // Client permissions
+  { path: "/api/plans", method: "GET", role: "client" },
+  { path: "/api/plans", method: "POST", role: "client" },
+  { path: "/api/users", method: "GET", role: "client" },
+  { path: "/api/users", method: "PUT", role: "client" },
 ];
 
 const PUBLIC_API_PATHS = ["/api/auth/login", "/api/auth/invite", "/api/auth/activate", "/api/auth/reset-password"];
