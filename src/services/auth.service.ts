@@ -262,7 +262,7 @@ export async function requestPasswordReset(
   const firstName = user.first_name || "User";
   await sendPasswordResetEmail(user.email, firstName, resetToken);
 
-  return { message: "If your email exists in our system, you will receive a password reset link" };
+  return { message: "Jeśli twój adres email istnieje w naszym systemie, otrzymasz link do resetowania hasła" };
 }
 
 /**
@@ -283,11 +283,14 @@ export async function confirmPasswordReset(
   supabase: SupabaseClient,
   command: ConfirmPasswordResetCommand
 ): Promise<MessageResponse> {
-  // Verify and decode token
-  const decoded =
-    command.token.includes(".") && command.token.split(".").length === 3
-      ? verifyToken(command.token, "password-reset")
-      : verifyToken(command.token, "activation");
+  // Verify and decode token - try password-reset first, then activation
+  let decoded: TokenPayload;
+  try {
+    decoded = verifyToken(command.token, "password-reset");
+  } catch {
+    // If it's not a password-reset token, try activation token
+    decoded = verifyToken(command.token, "activation");
+  }
 
   // Validate password strength (additional check beyond schema)
   if (!isStrongPassword(command.newPassword)) {
