@@ -1,8 +1,8 @@
 ---
-import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { ReasonsListPage } from "../../../components/admin/reasons/ReasonsListPage";
 ---
 
-<AdminLayout title="Powody niewykonania">
+<AuthenticatedLayout title="Powody niewykonania" requiredRole="admin">
   <ReasonsListPage client:load />
-</AdminLayout>
+</AuthenticatedLayout>

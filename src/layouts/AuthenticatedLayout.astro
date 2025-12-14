@@ -1,0 +1,61 @@
+---
+import Layout from "./Layout.astro";
+import { MainLayout } from "./MainLayout";
+import { Toaster } from "../components/ui/sonner";
+import type { AuthenticatedUser } from "@/types";
+import type { UserRole } from "@/types/db";
+
+interface Props {
+  title?: string;
+  requiredRole?: UserRole | UserRole[];
+}
+
+const { title, requiredRole } = Astro.props;
+
+// Get user from context (set by middleware)
+const user = Astro.locals.user as AuthenticatedUser;
+const supabase = Astro.locals.supabase;
+
+// If no user, redirect to login
+if (!user || !supabase) {
+  return Astro.redirect("/auth/login");
+}
+
+// Check if user has required role
+if (requiredRole) {
+  const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+
+  if (!allowedRoles.includes(user.role)) {
+    return Astro.redirect(`/${user.role}`);
+  }
+}
+
+// Get current path
+const currentPath = Astro.url.pathname;
+
+// Role-specific defaults
+const roleDefaults = {
+  admin: { title: "Admin Dashboard", firstName: "Admin" },
+  trainer: { title: "Trainer Dashboard", firstName: "Trener" },
+  client: { title: "Client Dashboard", firstName: "Podopieczny" },
+};
+
+const defaults = roleDefaults[user.role];
+const pageTitle = title || defaults.title;
+
+// Use user data from middleware (no additional query needed)
+const fullUser = {
+  id: user.id,
+  email: user.email,
+  firstName: user.firstName || defaults.firstName,
+  lastName: user.lastName || "User",
+  role: user.role,
+};
+---
+
+<Layout title={pageTitle}>
+  <MainLayout client:only="react" user={fullUser} currentPath={currentPath} requiredRole={requiredRole}>
+    <slot />
+  </MainLayout>
+  <Toaster client:only="react" />
+</Layout>

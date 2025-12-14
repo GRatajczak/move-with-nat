@@ -70,7 +70,12 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     return redirect("/auth/login");
   }
 
-  const { data: userDetails } = await supabase.from("users").select("role").eq("id", user.id).single();
+  // OPTIMIZATION: Fetch all user data in one query instead of separate queries in layouts
+  const { data: userDetails } = await supabase
+    .from("users")
+    .select("role, first_name, last_name")
+    .eq("id", user.id)
+    .single();
 
   if (!userDetails?.role) {
     await supabase.auth.signOut();
@@ -82,6 +87,8 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     id: user.id,
     email: user.email ?? "",
     role: userRole,
+    firstName: userDetails.first_name ?? undefined,
+    lastName: userDetails.last_name ?? undefined,
   };
   locals.supabase = supabase;
 

@@ -1,10 +1,10 @@
 ---
-import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { ExerciseDetailContainer } from "../../../components/exercises/ExerciseDetailContainer";
 
 const id = Astro.params.id ?? "";
 ---
 
-<AdminLayout title="Szczegóły ćwiczenia">
+<AuthenticatedLayout title="Szczegóły ćwiczenia" requiredRole="admin">
   <ExerciseDetailContainer id={id} client:load />
-</AdminLayout>
+</AuthenticatedLayout>

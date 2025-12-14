@@ -54,6 +54,8 @@ export interface AuthenticatedUser {
   id: string;
   email: string;
   role: "admin" | "trainer" | "client";
+  firstName?: string;
+  lastName?: string;
 }
 
 export type AuthenticatedUserWithFullName = AuthenticatedUser & {

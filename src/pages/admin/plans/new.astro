@@ -1,8 +1,8 @@
 ---
-import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { AdminCreatePlanContainer } from "../../../components/plans/create/AdminCreatePlanContainer";
 ---
 
-<AdminLayout>
+<AuthenticatedLayout requiredRole="admin">
   <AdminCreatePlanContainer client:load userRole="admin" />
-</AdminLayout>
+</AuthenticatedLayout>

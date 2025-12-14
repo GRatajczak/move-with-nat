@@ -1,9 +1,9 @@
 ---
-import TrainerLayout from "@/layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "@/layouts/AuthenticatedLayout.astro";
 import { TrainerDashboardContainer } from "@/components/trainer/dashboard/TrainerDashboardContainer";
 ---
 
-<TrainerLayout title="Dashboard">
+<AuthenticatedLayout title="Dashboard" requiredRole="trainer">
   <div class="container mx-auto py-8 px-4">
     <div class="mb-8">
       <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -11,4 +11,4 @@ import { TrainerDashboardContainer } from "@/components/trainer/dashboard/Traine
     </div>
     <TrainerDashboardContainer client:load />
   </div>
-</TrainerLayout>
+</AuthenticatedLayout>

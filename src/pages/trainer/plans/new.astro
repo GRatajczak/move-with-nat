@@ -1,11 +1,11 @@
 ---
-import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { CreatePlanContainer } from "../../../components/plans/create/CreatePlanContainer";
 
 const { locals } = Astro;
 const user = locals.user;
 ---
 
-<TrainerLayout>
+<AuthenticatedLayout requiredRole="trainer">
   <CreatePlanContainer client:load trainerId={user?.id ?? ""} userRole="trainer" />
-</TrainerLayout>
+</AuthenticatedLayout>

@@ -1,8 +1,8 @@
 ---
-import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { CreateExerciseContainer } from "../../../components/exercises/CreateExerciseContainer";
 ---
 
-<AdminLayout title="Dodaj nowe ćwiczenie">
+<AuthenticatedLayout title="Dodaj nowe ćwiczenie" requiredRole="admin">
   <CreateExerciseContainer client:load />
-</AdminLayout>
+</AuthenticatedLayout>

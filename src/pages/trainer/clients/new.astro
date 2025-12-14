@@ -1,8 +1,8 @@
 ---
-import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { CreateClientPage } from "../../../components/trainer/clients/CreateClientPage";
 ---
 
-<TrainerLayout title="Dodaj podopiecznego">
+<AuthenticatedLayout title="Dodaj podopiecznego" requiredRole="trainer">
   <CreateClientPage client:load />
-</TrainerLayout>
+</AuthenticatedLayout>

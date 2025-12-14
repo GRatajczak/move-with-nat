@@ -1,10 +1,10 @@
 ---
-import TrainerLayout from "../../../layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { ClientDetailPage } from "../../../components/trainer/clients/ClientDetailPage";
 
 const id = Astro.params.id ?? "";
 ---
 
-<TrainerLayout title="Szczegóły podopiecznego">
+<AuthenticatedLayout title="Szczegóły podopiecznego" requiredRole="trainer">
   <ClientDetailPage clientId={id} client:load />
-</TrainerLayout>
+</AuthenticatedLayout>

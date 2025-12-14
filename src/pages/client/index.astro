@@ -1,8 +1,8 @@
 ---
-import ClientLayout from "../../layouts/ClientLayout.astro";
+import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.astro";
 import { ClientDashboardPage } from "../../components/client/dashboard/ClientDashboardPage";
 ---
 
-<ClientLayout title="Moje Plany">
+<AuthenticatedLayout title="Moje Plany" requiredRole="client">
   <ClientDashboardPage client:only="react" />
-</ClientLayout>
+</AuthenticatedLayout>

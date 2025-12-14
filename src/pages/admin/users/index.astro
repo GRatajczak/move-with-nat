@@ -1,8 +1,8 @@
 ---
-import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../layouts/AuthenticatedLayout.astro";
 import { AdminUsersPage } from "../../../components/admin/users/AdminUsersPage";
 ---
 
-<AdminLayout title="Użytkownicy">
+<AuthenticatedLayout title="Użytkownicy" requiredRole="admin">
   <AdminUsersPage client:load />
-</AdminLayout>
+</AuthenticatedLayout>

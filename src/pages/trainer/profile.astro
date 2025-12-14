@@ -1,10 +1,10 @@
 ---
-import TrainerLayout from "../../layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.astro";
 import { ProfileContainer } from "../../components/profile/ProfileContainer";
 
 const user = Astro.locals.user;
 ---
 
-<TrainerLayout title="Profil">
+<AuthenticatedLayout title="Profil" requiredRole="trainer">
   <ProfileContainer client:load userId={user?.id ?? ""} userRole={user?.role ?? "trainer"} />
-</TrainerLayout>
+</AuthenticatedLayout>

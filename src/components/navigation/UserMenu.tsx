@@ -75,7 +75,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         {/* Logout */}
         <DropdownMenuItem
           onClick={onLogout}
-          className="flex items-center gap-2 text-destructive focus:text-destructive cursor-pointer"
+          className="flex items-center gap-2  cursor-pointer"
           data-testid="user-menu-logout"
         >
           <LogOut className="h-4 w-4" />

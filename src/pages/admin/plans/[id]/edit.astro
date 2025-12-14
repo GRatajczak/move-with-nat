@@ -1,11 +1,11 @@
 ---
-import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import AuthenticatedLayout from "../../../../layouts/AuthenticatedLayout.astro";
 import { AdminEditPlanContainer } from "../../../../components/plans/edit/AdminEditPlanContainer";
 
 const { params } = Astro;
 const planId = params.id || "";
 ---
 
-<AdminLayout>
+<AuthenticatedLayout requiredRole="admin">
   <AdminEditPlanContainer client:load planId={planId} userRole="admin" />
-</AdminLayout>
+</AuthenticatedLayout>

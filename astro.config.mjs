@@ -15,4 +15,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   adapter: vercel(),
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "hover",
+  },
 });

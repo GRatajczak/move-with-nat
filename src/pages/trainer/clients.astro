@@ -1,8 +1,8 @@
 ---
-import TrainerLayout from "../../layouts/TrainerLayout.astro";
+import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.astro";
 import { ClientsListPage } from "../../components/trainer/clients/ClientsListPage";
 ---
 
-<TrainerLayout>
+<AuthenticatedLayout requiredRole="trainer">
   <ClientsListPage client:load />
-</TrainerLayout>
+</AuthenticatedLayout>

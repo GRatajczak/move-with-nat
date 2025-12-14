@@ -1,10 +1,10 @@
 ---
-import ClientLayout from "../../../../layouts/ClientLayout.astro";
+import AuthenticatedLayout from "../../../../layouts/AuthenticatedLayout.astro";
 import { PlanDetailsPage } from "../../../../components/client/plan-details/PlanDetailsPage";
 
 const planId = Astro.params.planId ?? "";
 ---
 
-<ClientLayout title="Szczegóły planu">
+<AuthenticatedLayout title="Szczegóły planu" requiredRole="client">
   <PlanDetailsPage client:only="react" planId={planId} />
-</ClientLayout>
+</AuthenticatedLayout>

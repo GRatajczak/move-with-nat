@@ -1,11 +1,11 @@
 ---
-import ClientLayout from "../../../../../layouts/ClientLayout.astro";
+import AuthenticatedLayout from "../../../../../layouts/AuthenticatedLayout.astro";
 import { ExerciseCompletionPage } from "../../../../../components/client/exercise-completion/ExerciseCompletionPage";
 
 const planId = Astro.params.planId ?? "";
 const exerciseId = Astro.params.exerciseId ?? "";
 ---
 
-<ClientLayout title="Szczegóły ćwiczenia">
+<AuthenticatedLayout title="Szczegóły ćwiczenia" requiredRole="client">
   <ExerciseCompletionPage client:only="react" planId={planId} exerciseId={exerciseId} />
-</ClientLayout>
+</AuthenticatedLayout>
