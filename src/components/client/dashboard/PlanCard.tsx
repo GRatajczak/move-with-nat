@@ -19,11 +19,11 @@ function ProgressBar({ value, max }: { value: number; max: number }) {
           {value} / {max} ({percentage}%)
         </span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-secondary border border-border">
         <div
           className={cn(
-            "h-full rounded-full transition-all duration-300",
-            percentage === 100 ? "bg-green-500" : "bg-primary"
+            "h-full rounded-full transition-all duration-30",
+            percentage === 100 ? "bg-green-500 " : "bg-primary "
           )}
           style={{ width: `${percentage}%` }}
         />

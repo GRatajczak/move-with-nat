@@ -29,7 +29,7 @@ const ExerciseCompletionContent = ({ planId, exerciseId }: ExerciseCompletionPag
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto p-4 space-y-6">
+      <div className="mx-auto p-4 space-y-6">
         <Skeleton className="h-8 w-3/4" />
         <Skeleton className="aspect-video w-full rounded-md" />
         <Skeleton className="h-24 w-full" />
@@ -40,7 +40,7 @@ const ExerciseCompletionContent = ({ planId, exerciseId }: ExerciseCompletionPag
 
   if (error || !exerciseData) {
     return (
-      <div className="max-w-2xl mx-auto p-8 flex flex-col items-center justify-center text-center space-y-4">
+      <div className="mx-auto p-8 flex flex-col items-center justify-center text-center space-y-4">
         <AlertCircle className="h-12 w-12 text-destructive" />
         <h2 className="text-xl font-semibold">Wystąpił błąd</h2>
         <p className="text-muted-foreground">Nie udało się załadować danych ćwiczenia.</p>

@@ -18,6 +18,19 @@ export const UserRowItem = ({ user, children }: UserRowItemProps) => {
     }
   };
 
+  const getRoleBadgeVariant = (role: string): "default" | "secondary" | "destructive" => {
+    switch (role) {
+      case "trainer":
+        return "secondary";
+      case "client":
+        return "default";
+      case "admin":
+        return "destructive";
+      default:
+        return "secondary";
+    }
+  };
+
   const userProfileLink = `/${role}/users/${id}`;
 
   return (
@@ -42,7 +55,7 @@ export const UserRowItem = ({ user, children }: UserRowItemProps) => {
             <p className="text-xs text-muted-foreground">{email}</p>
           </div>
         </a>
-        <Badge variant={role === "trainer" ? "default" : "secondary"} className="ml-2 ml-auto">
+        <Badge variant={getRoleBadgeVariant(role)} className="ml-auto">
           {handleRoleTranslation(role)}
         </Badge>
       </div>

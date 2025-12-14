@@ -34,16 +34,9 @@ export function Sidebar({ role, isCollapsed, onToggle, isMobileOpen, onMobileClo
       >
         {/* Logo section */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          {!isCollapsed && (
-            <a href="/" className="flex items-center gap-2 font-semibold text-lg">
-              <span className="text-primary">MoveWithNat</span>
-            </a>
-          )}
-          {isCollapsed && (
-            <a href="/" className="flex items-center justify-center w-full font-semibold text-lg">
-              <span className="text-primary">MW</span>
-            </a>
-          )}
+          <a href="/" className="w-full flex items-center justify-center">
+            <img src="/nata-logo.svg" alt="Nata Logo" className="w-16 h-auto" />
+          </a>
 
           {/* Mobile close button */}
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={onMobileClose} aria-label="Zamknij menu">

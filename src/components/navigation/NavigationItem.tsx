@@ -61,30 +61,28 @@ export function NavigationItem({
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              {hasChildren ? (
-                <button
-                  onClick={onToggleExpand}
-                  className={cn(baseClasses, "w-full")}
-                  aria-expanded={isExpanded}
-                  aria-label={item.label}
-                >
-                  {content}
-                </button>
-              ) : (
-                <a
-                  href={item.href}
-                  className={cn(baseClasses, "w-full")}
-                  aria-label={item.label}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  {content}
-                </a>
-              )}
+              <a
+                href={item.href}
+                className={cn(baseClasses, "w-full")}
+                aria-label={item.label}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {content}
+              </a>
             </TooltipTrigger>
             <TooltipContent side="right" className="flex items-center gap-2">
               {item.label}
               {item.badge && (
-                <span className="px-1.5 py-0.5 text-xs font-medium rounded bg-muted">{item.badge.text}</span>
+                <span
+                  className={cn(
+                    "px-2 py-0.5 text-xs font-medium rounded-full",
+                    item.badge.variant === "default" && "bg-background text-foreground",
+                    item.badge.variant === "warning" && "bg-yellow-500 text-yellow-950",
+                    item.badge.variant === "error" && "bg-red-500 text-red-950"
+                  )}
+                >
+                  {item.badge.text}
+                </span>
               )}
             </TooltipContent>
           </Tooltip>

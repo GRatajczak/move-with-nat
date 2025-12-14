@@ -71,11 +71,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen">
+      <Card className="w-[90%] max-w-md mx-auto">
+        <img src="/nata-logo.svg" alt="Nata Logo" className="w-32 h-auto mx-auto" />
         <CardHeader>
-          <CardTitle className="text-2xl">Zaloguj się</CardTitle>
-          <CardDescription>Wprowadź swój adres email i hasło, aby zalogować się do swojego konta.</CardDescription>
+          <CardTitle className="text-2xl text-center mb-2">Zaloguj się</CardTitle>
+          <CardDescription className="text-center">
+            Wprowadź swój adres email i hasło, aby zalogować się do swojego konta.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} data-testid="login-form" data-hydrated={hydrated} noValidate>

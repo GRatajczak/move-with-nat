@@ -16,7 +16,8 @@ const API_ROLES: { path: string; method: string; role: UserRole }[] = [
   { path: "/api/exercises", method: "PUT", role: "trainer" },
   { path: "/api/exercises", method: "DELETE", role: "admin" },
   { path: "/api/plans", method: "GET", role: "client" },
-  { path: "/api/plans", method: "GET", role: "trainer" }, // Allow clients to view their plans
+  { path: "/api/plans", method: "POST", role: "client" },
+  { path: "/api/plans", method: "GET", role: "trainer" },
   { path: "/api/plans", method: "POST", role: "trainer" },
   { path: "/api/plans", method: "PUT", role: "trainer" },
   { path: "/api/plans", method: "DELETE", role: "trainer" },
