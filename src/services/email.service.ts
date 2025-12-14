@@ -101,7 +101,7 @@ export async function sendActivationEmail(email: string, firstName: string, toke
 
   await sendEmail({
     to: email,
-    subject: "Welcome to Move with Nat - Activate Your Account",
+    subject: "Witamy w Move with Nat – Aktywuj swoje konto",
     template: "activation",
     data: {
       firstName,
@@ -119,7 +119,7 @@ export async function sendActivationEmail(email: string, firstName: string, toke
  * @param resetToken - Password reset token
  */
 export async function sendPasswordResetEmail(email: string, firstName: string, resetToken: string): Promise<void> {
-  const baseUrl = import.meta.env.PUBLIC_APP_URL || "http://localhost:4321";
+  const baseUrl = import.meta.env.BASE_URL || "http://localhost:3000";
   // Use the same activation page for password reset (token purpose is embedded in the token)
   const resetLink = `${baseUrl}/auth/activate?token=${resetToken}`;
 
@@ -129,7 +129,7 @@ export async function sendPasswordResetEmail(email: string, firstName: string, r
     template: "password-reset",
     data: {
       firstName,
-      resetLink,
+      activationLink: resetLink,
       expiresIn: "1 hour",
     },
   });
