@@ -2,13 +2,40 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UserRowItem } from "./UserRowItem";
-import type { UserDto, PendingActivationsWidgetProps } from "@/interface";
+import type { UserDto } from "@/interface";
 import type { UserRole } from "@/types/db";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
-export const PendingActivationsWidget = ({ users, isLoading, onResendInvite }: PendingActivationsWidgetProps) => {
+interface PendingActivationsWidgetProps {
+  users: UserDto[];
+  isLoading?: boolean;
+}
+
+export const PendingActivationsWidget = ({ users, isLoading = false }: PendingActivationsWidgetProps) => {
   const [resendingId, setResendingId] = useState<string | null>(null);
+
+  const onResendInvite = async (email: string, role: UserRole) => {
+    try {
+      const response = await fetch("/api/auth/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, role, resend: true }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Błąd wysyłania zaproszenia");
+      }
+
+      toast.success("Zaproszenie zostało wysłane ponownie");
+    } catch (error) {
+      console.error("Resend invite error:", error);
+      toast.error(error instanceof Error ? error.message : "Wystąpił błąd podczas wysyłania zaproszenia");
+    }
+  };
 
   const handleResend = async (user: UserDto) => {
     setResendingId(user.id);

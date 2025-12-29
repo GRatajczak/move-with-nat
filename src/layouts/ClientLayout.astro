@@ -1,0 +1,42 @@
+---
+import Layout from "./Layout.astro";
+import { MainLayout } from "./MainLayout";
+import { Toaster } from "../components/ui/sonner";
+import type { AuthenticatedUser } from "@/types";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Client Dashboard" } = Astro.props;
+
+const user = Astro.locals.user as AuthenticatedUser;
+const supabase = Astro.locals.supabase;
+
+if (!user || !supabase) {
+  return Astro.redirect("/auth/login");
+}
+
+if (user.role !== "client") {
+  return Astro.redirect(`/${user.role}`);
+}
+
+const { data: userDetails } = await supabase.from("users").select("first_name, last_name").eq("id", user.id).single();
+
+const currentPath = Astro.url.pathname;
+
+const fullUser = {
+  id: user.id,
+  email: user.email,
+  firstName: userDetails?.first_name || "Podopieczny",
+  lastName: userDetails?.last_name || "User",
+  role: user.role,
+};
+---
+
+<Layout title={title}>
+  <MainLayout client:only="react" user={fullUser} currentPath={currentPath} requiredRole="client">
+    <slot />
+  </MainLayout>
+  <Toaster client:only="react" />
+</Layout>

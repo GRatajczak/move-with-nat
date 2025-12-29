@@ -1,0 +1,131 @@
+---
+import type { PaginatedResponse, UserDto } from "@/interface";
+import { Users, UserCheck, Dumbbell, Calendar, ClipboardList } from "lucide-react";
+import QuickActions from "./QuickActions.astro";
+import StatsCard from "./StatsCard.astro";
+import RecentUsersWidget from "./RecentUsersWidget/RecentUsersWidget.astro";
+import { PendingActivationsWidget } from "./PendingActivationsWidget.tsx";
+
+// Helper to safely parse JSON
+const parseJson = async (res: Response): Promise<PaginatedResponse<unknown> | null> => {
+  if (!res.ok) return null;
+  return res.json();
+};
+
+// Fetch dashboard data on the server
+let error: string | null = null;
+let stats = {
+  totalTrainers: 0,
+  totalClients: 0,
+  totalPlans: 0,
+  totalExercises: 0,
+  totalReasons: 0,
+};
+let recentUsers: UserDto[] = [];
+let pendingUsers: UserDto[] = [];
+
+try {
+  const headers = { "Content-Type": "application/json" };
+  const cookie = Astro.request.headers.get("cookie") || "";
+
+  // Parallel requests for dashboard data
+  const [trainersRes, clientsRes, recentUsersRes, pendingUsersRes, plansRes, exercisesRes, reasonsRes] =
+    await Promise.all([
+      fetch(new URL("/api/users?role=trainer&limit=1", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/users?role=client&limit=1", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/users?limit=5&status=active", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/users?status=pending&limit=5", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/plans?limit=1", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/exercises?limit=1", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+      fetch(new URL("/api/reasons?limit=1", Astro.url.origin), {
+        headers: { ...headers, cookie },
+      }),
+    ]);
+
+  const [trainersData, clientsData, recentUsersData, pendingUsersData, plansData, exercisesData, reasonsData] =
+    await Promise.all([
+      parseJson(trainersRes),
+      parseJson(clientsRes),
+      parseJson(recentUsersRes),
+      parseJson(pendingUsersRes),
+      parseJson(plansRes),
+      parseJson(exercisesRes),
+      parseJson(reasonsRes),
+    ]);
+
+  stats = {
+    totalTrainers: trainersData?.meta?.total || 0,
+    totalClients: clientsData?.meta?.total || 0,
+    totalPlans: plansData?.meta?.total || 0,
+    totalExercises: exercisesData?.meta?.total || 0,
+    totalReasons: reasonsData?.meta?.total || 0,
+  };
+  recentUsers = (recentUsersData?.data || []) as UserDto[];
+  pendingUsers = (pendingUsersData?.data || []) as UserDto[];
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error("Dashboard fetch error:", err);
+  error = "Nie udało się pobrać danych dashboardu. Spróbuj odświeżyć stronę.";
+}
+---
+
+<div class="space-y-8">
+  <h1 class="sr-only" data-testid="admin-dashboard-heading">Dashboard</h1>
+
+  {
+    error ? (
+      <div class="p-4 text-red-500 bg-red-50 rounded-md">
+        <p>{error}</p>
+      </div>
+    ) : (
+      <>
+        {/* Static Island: QuickActions */}
+        <QuickActions />
+
+        {/* Static Islands: Stats Cards */}
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <StatsCard title="Podopieczni" value={stats.totalClients} icon={Users} description="Aktywni klienci" />
+          <StatsCard title="Trenerzy" value={stats.totalTrainers} icon={UserCheck} description="Zatrudnieni trenerzy" />
+          <StatsCard
+            title="Plany Treningowe"
+            value={stats.totalPlans}
+            icon={Calendar}
+            description="Aktywne plany treningowe"
+          />
+          <StatsCard
+            title="Baza Ćwiczeń"
+            value={stats.totalExercises}
+            icon={Dumbbell}
+            description="Wszystkie ćwiczenia"
+          />
+          <StatsCard title="Powody" value={stats.totalReasons} icon={ClipboardList} description="Dostępne powody" />
+        </div>
+
+        {/* Widgets Grid */}
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7 items-stretch">
+          {/* Static Island: Recent Users */}
+          <div class="col-span-4">
+            <RecentUsersWidget users={recentUsers} />
+          </div>
+
+          {/* Interactive Island: Pending Activations (needs client-side interactivity for resend) */}
+          <div class="col-span-3">
+            <PendingActivationsWidget users={pendingUsers} isLoading={false} client:load />
+          </div>
+        </div>
+      </>
+    )
+  }
+</div>

@@ -1,8 +1,8 @@
 ---
 import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.astro";
-import { AdminDashboardContainer } from "@/components/admin/dashboard/AdminDashboardContainer";
+import AdminDashboardContent from "@/components/admin/dashboard/AdminDashboardContent.astro";
 ---
 
 <AuthenticatedLayout title="Dashboard" requiredRole="admin">
-  <AdminDashboardContainer client:load />
+  <AdminDashboardContent />
 </AuthenticatedLayout>

@@ -1,0 +1,30 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserRowItem } from "../UserRowItem";
+import type { UserDto } from "@/interface";
+
+interface Props {
+  users: UserDto[];
+}
+
+const { users } = Astro.props;
+---
+
+<Card className="h-full">
+  <CardHeader>
+    <CardTitle>Ostatnio zarejestrowani</CardTitle>
+  </CardHeader>
+  <CardContent>
+    {
+      users.length > 0 ? (
+        <ul class="flex flex-col">
+          {users.map((user) => (
+            <UserRowItem user={user} />
+          ))}
+        </ul>
+      ) : (
+        <div class="text-center text-muted-foreground py-8">Brak nowych użytkowników</div>
+      )
+    }
+  </CardContent>
+</Card>

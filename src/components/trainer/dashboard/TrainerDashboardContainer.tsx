@@ -1,8 +1,8 @@
 import { useTrainerDashboard } from "@/hooks/useTrainerDashboard";
-import { StatsCard } from "@/components/admin/dashboard/StatsCard";
+// import { StatsCard } from "@/components/admin/dashboard/StatsCard";
 import { TrainerQuickActions } from "./TrainerQuickActions";
 import { RecentClientsWidget } from "./RecentClientsWidget";
-import { Users, Calendar } from "lucide-react";
+// import { Users, Calendar } from "lucide-react";
 import { QueryProvider } from "../../QueryProvider";
 
 const TrainerDashboardContent = () => {
@@ -20,7 +20,7 @@ const TrainerDashboardContent = () => {
     <div className="space-y-8">
       <TrainerQuickActions />
 
-      <div className="grid gap-4 md:grid-cols-2">
+      {/* <div className="grid gap-4 md:grid-cols-2">
         <StatsCard
           title="Podopieczni"
           value={data?.stats.totalClients}
@@ -35,7 +35,7 @@ const TrainerDashboardContent = () => {
           isLoading={isLoading}
           description="Plany treningowe"
         />
-      </div>
+      </div> */}
 
       <div className="grid gap-4 md:grid-cols-1">
         <RecentClientsWidget clients={data?.recentClients || []} isLoading={isLoading} />
