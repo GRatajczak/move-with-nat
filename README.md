@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.0.1-blue)]()  
 [![License](https://img.shields.io/badge/license-Unlicensed-lightgrey)]()
 
-A responsive web application enabling personal trainers and administrators to create, manage, and share structured training plans with clients—eliminating the need for spreadsheets. Clients can view assigned plans, track exercise progress, and record reasons for incomplete exercises..
+A responsive web application enabling personal trainers and administrators to create, manage, and share structured training plans with clients—eliminating the need for spreadsheets. Clients can view assigned plans, track exercise progress, and record reasons for incomplete exercises.
 
 ## Table of Contents
 
